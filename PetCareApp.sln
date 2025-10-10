@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36518.9 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infraestructure", "Infraestructure", "{5344ECC7-95BA-4914-8225-930E22FDBEFA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{62BEF2A8-81C0-483C-92D5-5DCEEBAA39F4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetCareApp.Core.Domain", "PetCareApp.Core.Domain\PetCareApp.Core.Domain.csproj", "{20328FA7-DABB-47DD-9488-B396CCA0D303}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetCareApp.Core.Application", "PetCareApp.Core.Application\PetCareApp.Core.Application.csproj", "{C95E3907-79F3-4F6E-A259-558A0F289F11}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetCareApp.Infraestructure.Persistence", "PetCareApp.Infraestructure.Persistence\PetCareApp.Infraestructure.Persistence.csproj", "{0183A1BB-37D5-4DCE-9E9A-191FC426E55F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VetCareApp.Presentation.Web", "VetCareApp.Presentation.Web\VetCareApp.Presentation.Web.csproj", "{88895000-745B-4CFA-8876-916DABFC1ABF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{20328FA7-DABB-47DD-9488-B396CCA0D303}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20328FA7-DABB-47DD-9488-B396CCA0D303}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20328FA7-DABB-47DD-9488-B396CCA0D303}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20328FA7-DABB-47DD-9488-B396CCA0D303}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C95E3907-79F3-4F6E-A259-558A0F289F11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C95E3907-79F3-4F6E-A259-558A0F289F11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C95E3907-79F3-4F6E-A259-558A0F289F11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C95E3907-79F3-4F6E-A259-558A0F289F11}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0183A1BB-37D5-4DCE-9E9A-191FC426E55F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0183A1BB-37D5-4DCE-9E9A-191FC426E55F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0183A1BB-37D5-4DCE-9E9A-191FC426E55F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0183A1BB-37D5-4DCE-9E9A-191FC426E55F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88895000-745B-4CFA-8876-916DABFC1ABF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88895000-745B-4CFA-8876-916DABFC1ABF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88895000-745B-4CFA-8876-916DABFC1ABF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88895000-745B-4CFA-8876-916DABFC1ABF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{20328FA7-DABB-47DD-9488-B396CCA0D303} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{C95E3907-79F3-4F6E-A259-558A0F289F11} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{0183A1BB-37D5-4DCE-9E9A-191FC426E55F} = {5344ECC7-95BA-4914-8225-930E22FDBEFA}
+		{88895000-745B-4CFA-8876-916DABFC1ABF} = {62BEF2A8-81C0-483C-92D5-5DCEEBAA39F4}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {889AF1C0-18A1-4F42-BC70-0CB49763058A}
+	EndGlobalSection
+EndGlobal
