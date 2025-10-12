@@ -1,3 +1,4 @@
+using PetCareApp.Infraestructure.Persistence;
 namespace VetCareApp.Presentation.Web
 {
     public class Program
@@ -8,6 +9,7 @@ namespace VetCareApp.Presentation.Web
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddersistencelayerIoc(builder.Configuration);
 
             var app = builder.Build();
 

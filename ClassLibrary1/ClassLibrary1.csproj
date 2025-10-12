@@ -6,8 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\PetCareApp.Core.Domain\PetCareApp.Core.Domain.csproj" />
-  </ItemGroup>
-
 </Project>
