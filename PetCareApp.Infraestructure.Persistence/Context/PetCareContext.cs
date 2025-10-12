@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PetCareApp.Core.Domain.Entities;
+using System.Reflection;
 
 namespace PetCareApp.Infraestructure.Persistence.Context;
 
-public class AppContext : DbContext
+public class PetCareContext : DbContext
 {
-    public AppContext(DbContextOptions<AppContext> options): base(options){}
+    public PetCareContext(DbContextOptions<PetCareContext> options): base(options){}
 
     #region DbSets
     public  DbSet<Cita> Citas { get; set; }
@@ -30,16 +31,10 @@ public class AppContext : DbContext
     public  DbSet<Usuario> Usuarios { get; set; }
     #endregion
 
-    /*
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=localhost;Database=PETCARE;Trusted_Connection=True;TrustServerCertificate=True;");
-    */
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-       
-       
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
     }
 }
