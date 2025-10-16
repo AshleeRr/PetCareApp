@@ -33,8 +33,7 @@ public class PetCareContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(modelBuilder);
-        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-
+        modelBuilder.Entity<Dueño>().ToTable("Dueños");
+        modelBuilder.Entity<Telefono>().ToTable("Telefonos");
     }
 }
