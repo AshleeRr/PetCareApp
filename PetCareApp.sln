@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetCareApp.Core.Application
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetCareApp.Infraestructure.Persistence", "PetCareApp.Infraestructure.Persistence\PetCareApp.Infraestructure.Persistence.csproj", "{0183A1BB-37D5-4DCE-9E9A-191FC426E55F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetCareApp.Presentation.Web", "VetCareApp.Presentation.Web\PetCareApp.Presentation.Web.csproj", "{88895000-745B-4CFA-8876-916DABFC1ABF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VetCareApp.Presentation.Web", "VetCareApp.Presentation.Web\VetCareApp.Presentation.Web.csproj", "{88895000-745B-4CFA-8876-916DABFC1ABF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{43C27E27-7E7D-4AC0-9BB8-188F3936A169}"
 EndProject
