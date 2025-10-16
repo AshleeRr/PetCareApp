@@ -8,7 +8,7 @@ using PetCareApp.Core.Application.Dtos;
 namespace PetCareApp.Core.Application.Interfaces
 {
     public interface IClienteService
-    {
+    { 
         List<ClienteDto> ObtenerClientes();
         ClienteDto ObtenerPorId(int id);
         ClienteDto ObtenerPorCedula(string cedula);

@@ -35,5 +35,5 @@ public class PetCareContext : DbContext
     {
         modelBuilder.Entity<Dueño>().ToTable("Dueños");
         modelBuilder.Entity<Telefono>().ToTable("Telefonos");
-    }
+    } 
 }

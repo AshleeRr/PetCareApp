@@ -8,7 +8,7 @@ using PetCareApp.Core.Domain.Entities;
 namespace PetCareApp.Core.Application.Interfaces
 {
     public interface IClienteRepository
-    {
+    { 
         List<Dueño> ObtenerTodos();
         Dueño ObtenerPorId(int id);
         Dueño ObtenerPorCedula(string cedula);
