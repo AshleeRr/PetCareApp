@@ -19,7 +19,7 @@ namespace PetCareApp.Infraestructure.Persistence.EntitiesConfigurations
             #endregion
 
             #region relations configuration
-            builder.HasMany(d => d.Productos).WithMany(p => p.Proveedors)
+            builder.HasMany(d => d.Productos).WithMany(p => p.Proveedores)
                 .UsingEntity<Dictionary<string, object>>(
                     "Provee",
                     r => r.HasOne<Producto>().WithMany()
