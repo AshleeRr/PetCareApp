@@ -18,3 +18,5 @@ namespace PetCareApp.Core.Application.Interfaces
         List<ClienteDto> FiltrarPorNombre(string nombre);
     }
 }
+
+// todo deberia ser task, no?

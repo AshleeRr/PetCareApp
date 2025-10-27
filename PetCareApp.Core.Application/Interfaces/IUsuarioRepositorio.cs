@@ -10,7 +10,7 @@ namespace Dominio.Interfaces
     public interface IUsuarioRepositorio : IGeneRepositorio<Usuario>
     {
         Task<Usuario?> GetByEmailAsync(string email);
-        Task AddAsync(Usuario usuario);
-        Task SaveChangesAsync();
+        Task AddAsync(Usuario usuario); // por que add async esta aqui si lo esta heredando
+        Task SaveChangesAsync(); //esto tmb se supone que se hereda
     }
 }

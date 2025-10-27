@@ -12,9 +12,10 @@ namespace PetCareApp.Core.Application.Interfaces
         List<Dueño> ObtenerTodos();
         Dueño ObtenerPorId(int id);
         Dueño ObtenerPorCedula(string cedula);
-        void Agregar(Dueño cliente);
+        void Agregar(Dueño cliente); //  por que no hereda de la generica
         void Editar(Dueño cliente);
         void Eliminar(int id);
         List<Dueño> FiltrarPorNombre(string nombre);
     }
 }
+// lo mismo aqui, deberia ser task? 

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PetCareApp.Core.Domain.Interfaces
+namespace PetCareApp.Core.Application.Services
 {
-    internal class Class1
+    internal class MedicamentoService
     {
     }
 }

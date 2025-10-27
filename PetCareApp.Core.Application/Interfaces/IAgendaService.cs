@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PetCareApp.Core.Domain.Enum
+namespace PetCareApp.Core.Application.Interfaces
 {
-    internal class Class1
+    internal interface IAgendaService
     {
     }
 }

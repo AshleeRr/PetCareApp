@@ -12,8 +12,8 @@ namespace Dominio.Interfaces
         Task<T?> GetByIdAsync(int id);
         Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? predicate = null);
         Task AddAsync(T entity);
-        void Update(T entity);
-        void Remove(T entity);
+        void Update(T entity); // por que no es Task aqui?  
+        void Remove(T entity); // por que no es Task aqui?
         Task<int> SaveChangesAsync();
     }
 }
