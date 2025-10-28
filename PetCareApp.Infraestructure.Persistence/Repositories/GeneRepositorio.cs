@@ -1,15 +1,16 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using PetCareApp.Core.Domain.Interfaces;
+using PetCareApp.Infraestructure.Persistence.Context;
 
 namespace PetCareApp.Infraestructure.Persistence.Repositories
 {
     public class GeneRepositorio<T> : IGenericRepositorio<T> where T : class
     {
-        private readonly DbContext _context;
+        private readonly PetCareContext _context;
        // private readonly DbSet<T> _set;
 
-        public GeneRepositorio(DbContext ctx)
+        public GeneRepositorio(PetCareContext ctx)
         {
             _context = ctx;
            // _set = ctx.Set<T>();
