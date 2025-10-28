@@ -1,10 +1,5 @@
-﻿using PetCareApp.Core.Domain.Interfaces;
-using System;
+﻿using PetCareApp.Core.Application.Interfaces;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PetCareApp.Infraestructure.Persistence.Logging
 {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PetCareApp.Core.Domain.Interfaces
+namespace PetCareApp.Core.Application.Interfaces
 {
     public interface Ilogger
     {

@@ -1,9 +1,10 @@
-﻿using Dominio.Interfaces;
+﻿using Infraestructura.Persistencia.Repositorios;
 using Microsoft.EntityFrameworkCore;
 using PetCareApp.Core.Domain.Entities;
+using PetCareApp.Core.Domain.Interfaces;
 using PetCareApp.Infraestructure.Persistence.Context;
 
-namespace Infraestructura.Persistencia.Repositorios
+namespace PetCareApp.Infraestructure.Persistence.Repositories
 {
     public class UsuarioRepositorio : GeneRepositorio<Usuario>, IUsuarioRepositorio
     {
@@ -20,7 +21,7 @@ namespace Infraestructura.Persistencia.Repositorios
                 .Include(u => u.Role) // ✅ IMPORTANTE: Cargar la relación Role
                 .FirstOrDefaultAsync(u => u.Email == email);
         }
-
+        /*
         public async Task AddAsync(Usuario usuario)
         {
             await _context.Usuarios.AddAsync(usuario);
@@ -29,6 +30,6 @@ namespace Infraestructura.Persistencia.Repositorios
         public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();
-        }
+        }*/
     }
 }

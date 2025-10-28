@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PetCareApp.Core.Application.Interfaces;
-using PetCareApp.Core.Domain.Entities;
+﻿using PetCareApp.Core.Domain.Entities;
+using PetCareApp.Core.Domain.Interfaces;
 using PetCareApp.Infraestructure.Persistence.Context;
 
 namespace PetCareApp.Infraestructure.Persistence.Repositories
