@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PetCareApp.Core.Application.Interfaceson;
 using PetCareApp.Core.Domain.Entities;
 using PetCareApp.Core.Domain.Interfaces;
 using PetCareApp.Infraestructure.Persistence.Context;
+using PetCareApp.Infraestructure.Persistence.Repositories;
 
 namespace Infraestructura.Persistencia.Repositorios
 {
@@ -21,14 +21,14 @@ namespace Infraestructura.Persistencia.Repositorios
                 .FirstOrDefaultAsync(r => r.Rol == roleName);
         }
 
+        /*
         public async Task<Role?> GetByIdAsync(int id)
         {
             return await _context.Roles.FindAsync(id);
         }
-
         public async Task<List<Role>> GetAllAsync()
         {
             return await _context.Roles.ToListAsync();
-        }
+        }*/
     }
 }

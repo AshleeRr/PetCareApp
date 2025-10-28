@@ -1,7 +1,5 @@
-﻿using Dominio.Interfaces;
-using PetCareApp.Core.Application.Dtos;
+﻿using PetCareApp.Core.Application.Dtos;
 using PetCareApp.Core.Application.Interfaces;
-using PetCareApp.Core.Application.Interfaceson;
 using PetCareApp.Core.Domain.Entities;
 using PetCareApp.Core.Domain.Interfaces;
 using System.Security.Cryptography;
@@ -50,7 +48,7 @@ namespace PetCareApp.Core.Application.Services
             };
 
             await _usuarioRepo.AddAsync(user);
-            await _usuarioRepo.SaveChangesAsync();
+          //  await _usuarioRepo.SaveChangesAsync();
 
             var usuarioConRole = await _usuarioRepo.GetByEmailAsync(user.Email);
 

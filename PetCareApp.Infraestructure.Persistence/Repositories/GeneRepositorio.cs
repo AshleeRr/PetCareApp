@@ -1,34 +1,71 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using Dominio.Interfaces;
+﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using PetCareApp.Core.Domain.Interfaces;
 
-namespace Infraestructura.Persistencia.Repositorios
+namespace PetCareApp.Infraestructure.Persistence.Repositories
 {
-    public class GeneRepositorio<T> : IGeneRepositorio<T> where T : class
+    public class GeneRepositorio<T> : IGenericRepositorio<T> where T : class
     {
-        protected readonly DbContext _ctx;
-        protected readonly DbSet<T> _set;
+        private readonly DbContext _context;
+       // private readonly DbSet<T> _set;
 
         public GeneRepositorio(DbContext ctx)
         {
-            _ctx = ctx;
-            _set = ctx.Set<T>();
+            _context = ctx;
+           // _set = ctx.Set<T>();
         }
 
-        public async Task AddAsync(T entity) => await _set.AddAsync(entity);
-        public void Update(T entity) => _set.Update(entity);
-        public void Remove(T entity) => _set.Remove(entity);
+        public virtual async Task<T> AddAsync(T entity)
+        {
+            await _context.Set<T>().AddAsync(entity);
+            await _context.SaveChangesAsync();
+            return entity;
+        }
+        public virtual async Task<T?> UpdateAsync(int id, T entity) 
+        {
+            var entry = await _context.Set<T>().FindAsync(id);
+            if(entry != null)
+            {
+                _context.Entry(entry).CurrentValues.SetValues(entity);
+                await _context.SaveChangesAsync();
+                return entity;
+               
+            }
+            return null;
+        }
+        public virtual async Task RemoveAsync(int id)
+        {
+            var entity = await _context.Set<T>().FindAsync(id);
+            if(entity != null)
+            {
+                _context.Set<T>().Remove(entity);
+                await _context.SaveChangesAsync();
+            }   
+        }
 
-        public async Task<T?> GetByIdAsync(int id) => await _set.FindAsync(id);
+        public virtual async Task<T?> GetByIdAsync(int id)
+        {
+           return await _context.Set<T>().FindAsync(id);
+        }
 
-        public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? predicate = null)
-            => predicate == null ? await _set.ToListAsync() : await _set.Where(predicate).ToListAsync();
+        public virtual async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? predicate = null)
+            => predicate == null ? await _context.Set<T>().ToListAsync() : await _context.Set<T>().Where(predicate).ToListAsync();
 
-        public Task<int> SaveChangesAsync() => _ctx.SaveChangesAsync();
+       // public Task<int> SaveChangesAsync() => _ctx.SaveChangesAsync();
+
+        public virtual IQueryable<T> GetAllQuery()
+        {
+            return _context.Set<T>().AsQueryable();
+        }
+
+        public virtual IQueryable<T> GetAllQueryWithInclude(List<string> properties)
+        {
+            var query = _context.Set<T>().AsQueryable();
+            foreach(var property in properties)
+            {
+                query = query.Include(property);
+            }
+            return query;
+        }
     }
 }

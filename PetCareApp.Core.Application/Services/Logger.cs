@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PetCareApp.Core.Domain.Interfaces;
+﻿
+using PetCareApp.Core.Application.Interfaces;
 
-namespace Infraestructura.Servicios
+namespace PetCareApp.Core.Application.Services
 {
     public class Logger : Ilogger
     {
