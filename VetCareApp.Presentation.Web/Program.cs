@@ -1,8 +1,22 @@
+ï»¿using Dominio.Interfaces;
+using Infraestructura.Persistencia.Repositorios;
+using Infraestructura.Servicios;
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
+using PetCareApp.Core.Application.Interfaces;
+using PetCareApp.Core.Application.Interfaceson;
+using PetCareApp.Core.Application.Services;
+using PetCareApp.Core.Domain.Interfaces;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection; // Asegúrate de tener este 'using' si usas métodos de extensión
+using Microsoft.Extensions.DependencyInjection; // AsegÃºrate de tener este 'using' si usas mÃ©todos de extensiÃ³n
 using PetCareApp.Core.Application.Interfaces;
 using PetCareApp.Core.Application.Services;
 using PetCareApp.Infraestructure.Persistence;
+using PetCareApp.Infraestructure.Persistence.Context;
+using System.Text;
+
 using PetCareApp.Infraestructure.Persistence.Repositories;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using Microsoft.EntityFrameworkCore;
@@ -16,8 +30,75 @@ namespace VetCareApp.Presentation.Web
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            // 1. Registrar servicios
+            builder.Services.AddControllersWithViews();
+            builder.Services.AddRazorPages();
+
+            var jwtKey = builder.Configuration["JwtSettings:SecretKey"];
+            var jwtIssuer = builder.Configuration["JwtSettings:Issuer"];
+            var jwtAudience = builder.Configuration["JwtSettings:Audience"];
+
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = jwtIssuer,
+                    ValidAudience = jwtAudience,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
+                };
+            });
+
+            builder.Services.AddAuthorization();
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll",
+                    policy => policy.AllowAnyOrigin()
+                                    .AllowAnyMethod()
+                                    .AllowAnyHeader());
+            });
+
+            // âœ… DbContext ya estÃ¡ registrado correctamente
+            builder.Services.AddDbContext<PetCareContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("AppConnection"))
+            );
+
+            // âœ… Registrar repositorios y servicios
+            builder.Services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
+            builder.Services.AddScoped<IRoleRepositorio, RoleRepositorio>(); // âœ… Agregar esta lÃ­nea
+            builder.Services.AddScoped<IAutenticacionService, AutenticacionService>();
+            builder.Services.AddScoped<Ilogger, Logger>();
+            builder.Services.AddScoped<TokenService>();
+
+            builder.Services.Configure<Infraestructura.Servicios.ConfiguracionServices2>(
+                builder.Configuration.GetSection("SmtpSettings")
+            );
+
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+                {
+                    Title = "PetCare API",
+                    Version = "v1"
+                });
+            });
+
+            builder.Services.AddControllersWithViews()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+                });
             // -----------------------------
-            // CONFIGURACIÓN DE SERVICIOS
+            // CONFIGURACIÃ“N DE SERVICIOS
             // -----------------------------
 
             // Controladores tipo API
@@ -25,14 +106,14 @@ namespace VetCareApp.Presentation.Web
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            // Inyección de dependencias de la capa de infraestructura
-            // NOTA: Se asume que AddersistencelayerIoc es un método de extensión en otro proyecto.
+            // InyecciÃ³n de dependencias de la capa de infraestructura
+            // NOTA: Se asume que AddersistencelayerIoc es un mÃ©todo de extensiÃ³n en otro proyecto.
             builder.Services.AddersistencelayerIoc(builder.Configuration);
 
             // Contexto de Base de Datos
             builder.Services.AddSqlServer<PetCareContext>(builder.Configuration.GetConnectionString("AppConnection"));
 
-            // Repositorios y servicios (inyección manual)
+            // Repositorios y servicios (inyecciï¿½n manual)
             builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
             builder.Services.AddScoped<ClienteService>();
 
@@ -51,22 +132,31 @@ namespace VetCareApp.Presentation.Web
             var app = builder.Build();
 
             // -----------------------------
-            // CONFIGURACIÓN DEL PIPELINE
+            // CONFIGURACIÃ“N DEL PIPELINE
             // -----------------------------
 
             // HABILITAR SWAGGER
             if (app.Environment.IsDevelopment())
+            // 2. Configurar el pipeline
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            }
+            else
             {
                 // 1. Usa UseSwagger() para generar el documento JSON
                 app.UseSwagger();
 
                 // 2. Usa UseSwaggerUI() para servir la interfaz web.
-                // NOTA: La "I" en UI debe ser mayúscula.
+                // NOTA: La "I" en UI debe ser mayÃºscula.
                 app.UseSwaggerUI(options =>
                 {
                     options.SwaggerEndpoint("/swagger/v1/swagger.json", "API Veterinaria v1");
-                    options.RoutePrefix = string.Empty; // Muestra Swagger en la raíz (http://localhost:5000/)
+                    options.RoutePrefix = string.Empty; // Muestra Swagger en la raÃ­z (http://localhost:5000/)
                 });
+                app.UseExceptionHandler("/Home/Error");
+                app.UseHsts();
             }
 
             app.UseHttpsRedirection();
@@ -76,19 +166,34 @@ namespace VetCareApp.Presentation.Web
                 .AllowAnyOrigin()
                 .AllowAnyMethod()
                 .AllowAnyHeader());
+            app.UseStaticFiles();
+            app.UseRouting();
 
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "PetCare API V1");
+                c.RoutePrefix = string.Empty;
+            });
+
+            app.UseCors("AllowAll");
+            app.UseAuthentication();
             app.UseAuthorization();
 
+            app.MapControllers();
+            app.MapRazorPages();
+
+            app.MapControllerRoute(
+                name: "default",
+                pattern: "{controller=Home}/{action=Index}/{id?}");
             // Mapeo de Endpoints
             app.MapControllers();
 
             // Ruta de prueba
             app.MapGet("/", () => "Gestion de clientes funciona ?");
 
-            // Ejecutar la aplicación
+            // Ejecutar la aplicaciï¿½n
             app.Run();
         }
     }
-
 }
-
