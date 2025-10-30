@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 
 namespace PetCareApp.Core.Application.Interfaces
 {
-    public interface Ilogger
+    internal class ITratamientoService
     {
-        void Info(string mensaje, string usuario = "");
-        void Error(string mensaje, string usuario = "");
     }
 }

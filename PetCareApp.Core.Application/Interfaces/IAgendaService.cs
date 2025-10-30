@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PetCareApp.Core.Application.Services
+namespace PetCareApp.Core.Application.Interfaces
 {
-    public class ServiceRegistration
+    internal interface IAgendaService
     {
     }
 }

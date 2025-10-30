@@ -18,7 +18,7 @@ public class PetCareContext : DbContext
     public  DbSet<Mascota> Mascota { get; set; }
     public  DbSet<Medicamento> Medicamentos { get; set; }
     public  DbSet<MotivoCita> MotivoCita { get; set; }
-    public  DbSet<Personal> Personal { get; set; }
+    public  DbSet<Personal> Personals { get; set; }
     public  DbSet<Producto> Productos { get; set; }
     public  DbSet<Proveedor> Proveedors { get; set; }
     public  DbSet<PruebasMedica> PruebasMedicas { get; set; }
@@ -33,8 +33,7 @@ public class PetCareContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(modelBuilder);
-        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-
-    }
+        modelBuilder.Entity<Dueño>().ToTable("Dueños");
+        modelBuilder.Entity<Telefono>().ToTable("Telefonos");
+    } 
 }

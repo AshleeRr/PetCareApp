@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetCare - Tu veterinaria de confianza</title>
+    <link rel="stylesheet" href="css/principal.css">
+    <link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Navegación fija -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-logo">
+                <span class="paw-icon">🐾</span>
+            </div>
+            <ul class="navbar-menu">
+                <li><a href="#sobre">Sobre Nosotros</a></li>
+                <li><a href="#servicios">Nuestros Servicios</a></li>
+                <li><a href="#productos">Productos</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+            <button class="btn-logout" id="logoutBtn">Cerrar Sesión</button>
+        </div>
+    </nav>
+
+    <!-- SECCIÓN: SOBRE NOSOTROS -->
+    <section id="sobre">
+        <div class="sobre-imagen">
+            <img src="https://images.unsplash.com/photo-1628009368231-7bb7cfcb0def?w=600" alt="Clínica veterinaria">
+        </div>
+        <div class="sobre-contenido">
+            <h2><span class="paw-icon-title">🐾</span> Nuestra Historia</h2>
+            <p>
+                Somos una empresa veterinaria ubicada en la República Dominicana, dedicada al cuidado y bienestar de las
+                mascotas con un trato humano, profesional y lleno de cariño. En PetCare trabajamos cada día para ofrecer
+                servicios de salud integral, desde consultas y vacunación, hasta emergencias, cirugías, estética y
+                programas de nutrición.
+            </p>
+            <p>
+                Nuestro compromiso es brindar atención de calidad, porque entendemos que tus mascotas no son solo
+                animales, son parte de tu familia.
+            </p>
+            <button class="btn-leer-mas">Leer Más</button>
+        </div>
+
+        <div class="valores-container">
+            <div class="valor-card">
+                <h3>Misión</h3>
+                <p>Brindar atención médica veterinaria de excelencia, con un enfoque humano y profesional, garantizando
+                    el bienestar y la salud de las mascotas, mientras ofrecemos confianza y tranquilidad a sus familias.
+                </p>
+            </div>
+            <div class="valor-card">
+                <h3>Visión</h3>
+                <p>Ser la clínica veterinaria líder en la República Dominicana, reconocida por la calidad de sus
+                    servicios, innovación en el cuidado animal y compromiso con la comunidad.</p>
+            </div>
+            <div class="valor-card">
+                <h3>Valores</h3>
+                <ul>
+                    <li>• Compromiso</li>
+                    <li>• Profesionalismo</li>
+                    <li>• Innovación</li>
+                    <li>• Responsabilidad social</li>
+                    <li>• Empatía</li>
+                    <li>• Respeto</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN: SERVICIOS -->
+    <section id="servicios">
+        <div class="servicios-header">
+            <h2>Nuestros Servicios</h2>
+            <div class="banner">
+                <h3>Evalúa la Condición de tu Mascota</h3>
+                <p>🐕 🐈</p>
+            </div>
+        </div>
+
+        <div class="servicios-grid">
+            <div class="servicio-card">
+                <h3>Cuidado de la Salud</h3>
+                <ul>
+                    <li>Diagnóstico exacto de enfermedades animales</li>
+                    <li>Chequeos de salud</li>
+                    <li>Análisis completo de sangre y orina</li>
+                    <li>Análisis bioquímico de la sangre</li>
+                    <li>Ultrasonido y radiología digital (rayos X)</li>
+                </ul>
+            </div>
+
+            <div class="servicio-card">
+                <h3>Cuidado Diario</h3>
+                <ul>
+                    <li>Servicios de cuidado animal</li>
+                    <li>Higiene diaria (cepillado, limpieza de orejas y dientes)</li>
+                    <li>Alojamiento temporal seguro y confortable</li>
+                    <li>Administración de medicamentos diarios</li>
+                    <li>Paseos y ejercicio supervisado</li>
+                    <li>Baño y arreglo higiénico</li>
+                    <li>Rehabilitación y mantenimiento diario</li>
+                </ul>
+            </div>
+
+            <div class="servicio-card">
+                <h3>Servicios de Consultoría</h3>
+                <p>Servicios de consultoría para el cuidado de los animales</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN: PRODUCTOS -->
+    <section id="productos">
+        <h2>Encuentra Aquí Lo Que Tu Mascota Necesita Para Hacerla Feliz</h2>
+
+        <div class="categorias-container">
+            <h3>Categoría</h3>
+            <div class="categorias-grid">
+                <div class="categoria-item">
+                    <div class="emoji">🐱</div>
+                    <p>Gatos</p>
+                </div>
+                <div class="categoria-item">
+                    <div class="emoji">🐕</div>
+                    <p>Perros</p>
+                </div>
+                <div class="categoria-item">
+                    <div class="emoji">🦜</div>
+                    <p>Aves</p>
+                </div>
+                <div class="categoria-item">
+                    <div class="emoji">🐹</div>
+                    <p>Conejos</p>
+                </div>
+                <div class="categoria-item">
+                    <div class="emoji">🐠</div>
+                    <p>Peces</p>
+                </div>
+                <div class="categoria-item">
+                    <div class="emoji">🐴</div>
+                    <p>Otros animales</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="filtros">
+            <button class="filtro-btn active">Todo</button>
+            <button class="filtro-btn">Comida</button>
+            <button class="filtro-btn">Ropa</button>
+            <button class="filtro-btn">Juguetes</button>
+            <button class="filtro-btn">Vitaminas</button>
+            <button class="filtro-btn">Shampoo</button>
+            <button class="filtro-btn">Collares</button>
+            <button class="filtro-btn">Platos</button>
+            <button class="filtro-btn">Camas</button>
+            <button class="filtro-btn">Transportadores</button>
+        </div>
+    </section>
+
+    <!-- SECCIÓN: CONTACTO -->
+
+    <section id="contacto">
+        <div class="contacto-container">
+            <h2>Contáctanos!</h2>
+            <div class="contacto-grid">
+
+                <!-- Instagram -->
+                <div class="contacto-item">
+                    <div class="icon">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/2048px-Instagram_logo_2016.svg.png"
+                            alt="Instagram" width="32" height="32">
+                    </div>
+                    <p>@PetCareRD</p>
+                </div>
+
+                <!-- WhatsApp -->
+                <div class="contacto-item">
+                    <div class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="#25D366" viewBox="0 0 24 24" width="32"
+                            height="32">
+                            <path
+                                d="M12.01 2c-5.5 0-9.96 4.46-9.96 9.96 0 1.76.46 3.47 1.34 4.99L2 22l5.24-1.37a9.9 9.9 0 0 0 4.77 1.21h.01c5.5 0 9.96-4.46 9.96-9.96S17.51 2 12.01 2zM12 20.2c-1.54 0-3.04-.41-4.35-1.19l-.31-.18-3.1.81.83-3.03-.2-.32a8.1 8.1 0 0 1-1.26-4.35C3.6 7.67 7.32 4 12 4s8.4 3.67 8.4 8.2-3.72 8.2-8.4 8.2zm4.58-5.91c-.25-.13-1.47-.73-1.7-.81-.23-.08-.4-.13-.57.13-.17.25-.65.81-.8.98-.15.17-.3.19-.56.06a6.62 6.62 0 0 1-1.95-1.2 7.3 7.3 0 0 1-1.35-1.66c-.14-.25-.01-.38.1-.5.1-.1.25-.26.38-.4.13-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.57-1.38-.78-1.9-.2-.48-.4-.42-.57-.43h-.49c-.17 0-.44.06-.67.31s-.88.86-.88 2.1.9 2.44 1.03 2.61c.13.17 1.75 2.68 4.25 3.77.59.25 1.05.4 1.4.51.59.19 1.13.16 1.55.1.47-.07 1.47-.6 1.68-1.18.21-.57.21-1.06.15-1.17-.06-.1-.23-.17-.48-.3z" />
+                        </svg>
+                    </div>
+                    <p>809-000-0000</p>
+                </div>
+
+                <!-- Facebook -->
+                <div class="contacto-item">
+                    <div class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="#1877F2" viewBox="0 0 24 24" width="32"
+                            height="32">
+                            <path
+                                d="M22 12.07C22 6.51 17.52 2 12 2S2 6.51 2 12.07C2 17.1 5.66 21.23 10.44 22v-7.04H7.9v-2.9h2.54v-2.2c0-2.52 1.5-3.91 3.8-3.91 1.1 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.62.77-1.62 1.56v1.89h2.77l-.44 2.9h-2.33V22C18.34 21.23 22 17.1 22 12.07" />
+                        </svg>
+                    </div>
+                    <p>PetCareRD</p>
+                </div>
+
+                <!-- Gmail -->
+                <div class="contacto-item">
+                    <div class="icon">
+                        <img src="https://images.icon-icons.com/2631/PNG/512/gmail_new_logo_icon_159149.png" alt="Gmail"
+                            width="32" height="32">
+                    </div>
+                    <p>@PetCareRD</p>
+                </div>
+
+                <!-- TikTok -->
+                <div class="contacto-item">
+                    <div class="icon">
+                        <img src="https://i.pinimg.com/736x/72/66/84/726684e0bcffd7de98a3fcec247af207.jpg" alt="TikTok"
+                            width="32" height="32">
+                    </div>
+                    <p>@PetCareRD</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Perrito flotante decorativo -->
+    <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=200" alt="Perrito"
+        class="perrito-flotante">
+
+    <script src="js/principal.js"></script>
+</body>
+
+</html>
