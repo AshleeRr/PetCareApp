@@ -19,6 +19,7 @@ public class Mascota
     public required Dueño Dueño { get; set; }
 
     public ICollection<MascotaPruebasMedica> MascotaPruebasMedicas { get; set; } = new List<MascotaPruebasMedica>();
+    public ICollection<Cita> Cita { get; set; } = new List<Cita>();
 
     public required TipoMascota TipoMascota { get; set; }
 }

@@ -1,4 +1,5 @@
-﻿using PetCareApp.Core.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using PetCareApp.Core.Domain.Entities;
 using PetCareApp.Core.Domain.Interfaces;
 using PetCareApp.Infraestructure.Persistence.Context;
 
@@ -12,9 +13,21 @@ namespace PetCareApp.Infraestructure.Persistence.Repositories
         {
             _context = context;
         }
-        public Task<List<Cita?>> GetCitasByDate(DateOnly date)
+        public async Task<List<Cita?>> GetCitasByDate(DateOnly date)
         {
-            throw new NotImplementedException();
+            return await _context.Citas.Where(c => DateOnly.FromDateTime(c.FechaHora) == date).ToListAsync();
+        }
+
+        public async Task<List<Cita?>> GetCitasOfMascotaById(int mascotaId)
+        {
+            return await _context.Citas
+                .Include(c => c.Veterinario)
+                .Include(c => c.Estado)
+                .Include(c => c.Motivo)
+                .Include(c => c.Dueño)
+                .Where(c => c.MascotaId == mascotaId)
+                .OrderByDescending(c => c.FechaHora)
+                .ToListAsync();
         }
     }
 }
