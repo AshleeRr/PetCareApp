@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using PetCareApp.Core.Domain.Entities;
 
-namespace PetCareApp.Core.Application.Interfaces
+namespace PetCareApp.Core.Domain.Interfaces
 {
     public interface IClienteRepository
     {
@@ -18,3 +18,4 @@ namespace PetCareApp.Core.Application.Interfaces
         Task DeleteAsync(int id);
     }
 }
+// lo mismo aqui, deberia ser task? 

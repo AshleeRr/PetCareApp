@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetCare - Tu veterinaria de confianza</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Navegación -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-logo">
+                <span class="paw-icon">🐾</span>
+            </div>
+            <ul class="navbar-menu">
+                <li><a href="principal.html#sobre">Sobre Nosotros</a></li>
+                <li><a href="principal.html#servicios">Nuestros Servicios</a></li>
+                <li><a href="principal.html#productos">Productos</a></li>
+                <li><a href="principal.html#contacto">Contacto</a></li>
+            </ul>
+            <button class="btn-login">Iniciar Sesión</button>
+        </div>
+    </nav>
+
+    <!-- Contenedor principal -->
+    <div class="container">
+        <!-- Sección izquierda - Formulario -->
+        <div class="left-section">
+            <h1>¡Hola!</h1>
+            <p class="subtitle">Bienvenido a PetCare. Tu veterinaria de confianza</p>
+
+            <!-- Botón Google Login -->
+<button class="btn-google">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="20" height="20">
+    <path fill="#EA4335" d="M24 9.5c3.54 0 6.23 1.54 7.65 2.84l5.62-5.62C33.17 3.07 28.88 1 24 1 14.93 1 7.12 6.83 3.66 14.68l6.89 5.35C12.17 14.27 17.61 9.5 24 9.5z"/>
+    <path fill="#34A853" d="M46.11 24.5c0-1.64-.15-3.22-.43-4.75H24v9h12.53c-.54 2.9-2.15 5.36-4.53 7.06l7.07 5.49C43.62 37.2 46.11 31.3 46.11 24.5z"/>
+    <path fill="#FBBC05" d="M10.55 28.03a14.52 14.52 0 0 1-.76-4.53c0-1.57.27-3.1.76-4.53L3.66 13.62A23.905 23.905 0 0 0 0 23.5a23.9 23.9 0 0 0 3.66 9.88l6.89-5.35z"/>
+    <path fill="#4285F4" d="M24 47c6.48 0 11.91-2.15 15.87-5.88l-7.07-5.49C30.38 37.57 27.34 38.5 24 38.5c-6.39 0-11.83-4.77-13.45-11.53l-6.89 5.35C7.12 41.17 14.93 47 24 47z"/>
+  </svg>
+  Iniciar Sesión con Google
+</button>
+
+
+            <!-- Formulario -->
+            <form id="loginForm">
+                <input 
+                    type="email" 
+                    id="email" 
+                    placeholder="Email" 
+                    class="form-input" 
+                    required
+                >
+                <input 
+                    type="password" 
+                    id="password" 
+                    placeholder="Contraseña" 
+                    class="form-input" 
+                    required
+                >
+                <a href="#" class="forgot-password">Olvidaste tu contraseña?</a>
+
+                <button type="submit" class="btn-submit">Iniciar Sesión</button>
+            </form>
+
+            <!-- Registro -->
+            <p class="signup-text">
+                No tienes una cuenta? 
+                <a href="#" class="signup-link">Registrarse</a>
+            </p>
+        </div>
+
+        <!-- Sección derecha - Imagen -->
+        <div class="right-section">
+            <img src="assets/perritoPortada.png" alt="Veterinaria con perro" class="featured-image">
+        </div>
+    </div>
+
+    <script src="js/login.js"></script>
+</body>
+</html>

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PetCareApp.Core.Application.Interfaces;
 using PetCareApp.Core.Domain.Entities;
+using PetCareApp.Core.Domain.Interfaces;
 using PetCareApp.Infraestructure.Persistence.Context;
 using System;
 using System.Collections.Generic;
@@ -79,7 +80,7 @@ namespace PetCareApp.Infraestructure.Persistence.Repositories
         {
             var cita = await _context.Citas.FindAsync(id);
             if (cita != null)
-            {
+        {
                 _context.Citas.Remove(cita);
                 await _context.SaveChangesAsync();
             }

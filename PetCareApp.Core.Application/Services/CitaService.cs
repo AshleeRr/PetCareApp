@@ -82,7 +82,7 @@ namespace PetCareApp.Core.Application.Services
         }
 
         public async Task<bool> EliminarCitaAsync(int id)
-        {
+    {
             var cita = await _repo.GetByIdAsync(id);
             if (cita == null) return false;
             await _repo.DeleteAsync(id);

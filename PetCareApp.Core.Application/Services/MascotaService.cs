@@ -73,7 +73,7 @@ namespace PetCareApp.Core.Application.Services
         }
 
         public async Task<bool> EliminarAsync(int id)
-        {
+    {
             var m = await _repo.GetByIdAsync(id);
             if (m == null) return false;
             await _repo.DeleteAsync(id);
