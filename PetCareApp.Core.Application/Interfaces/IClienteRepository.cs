@@ -8,13 +8,13 @@ using PetCareApp.Core.Domain.Entities;
 namespace PetCareApp.Core.Application.Interfaces
 {
     public interface IClienteRepository
-    { 
-        List<Dueño> ObtenerTodos();
-        Dueño ObtenerPorId(int id);
-        Dueño ObtenerPorCedula(string cedula);
-        void Agregar(Dueño cliente);
-        void Editar(Dueño cliente);
-        void Eliminar(int id);
-        List<Dueño> FiltrarPorNombre(string nombre);
+    {
+        Task<List<Dueño>> GetAllAsync();
+        Task<Dueño?> GetByIdAsync(int id);
+        Task<Dueño?> GetByCedulaAsync(string cedula);
+        Task<List<Dueño>> FilterAsync(string nombre, string cedula);
+        Task<Dueño> AddAsync(Dueño cliente);
+        Task UpdateAsync(Dueño cliente);
+        Task DeleteAsync(int id);
     }
 }

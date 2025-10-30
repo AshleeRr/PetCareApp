@@ -17,52 +17,66 @@ namespace VetCareApp.Presentation.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<ActionResult<List<ClienteDto>>> GetAll([FromQuery] string? nombre, [FromQuery] string? cedula)
         {
-            return Ok(_service.ObtenerClientes());
+            if (!string.IsNullOrWhiteSpace(nombre) || !string.IsNullOrWhiteSpace(cedula))
+            {
+                var filtered = await _service.FiltrarPorNombreAsync(nombre ?? string.Empty, cedula ?? string.Empty);
+                return Ok(filtered);
+            }
+            var list = await _service.ObtenerClientesAsync();
+            return Ok(list);
         }
 
-        [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<ClienteDto>> GetById(int id)
         {
-            var cliente = _service.ObtenerPorId(id);
-            if (cliente == null) return NotFound();
-            return Ok(cliente);
+            var c = await _service.ObtenerPorIdAsync(id);
+            if (c == null) return NotFound();
+            return Ok(c);
         }
 
         [HttpGet("cedula/{cedula}")]
-        public IActionResult GetByCedula(string cedula)
+        public async Task<ActionResult<ClienteDto>> GetByCedula(string cedula)
         {
-            var cliente = _service.ObtenerPorCedula(cedula);
-            if (cliente == null) return NotFound();
-            return Ok(cliente);
-        }
-
-        [HttpGet("filtrar")]
-        public IActionResult FiltrarPorNombre([FromQuery] string nombre)
-        {
-            return Ok(_service.FiltrarPorNombre(nombre));
+            var c = await _service.ObtenerPorCedulaAsync(cedula);
+            if (c == null) return NotFound();
+            return Ok(c);
         }
 
         [HttpPost]
-        public IActionResult Crear([FromBody] CrearClienteDto dto)
+        public async Task<ActionResult> Create([FromBody] CrearClienteDto dto)
         {
-            _service.CrearCliente(dto);
-            return Ok("Cliente creado exitosamente.");
+            try
+            {
+                var created = await _service.CrearClienteAsync(dto);
+                return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+            }
+            catch (System.ArgumentException ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
+            catch (System.InvalidOperationException ex)
+            {
+                return Conflict(new { error = ex.Message });
+            }
         }
 
-        [HttpPut("{id}")]
-        public IActionResult Editar(int id, [FromBody] CrearClienteDto dto)
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult> Update(int id, [FromBody] ActualizarClienteDto dto)
         {
-            _service.EditarCliente(id, dto);
-            return Ok("Cliente actualizado exitosamente.");
+            var ok = await _service.EditarClienteAsync(id, dto);
+            if (!ok) return NotFound();
+            return NoContent();
         }
 
-        [HttpDelete("{id}")]
-        public IActionResult Eliminar(int id)
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> Delete(int id)
         {
-            _service.EliminarCliente(id);
-            return Ok("Cliente eliminado exitosamente.");
+            var ok = await _service.EliminarClienteAsync(id);
+            if (!ok) return NotFound();
+            return NoContent();
         }
+
     }
 }

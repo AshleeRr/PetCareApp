@@ -13,92 +13,87 @@ namespace PetCareApp.Core.Application.Services
     {
         private readonly IClienteRepository _repository;
 
-        public ClienteService(IClienteRepository repository)
+        public ClienteService(IClienteRepository repo)
         {
-            _repository = repository;
+            _repo = repo;
         }
-         
-        public void CrearCliente(CrearClienteDto dto)
+
+        private static ClienteDto MapToDto(Cliente c) =>
+            new ClienteDto
+            {
+                Id = c.Id,
+                Nombre = c.Nombre,
+                Apellido = c.Apellido,
+                Direccion = c.Direccion,
+                Cedula = c.Cedula,
+                Email = c.Email
+            };
+
+        public async Task<List<ClienteDto>> ObtenerClientesAsync()
         {
-            var nuevo = new Dueño
+            var list = await _repo.GetAllAsync();
+            return list.Select(MapToDto).ToList();
+        }
+
+        public async Task<ClienteDto?> ObtenerPorIdAsync(int id)
+        {
+            var entity = await _repo.GetByIdAsync(id);
+            return entity == null ? null : MapToDto(entity);
+        }
+
+        public async Task<ClienteDto?> ObtenerPorCedulaAsync(string cedula)
+        {
+            var entity = await _repo.GetByCedulaAsync(cedula);
+            return entity == null ? null : MapToDto(entity);
+        }
+
+        public async Task<ClienteDto> CrearClienteAsync(CrearClienteDto dto)
+        {
+            // validaciones básicas
+            if (string.IsNullOrWhiteSpace(dto.Cedula)) throw new System.ArgumentException("Cédula requerida");
+
+            var exist = await _repo.GetByCedulaAsync(dto.Cedula);
+            if (exist != null) throw new System.InvalidOperationException("Ya existe un cliente con esa cédula");
+
+            var cliente = new Cliente
             {
                 Nombre = dto.Nombre,
                 Apellido = dto.Apellido,
                 Direccion = dto.Direccion,
-                Cedula = dto.Cedula
+                Cedula = dto.Cedula,
+                Email = dto.Email
             };
-            _repository.Agregar(nuevo);
-        }
-        public void EditarCliente(int id, CrearClienteDto dto)
-        {
-            var existente = _repository.ObtenerPorId(id);
-            if (existente == null) return;
 
-            existente.Nombre = dto.Nombre;
-            existente.Apellido = dto.Apellido;
-            existente.Direccion = dto.Direccion;
-            existente.Cedula = dto.Cedula;
-
-            _repository.Editar(existente);
-        }
-        public void EliminarCliente(int id)
-        {
-            _repository.Eliminar(id);
-        }
-        public List<ClienteDto> FiltrarPorNombre(string nombre)
-        {
-            return _repository.FiltrarPorNombre(nombre)
-            .Select(c => new ClienteDto
-            {
-                Id = c.Id,
-                Nombre = c.Nombre,
-                Apellido = c.Apellido,
-                Direccion = c.Direccion,
-                Cedula = c.Cedula
-            }).ToList();
+            var created = await _repo.AddAsync(cliente);
+            return MapToDto(created);
         }
 
-        public ClienteDto ObtenerPorCedula(string cedula)
+        public async Task<bool> EditarClienteAsync(int id, ActualizarClienteDto dto)
         {
-            var c = _repository.ObtenerPorCedula(cedula);
-            if (c == null) return null;
+            var cliente = await _repo.GetByIdAsync(id);
+            if (cliente == null) return false;
 
+            cliente.Nombre = dto.Nombre ?? cliente.Nombre;
+            cliente.Apellido = dto.Apellido ?? cliente.Apellido;
+            cliente.Direccion = dto.Direccion ?? cliente.Direccion;
+            cliente.Email = dto.Email ?? cliente.Email;
 
-            return new ClienteDto
-            {
-                Id = c.Id,
-                Nombre = c.Nombre,
-                Apellido = c.Apellido,
-                Direccion = c.Direccion,
-                Cedula = c.Cedula
-            };
+            await _repo.UpdateAsync(cliente);
+            return true;
         }
-        public ClienteDto ObtenerPorId(int id)
+
+        public async Task<bool> EliminarClienteAsync(int id)
         {
-            var c = _repository.ObtenerPorId(id);
-            if (c == null) return null;
-
-
-            return new ClienteDto
-            {
-                Id = c.Id,
-                Nombre = c.Nombre,
-                Apellido = c.Apellido,
-                Direccion = c.Direccion,
-                Cedula = c.Cedula
-            };
+            var cliente = await _repo.GetByIdAsync(id);
+            if (cliente == null) return false;
+            await _repo.DeleteAsync(id);
+            return true;
         }
-        public List<ClienteDto> ObtenerClientes()
+
+        public async Task<List<ClienteDto>> FiltrarPorNombreAsync(string nombre, string cedula)
         {
-            return _repository.ObtenerTodos()
-            .Select(c => new ClienteDto
-            {
-                Id = c.Id,
-                Nombre = c.Nombre,
-                Apellido = c.Apellido,
-                Direccion = c.Direccion,
-                Cedula = c.Cedula
-            }).ToList();
+            var list = await _repo.FilterAsync(nombre, cedula);
+            return list.Select(MapToDto).ToList();
         }
     }
 }

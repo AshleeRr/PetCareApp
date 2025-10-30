@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace PetCareApp.Core.Application.Dtos
 {
-    internal class Class1
+    public class EstadoDto
     {
+        public int Id { get; set; }
+        public string Nombre { get; set; } = string.Empty;
     }
 }
