@@ -13,12 +13,10 @@ public class Cita
 
     public int MascotaId { get; set; }
     public Mascota Mascota { get; set; } = null!;
-
-    public Personal Veterinario { get; set; } = null!;
-
+  
+    public Personal? Veterinario { get; set; }
     public int VeterinarioId { get; set; }
 
     public int MotivoId { get; set; }
     public MotivoCita Motivo { get; set; } = null!;
 
-}

@@ -7,7 +7,7 @@ namespace PetCareApp.Core.Application.Services
     {
         public void Info(string mensaje, string usuario = "")
         {
-            Console.WriteLine($"[INFO] {DateTime.Now:yyyy-MM-dd HH:mm:ss} {(!string.IsNullOrEmpty(usuario) ? $"Usuario:{usuario}" : "")} - {mensaje}");
+            Console.WriteLine($"[INFO] {DateTime.Now:yyyy-MM-dd HH:mm:ss} {(!string.IsNullOrEmpty(usuario)  ? $"Usuario:{usuario}" : "")} - {mensaje}");
         }
 
         public void Error(string mensaje, string usuario = "")

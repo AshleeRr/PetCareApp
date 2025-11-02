@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PetCareApp.Core.Application.Dtos;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,14 @@ using System.Threading.Tasks;
 
 namespace PetCareApp.Core.Application.Interfaces
 {
-    internal class ICitaService
+    public interface ICitaService
     {
+        Task<List<CitaDto>> ObtenerCitasAsync();
+        Task<CitaDto?> ObtenerPorIdAsync(int id);
+        Task<List<CitaDto>> ObtenerPorFechaAsync(DateTime fecha);
+        Task<List<CitaDto>> ObtenerPorClienteAsync(int clienteId);
+        Task<CitaDto> CrearCitaAsync(CrearCitaDto dto);
+        Task<bool> EditarCitaAsync(int id, ActualizarCitaDto dto);
+        Task<bool> EliminarCitaAsync(int id);
     }
 }

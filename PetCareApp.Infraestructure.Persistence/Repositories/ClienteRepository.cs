@@ -12,49 +12,61 @@ namespace PetCareApp.Infraestructure.Persistence.Repositories
         {
             _context = context;
         }
-        
-        public void Agregar(Dueño cliente)
+
+        public async Task<List<Dueño>> GetAllAsync()
         {
-            _context.Dueños.Add(cliente);
-            _context.SaveChanges();
+            return await _context.Dueños.AsNoTracking().ToListAsync();
         }
 
-        public void Editar(Dueño cliente)
+        public async Task<Dueño?> GetByIdAsync(int id)
+        {
+            return await _context.Dueños.FindAsync(id);
+        }
+
+        public async Task<Dueño?> GetByCedulaAsync(string cedula)
+        {
+            return await _context.Dueños.FirstOrDefaultAsync(c => c.Cedula == cedula);
+        }
+
+        public async Task<List<Dueño>> FilterAsync(string nombre, string cedula)
+        {
+            var query = _context.Dueños.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(nombre))
+            {
+                var lower = nombre.ToLower();
+                query = query.Where(c => c.Nombre.ToLower().Contains(lower) || c.Apellido.ToLower().Contains(lower));
+            }
+
+            if (!string.IsNullOrWhiteSpace(cedula))
+            {
+                query = query.Where(c => c.Cedula.Contains(cedula));
+            }
+
+            return await query.AsNoTracking().ToListAsync();
+        }
+
+        public async Task<Dueño> AddAsync(Cliente cliente)
+        {
+            var entry = await _context.Dueños.AddAsync(cliente);
+            await _context.SaveChangesAsync();
+            return entry.Entity;
+        }
+
+        public async Task UpdateAsync(Dueño cliente)
         {
             _context.Dueños.Update(cliente);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void Eliminar(int id)
+        public async Task DeleteAsync(int id)
         {
-            var cliente = _context.Dueños.Find(id);
+            var cliente = await _context.Clientes.FindAsync(id);
             if (cliente != null)
             {
                 _context.Dueños.Remove(cliente);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
-        }
-
-        public List<Dueño> FiltrarPorNombre(string nombre)
-        {
-            return _context.Dueños
-            .Where(d => d.Nombre.Contains(nombre))
-            .ToList();
-        }
-
-        public Dueño ObtenerPorCedula(string cedula)
-        {
-            return _context.Dueños.FirstOrDefault(d => d.Cedula == cedula);
-        }
-
-        public Dueño ObtenerPorId(int id)
-        {
-            return _context.Dueños.FirstOrDefault(d => d.Id == id);
-        }
-
-        public List<Dueño> ObtenerTodos()
-        {
-            return _context.Dueños.ToList();
         }
     }
 }

@@ -8,14 +8,14 @@ using PetCareApp.Core.Application.Dtos;
 namespace PetCareApp.Core.Application.Interfaces
 {
     public interface IClienteService
-    { 
-        List<ClienteDto> ObtenerClientes();
-        ClienteDto ObtenerPorId(int id);
-        ClienteDto ObtenerPorCedula(string cedula);
-        void CrearCliente(CrearClienteDto dto);
-        void EditarCliente(int id, CrearClienteDto dto);
-        void EliminarCliente(int id);
-        List<ClienteDto> FiltrarPorNombre(string nombre);
+    {
+        Task<List<ClienteDto>> ObtenerClientesAsync();
+        Task<ClienteDto?> ObtenerPorIdAsync(int id);
+        Task<ClienteDto?> ObtenerPorCedulaAsync(string cedula);
+        Task<ClienteDto> CrearClienteAsync(CrearClienteDto dto);
+        Task<bool> EditarClienteAsync(int id, ActualizarClienteDto dto);
+        Task<bool> EliminarClienteAsync(int id);
+        Task<List<ClienteDto>> FiltrarPorNombreAsync(string nombre, string cedula);
     }
 }
 
