@@ -24,5 +24,12 @@ namespace PetCareApp.Infraestructure.Persistence.Repositories
             }
             return medicamento;
         }
+
+        public async Task<List<Medicamento?>> GetMedicamentosByPresentacion(string presentacion)
+        {
+            return await _context.Medicamentos
+                .Where(m => m.Presentacion.Contains(presentacion.ToLower().Trim(), StringComparison.CurrentCultureIgnoreCase))
+                .ToListAsync();
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using PetCareApp.Core.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using PetCareApp.Core.Domain.Entities;
 using PetCareApp.Core.Domain.Interfaces;
 using PetCareApp.Infraestructure.Persistence.Context;
 
@@ -46,7 +47,7 @@ namespace PetCareApp.Infraestructure.Persistence.Repositories
             return await query.AsNoTracking().ToListAsync();
         }
 
-        public async Task<Dueño> AddAsync(Cliente cliente)
+        public async Task<Dueño> AddAsync(Dueño cliente)
         {
             var entry = await _context.Dueños.AddAsync(cliente);
             await _context.SaveChangesAsync();
@@ -61,7 +62,7 @@ namespace PetCareApp.Infraestructure.Persistence.Repositories
 
         public async Task DeleteAsync(int id)
         {
-            var cliente = await _context.Clientes.FindAsync(id);
+            var cliente = await _context.Dueños.FindAsync(id);
             if (cliente != null)
             {
                 _context.Dueños.Remove(cliente);
