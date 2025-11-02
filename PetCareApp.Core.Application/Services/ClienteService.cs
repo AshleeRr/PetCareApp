@@ -8,14 +8,14 @@ namespace PetCareApp.Core.Application.Services
 {
     public class ClienteService : IClienteService
     {
-        private readonly IClienteRepository _repository;
+        private readonly IClienteRepository _repo;
 
         public ClienteService(IClienteRepository repo)
         {
             _repo = repo;
         }
 
-        private static ClienteDto MapToDto(Cliente c) =>
+        private static ClienteDto MapToDto(Dueño c) => // cambiado a due;o porque estaba dando error porque tenia cliente, no hay entidad cliente.
             new ClienteDto
             {
                 Id = c.Id,
@@ -23,7 +23,7 @@ namespace PetCareApp.Core.Application.Services
                 Apellido = c.Apellido,
                 Direccion = c.Direccion,
                 Cedula = c.Cedula,
-                Email = c.Email
+              //  Email = c.Email
             };
 
         public async Task<List<ClienteDto>> ObtenerClientesAsync()
@@ -52,14 +52,16 @@ namespace PetCareApp.Core.Application.Services
             var exist = await _repo.GetByCedulaAsync(dto.Cedula);
             if (exist != null) throw new System.InvalidOperationException("Ya existe un cliente con esa cédula");
 
-            var cliente = new Cliente
+            var cliente = new Dueño()
             {
                 Nombre = dto.Nombre,
                 Apellido = dto.Apellido,
                 Direccion = dto.Direccion,
                 Cedula = dto.Cedula,
-                Email = dto.Email
+               // Email = dto.Email
             };
+
+            
 
             var created = await _repo.AddAsync(cliente);
             return MapToDto(created);
@@ -73,7 +75,7 @@ namespace PetCareApp.Core.Application.Services
             cliente.Nombre = dto.Nombre ?? cliente.Nombre;
             cliente.Apellido = dto.Apellido ?? cliente.Apellido;
             cliente.Direccion = dto.Direccion ?? cliente.Direccion;
-            cliente.Email = dto.Email ?? cliente.Email;
+           // cliente.Email = dto.Email ?? cliente.Email;
 
             await _repo.UpdateAsync(cliente);
             return true;

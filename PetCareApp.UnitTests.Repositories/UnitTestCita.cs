@@ -21,7 +21,7 @@ namespace PetCareApp.UnitTests.Repositories
             // Arrange
             var context = GetInMemoryDbContext();
 
-            var input = new DateOnly(2025, 10, 17);
+            var input = new DateTime(2025, 10, 17);
 
             context.Citas.AddRange(
                 new Cita { FechaHora = new DateTime(2025, 10, 17, 9, 0, 0) },
@@ -32,7 +32,7 @@ namespace PetCareApp.UnitTests.Repositories
             var repositoy = new CitaRepository(context);
 
             // Act
-            var result = await repositoy.GetCitasByDate(input);
+            var result = await repositoy.GetByFechaAsync(input);
 
             // Assert
             Assert.NotNull(result);
