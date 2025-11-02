@@ -52,14 +52,6 @@ namespace VetCareApp.Presentation.Web
                                     .AllowAnyHeader());
             });
 
-            // ✅ DbContext ya está registrado correctamente
-           /* builder.Services.AddDbContext<PetCareContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("AppConnection"))
-            );*/
-
-            // ✅ Registrar repositorios y servicios
-            
-
             builder.Services.Configure<Infraestructura.Servicios.ConfiguracionServices2>(
                 builder.Configuration.GetSection("SmtpSettings")
             );
@@ -87,29 +79,6 @@ namespace VetCareApp.Presentation.Web
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            // Inyección de dependencias de la capa de infraestructura
-            // NOTA: Se asume que AddersistencelayerIoc es un método de extensión en otro proyecto.
-            //builder.Services.AddersistencelayerIoc(builder.Configuration);
-
-            // Contexto de Base de Datos
-           // builder.Services.AddSqlServer<PetCareContext>(builder.Configuration.GetConnectionString("AppConnection"));
-
-            // Repositorios y servicios (inyecci�n manual)
-           // builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
-            /*
-
-            builder.Services.AddScoped<ICitaRepository, CitaRepository>();
-           
-
-            builder.Services.AddScoped<IEstadoRepository, EstadoRepository>();
-            builder.Services.AddScoped<IEstadoService, EstadoService>();
-
-            builder.Services.AddScoped<IMotivoCitaRepository, MotivoCitaRepository>();
-            builder.Services.AddScoped<IMotivoCitaService, MotivoCitaService>();
-
-            builder.Services.AddScoped<IMascotaRepository, MascotaRepository>();
-            builder.Services.AddScoped<IMascotaService, MascotaService>();
-            */
             var app = builder.Build();
 
             // -----------------------------

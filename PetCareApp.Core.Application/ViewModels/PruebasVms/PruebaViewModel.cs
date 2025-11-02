@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PetCareApp.Core.Application.ViewModels
+namespace PetCareApp.Core.Application.ViewModels.PruebasVms
 {
-    internal class Class1
+    public class PruebaViewModel
     {
     }
 }
