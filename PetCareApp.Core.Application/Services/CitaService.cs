@@ -1,6 +1,7 @@
 ﻿using PetCareApp.Core.Application.Dtos;
 using PetCareApp.Core.Application.Interfaces;
 using PetCareApp.Core.Domain.Entities;
+using PetCareApp.Core.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -77,7 +78,7 @@ namespace PetCareApp.Core.Application.Services
             cita.VeterinarioId = dto.VeterinarioId;
             cita.MotivoId = dto.MotivoId;
 
-            await _repo.UpdateAsync(cita);
+            await _repo.UpdateAsync(id, cita);
             return true;
         }
 
@@ -85,7 +86,7 @@ namespace PetCareApp.Core.Application.Services
     {
             var cita = await _repo.GetByIdAsync(id);
             if (cita == null) return false;
-            await _repo.DeleteAsync(id);
+            await _repo.RemoveAsync(id);
             return true;
         }
     }

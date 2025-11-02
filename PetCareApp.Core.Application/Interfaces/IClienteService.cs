@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 using PetCareApp.Core.Application.Dtos;
 
 namespace PetCareApp.Core.Application.Interfaces
@@ -18,5 +14,3 @@ namespace PetCareApp.Core.Application.Interfaces
         Task<List<ClienteDto>> FiltrarPorNombreAsync(string nombre, string cedula);
     }
 }
-
-// todo deberia ser task, no?

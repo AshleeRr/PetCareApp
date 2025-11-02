@@ -1,26 +1,8 @@
-﻿using Dominio.Interfaces;
-using Infraestructura.Persistencia.Repositorios;
-using Infraestructura.Servicios;
-    using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using PetCareApp.Core.Application.Interfaces;
-using PetCareApp.Core.Application.Interfaceson;
-using PetCareApp.Core.Application.Services;
-using PetCareApp.Core.Domain.Interfaces;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection; // Asegúrate de tener este 'using' si usas métodos de extensión
-using PetCareApp.Core.Application.Interfaces;
-using PetCareApp.Core.Application.Services;
 using PetCareApp.Infraestructure.Persistence;
-using PetCareApp.Infraestructure.Persistence.Context;
+using PetCareApp.Core.Application;
 using System.Text;
-
-using PetCareApp.Infraestructure.Persistence.Repositories;
-using Swashbuckle.AspNetCore.SwaggerUI;
-using Microsoft.EntityFrameworkCore;
-using PetCareApp.Infraestructure.Persistence.Context;
 
 namespace VetCareApp.Presentation.Web
 {
@@ -31,7 +13,10 @@ namespace VetCareApp.Presentation.Web
             var builder = WebApplication.CreateBuilder(args);
 
             // 1. Registrar servicios
+            builder.Services.AddPersistencelayerIoc(builder.Configuration);
+            builder.Services.AddApplicationlayerIoc();
             builder.Services.AddControllersWithViews();
+
             builder.Services.AddRazorPages();
 
             var jwtKey = builder.Configuration["JwtSettings:SecretKey"];
@@ -68,16 +53,12 @@ namespace VetCareApp.Presentation.Web
             });
 
             // ✅ DbContext ya está registrado correctamente
-            builder.Services.AddDbContext<PetCareContext>(options =>
+           /* builder.Services.AddDbContext<PetCareContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("AppConnection"))
-            );
+            );*/
 
             // ✅ Registrar repositorios y servicios
-            builder.Services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
-            builder.Services.AddScoped<IRoleRepositorio, RoleRepositorio>(); // ✅ Agregar esta línea
-            builder.Services.AddScoped<IAutenticacionService, AutenticacionService>();
-            builder.Services.AddScoped<Ilogger, Logger>();
-            builder.Services.AddScoped<TokenService>();
+            
 
             builder.Services.Configure<Infraestructura.Servicios.ConfiguracionServices2>(
                 builder.Configuration.GetSection("SmtpSettings")
@@ -108,17 +89,17 @@ namespace VetCareApp.Presentation.Web
 
             // Inyección de dependencias de la capa de infraestructura
             // NOTA: Se asume que AddersistencelayerIoc es un método de extensión en otro proyecto.
-            builder.Services.AddersistencelayerIoc(builder.Configuration);
+            //builder.Services.AddersistencelayerIoc(builder.Configuration);
 
             // Contexto de Base de Datos
-            builder.Services.AddSqlServer<PetCareContext>(builder.Configuration.GetConnectionString("AppConnection"));
+           // builder.Services.AddSqlServer<PetCareContext>(builder.Configuration.GetConnectionString("AppConnection"));
 
             // Repositorios y servicios (inyecci�n manual)
-            builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
-            builder.Services.AddScoped<ClienteService>();
+           // builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
+            /*
 
             builder.Services.AddScoped<ICitaRepository, CitaRepository>();
-            builder.Services.AddScoped<ICitaService, CitaService>();
+           
 
             builder.Services.AddScoped<IEstadoRepository, EstadoRepository>();
             builder.Services.AddScoped<IEstadoService, EstadoService>();
@@ -128,7 +109,7 @@ namespace VetCareApp.Presentation.Web
 
             builder.Services.AddScoped<IMascotaRepository, MascotaRepository>();
             builder.Services.AddScoped<IMascotaService, MascotaService>();
-
+            */
             var app = builder.Build();
 
             // -----------------------------

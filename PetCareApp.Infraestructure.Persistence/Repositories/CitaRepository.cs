@@ -11,18 +11,18 @@ using System.Threading.Tasks;
 
 namespace PetCareApp.Infraestructure.Persistence.Repositories
 {
-    public class CitaRepository : ICitaRepository
+    public class CitaRepository : GeneRepositorio<Cita>, ICitaRepository
     {
         private readonly PetCareContext _context;
 
-        public CitaRepository(PetCareContext context)
+        public CitaRepository(PetCareContext context) : base(context)
         {
             _context = context;
         }
-        public async Task<List<Cita>> GetCitasByDate(DateOnly date)
+       /* public async Task<List<Cita>> GetCitasByDate(DateOnly date)
         {
             return await _context.Citas.Where(c => DateOnly.FromDateTime(c.FechaHora) == date).ToListAsync();
-        }
+        }*/
 
         public async Task<List<Cita>> GetCitasOfMascotaById(int mascotaId)
         {
@@ -34,6 +34,7 @@ namespace PetCareApp.Infraestructure.Persistence.Repositories
                 .Where(c => c.MascotaId == mascotaId)
                 .OrderByDescending(c => c.FechaHora)
                 .ToListAsync();
+        }
 
         public async Task<List<Cita>> GetAllAsync()
         {
@@ -45,7 +46,7 @@ namespace PetCareApp.Infraestructure.Persistence.Repositories
                 .AsNoTracking()
                 .ToListAsync();
         }
-
+        /*
         public async Task<Cita?> GetByIdAsync(int id)
         {
             return await _context.Citas
@@ -54,7 +55,7 @@ namespace PetCareApp.Infraestructure.Persistence.Repositories
                 .Include(c => c.Veterinario)
                 .Include(c => c.Motivo)
                 .FirstOrDefaultAsync(c => c.Id == id);
-        }
+        }*/
 
         public async Task<List<Cita>> GetByFechaAsync(DateTime fecha)
         {
@@ -77,7 +78,7 @@ namespace PetCareApp.Infraestructure.Persistence.Repositories
                 .Where(c => c.DueñoId == clienteId)
                 .ToListAsync();
         }
-
+        /*
         public async Task<Cita> AddAsync(Cita cita)
         {
             var entry = await _context.Citas.AddAsync(cita);
@@ -100,5 +101,6 @@ namespace PetCareApp.Infraestructure.Persistence.Repositories
                 await _context.SaveChangesAsync();
             }
         }
+        */
     }
 }
