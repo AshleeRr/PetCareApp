@@ -13,12 +13,12 @@ namespace PetCareApp.Infraestructure.Persistence.Repositories
         {
             _context = context;
         }
-        public async Task<List<Cita?>> GetCitasByDate(DateOnly date)
+        public async Task<List<Cita>> GetCitasByDate(DateOnly date)
         {
             return await _context.Citas.Where(c => DateOnly.FromDateTime(c.FechaHora) == date).ToListAsync();
         }
 
-        public async Task<List<Cita?>> GetCitasOfMascotaById(int mascotaId)
+        public async Task<List<Cita>> GetCitasOfMascotaById(int mascotaId)
         {
             return await _context.Citas
                 .Include(c => c.Veterinario)

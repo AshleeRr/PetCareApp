@@ -12,7 +12,7 @@ namespace PetCareApp.Infraestructure.Persistence.Repositories
         {
             _context = context;
         }
-        public async Task<List<MascotaPruebasMedica?>> GetPruebasOfMascotaById(int mascotaId)
+        public async Task<List<MascotaPruebasMedica>> GetPruebasOfMascotaById(int mascotaId)
         {
             return await _context.MascotaPruebasMedicas
                     .Include(pm => pm.PruebaMedica)

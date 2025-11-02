@@ -1,4 +1,5 @@
-﻿using PetCareApp.Core.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using PetCareApp.Core.Domain.Entities;
 using PetCareApp.Core.Domain.Interfaces;
 using PetCareApp.Infraestructure.Persistence.Context;
 
@@ -12,9 +13,16 @@ namespace PetCareApp.Infraestructure.Persistence.Repositories
             _context = context;
         }
 
-        public Task<Medicamento> GetMedicamentoByName(string nombre)
+        public async Task<Medicamento?> GetMedicamentoByName(string nombre)
         {
-            throw new NotImplementedException();
+            var medicamento = await _context.Medicamentos
+                .FirstOrDefaultAsync(m => m.Presentacion.ToLower() == nombre.ToLower().Trim());
+
+            if (medicamento == null)
+            {
+                return null;
+            }
+            return medicamento;
         }
     }
 }

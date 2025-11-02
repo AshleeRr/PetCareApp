@@ -5,6 +5,6 @@ namespace PetCareApp.Core.Domain.Interfaces
 {
     public interface ITratamientoRepository : IGenericRepositorio<MascotaPruebasMedica>
     {
-        Task<List<MascotaPruebasMedica?>> GetPruebasOfMascotaById(int mascotaId);
+        Task<List<MascotaPruebasMedica>> GetPruebasOfMascotaById(int mascotaId);
     }
 }

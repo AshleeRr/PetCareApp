@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using PetCareApp.Core.Domain.Interfaces;
 using PetCareApp.Infraestructure.Persistence.Context;
+using PetCareApp.Infraestructure.Persistence.Repositories;
 
 namespace PetCareApp.Infraestructure.Persistence
 {
@@ -17,6 +19,11 @@ namespace PetCareApp.Infraestructure.Persistence
             #endregion
 
             #region Repositories IOC
+            services.AddTransient(typeof(IGenericRepositorio<>), typeof(GeneRepositorio<>));
+            services.AddTransient<IMedicamentoRepository, MedicamentosRepository>();
+            services.AddTransient<ICitaRepository, CitaRepository>();
+            services.AddTransient<IPruebasMedicasRepository, PruebasMedicasRepository>();
+            services.AddTransient<ITratamientoRepository, TratamientoRepository>();
             #endregion
         }
     }
