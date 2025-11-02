@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PetCareApp.Core.Domain.Entities;
-using System.Reflection;
 
 namespace PetCareApp.Infraestructure.Persistence.Context;
 
@@ -33,6 +32,10 @@ public class PetCareContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(PetCareContext).Assembly);
+
         modelBuilder.Entity<Dueño>().ToTable("Dueños");
         modelBuilder.Entity<Telefono>().ToTable("Telefonos");
     } 

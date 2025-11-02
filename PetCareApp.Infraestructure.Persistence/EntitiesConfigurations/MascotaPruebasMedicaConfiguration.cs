@@ -10,7 +10,7 @@ namespace PetCareApp.Infraestructure.Persistence.EntitiesConfigurations
         {
             #region base configuration
                 builder.ToTable("Mascota_PruebasMedicas");
-                builder.HasKey(e => new { e.MascotaId, e.PruebaMedicaId }).HasName("PK__Mascota___A4370A57AD5429E1");
+            builder.HasKey(e => new { e.MascotaId, e.PruebaMedicaId });
             #endregion
 
             #region properties configuration

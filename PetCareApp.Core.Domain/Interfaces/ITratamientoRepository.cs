@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using PetCareApp.Core.Domain.Entities;
 
 namespace PetCareApp.Core.Domain.Interfaces
 {
-    internal interface ITratamientoRepository
+    public interface ITratamientoRepository : IGenericRepositorio<MascotaPruebasMedica>
     {
+        Task<List<MascotaPruebasMedica>> GetPruebasOfMascotaById(int mascotaId);
     }
 }
