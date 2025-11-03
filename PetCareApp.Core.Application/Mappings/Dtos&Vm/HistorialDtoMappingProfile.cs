@@ -6,7 +6,6 @@ using PetCareApp.Core.Application.Dtos.MascotasDtos;
 using PetCareApp.Core.Application.ViewModels.CitasVms;
 using PetCareApp.Core.Application.ViewModels.HistorialVms;
 using PetCareApp.Core.Application.ViewModels.PruebasVms;
-using PetCareApp.Core.Domain.Entities;
 
 namespace PetCareApp.Core.Application.Mappings.Dtos_Vm
 {
