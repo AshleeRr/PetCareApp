@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PetCareApp.Core.Application.Dtos;
+using PetCareApp.Core.Application.Dtos.MascotasDtos;
 using PetCareApp.Core.Application.Interfaces;
 
 namespace VetCareApp.Presentation.Web.Controllers

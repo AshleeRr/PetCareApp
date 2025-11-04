@@ -1,4 +1,5 @@
 ﻿using PetCareApp.Core.Application.Dtos;
+using PetCareApp.Core.Application.Dtos.MascotasDtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +16,6 @@ namespace PetCareApp.Core.Application.Interfaces
         Task<MascotaDto> CrearAsync(CrearMascotaDto dto);
         Task<bool> EditarAsync(int id, CrearMascotaDto dto);
         Task<bool> EliminarAsync(int id);
+
     }
 }

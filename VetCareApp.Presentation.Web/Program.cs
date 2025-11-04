@@ -107,6 +107,10 @@ namespace VetCareApp.Presentation.Web
                                     .AllowAnyHeader());
             });
 
+            builder.Services.Configure<Infraestructura.Servicios.ConfiguracionServices2>(
+                builder.Configuration.GetSection("SmtpSettings")
+            );
+
             // 8. Swagger
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(c =>
@@ -118,6 +122,20 @@ namespace VetCareApp.Presentation.Web
                     Description = "API para el sistema de gestión veterinaria PetCare"
                 });
             });
+
+            builder.Services.AddControllersWithViews()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+                });
+            // -----------------------------
+            // CONFIGURACIÓN DE SERVICIOS
+            // -----------------------------
+
+            // Controladores tipo API
+            builder.Services.AddControllers();
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
 
