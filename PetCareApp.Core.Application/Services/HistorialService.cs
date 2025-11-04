@@ -1,5 +1,7 @@
 ﻿
 using AutoMapper;
+using PetCareApp.Core.Application.Dtos;
+using PetCareApp.Core.Application.Dtos.MascotaPruebaMedicaDtos;
 using PetCareApp.Core.Application.Dtos.MascotasDtos;
 using PetCareApp.Core.Application.Interfaces;
 using PetCareApp.Core.Domain.Interfaces;
@@ -18,9 +20,21 @@ namespace PetCareApp.Core.Application.Services
             _mascotaPruebaMedicaRepository = tratamientoRepository;
             _mapper = mapper;
         }
-        public Task<MascotaHistorialDto> GetHistorialDeMascotaAsync(int mascotaId)
+        public async Task<MascotaHistorialDto> GetHistorialDeMascotaAsync(int mascotaId)
         {
-            throw new NotImplementedException();
+            var citas = await _citaRepository.GetCitasOfMascotaById(mascotaId);
+            var pruebasMedicas = await _mascotaPruebaMedicaRepository.GetPruebasOfMascotaById(mascotaId);
+
+            var historialDto = new MascotaHistorialDto 
+            {
+                MascotaId =  mascotaId,
+                HistorialCitas =  _mapper.Map<List<CitaDto>>(citas),
+                PruebasMedicas = _mapper.Map<List<MascotaPruebaMedicaDto>>(pruebasMedicas)
+
+            };
+
+            return historialDto;
+
         }
     }
 }
