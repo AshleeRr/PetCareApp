@@ -78,29 +78,40 @@ namespace PetCareApp.Infraestructure.Persistence.Repositories
                 .Where(c => c.DueñoId == clienteId)
                 .ToListAsync();
         }
+
+        public async Task<List<Cita?>> GetCitasAsiganasAVeterinarioAsync(int userId)
+        {
+            return await _context.Citas
+                .Include(c => c.Mascota)
+                .Include(c => c.Dueño)
+                .Include(c => c.Estado)
+                .Include(c => c.Motivo)
+                .Where(c => c.VeterinarioId == userId)
+                .ToListAsync();
+        }
         /*
-        public async Task<Cita> AddAsync(Cita cita)
-        {
-            var entry = await _context.Citas.AddAsync(cita);
-            await _context.SaveChangesAsync();
-            return entry.Entity;
-        }
+public async Task<Cita> AddAsync(Cita cita)
+{
+   var entry = await _context.Citas.AddAsync(cita);
+   await _context.SaveChangesAsync();
+   return entry.Entity;
+}
 
-        public async Task UpdateAsync(Cita cita)
-        {
-            _context.Citas.Update(cita);
-            await _context.SaveChangesAsync();
-        }
+public async Task UpdateAsync(Cita cita)
+{
+   _context.Citas.Update(cita);
+   await _context.SaveChangesAsync();
+}
 
-        public async Task DeleteAsync(int id)
-        {
-            var cita = await _context.Citas.FindAsync(id);
-            if (cita != null)
-        {
-                _context.Citas.Remove(cita);
-                await _context.SaveChangesAsync();
-            }
-        }
-        */
+public async Task DeleteAsync(int id)
+{
+   var cita = await _context.Citas.FindAsync(id);
+   if (cita != null)
+{
+       _context.Citas.Remove(cita);
+       await _context.SaveChangesAsync();
+   }
+}
+*/
     }
 }
