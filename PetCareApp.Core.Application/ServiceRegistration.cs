@@ -10,7 +10,8 @@ namespace PetCareApp.Core.Application
         public static void AddApplicationlayerIoc(this IServiceCollection services)
         {
             #region Configurations
-            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            //services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             #endregion
 
             #region Services IOC

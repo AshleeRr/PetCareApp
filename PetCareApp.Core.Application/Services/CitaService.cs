@@ -11,7 +11,7 @@ namespace PetCareApp.Core.Application.Services
         private readonly ICitaRepository _repo;
         private readonly IMapper _mapper;
 
-        public CitaService(ICitaRepository repo, Mapper mapper)
+        public CitaService(ICitaRepository repo, IMapper mapper)
         {
             _repo = repo;
             _mapper = mapper;

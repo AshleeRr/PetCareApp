@@ -40,6 +40,11 @@ namespace PetCareApp.Infraestructure.Persistence.EntitiesConfigurations
                 .HasForeignKey(d => d.VeterinarioId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Citas_Personal");
+
+            builder.HasOne(m => m.Mascota).WithMany(t => t.Cita)
+                .HasForeignKey(m => m.MascotaId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Citas_Mascota");
             #endregion
 
 
