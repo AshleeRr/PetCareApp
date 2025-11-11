@@ -33,7 +33,8 @@ namespace PetCareApp.Infraestructure.Persistence
             services.AddScoped<IRoleRepositorio, RoleRepositorio>();
             services.AddScoped<IMotivoCitaRepository, MotivoCitaRepository>();
             services.AddScoped<IMascotaRepository, MascotaRepository>();
-
+            services.AddScoped<IRecetaRepository, RecetaRepository>();
+            services.AddScoped<IRazaMascotaRepository, RazaMascotRepository>();
 
             services.AddScoped<Ilogger, Logger>();
             #endregion

@@ -1,15 +1,19 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+/*
+using Microsoft.EntityFrameworkCore;
+
 using PetCareApp.Infraestructure.Persistence.Context;
 using PetCareApp.Core.Domain.Interfaces;
 using PetCareApp.Infraestructure.Persistence.Repositories;
 using Infraestructura.Persistencia.Repositorios;
 using PetCareApp.Core.Application.Services;
 using PetCareApp.Core.Application.Interfaces;
+*/
 using Infraestructura.Servicios;
 using System.Text;
-
+using PetCareApp.Core.Application;
+using PetCareApp.Infraestructure.Persistence;
 namespace VetCareApp.Presentation.Web
 {
     public class Program
@@ -17,16 +21,21 @@ namespace VetCareApp.Presentation.Web
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
+            builder.Services.AddPersistencelayerIoc(builder.Configuration);
+            builder.Services.AddApplicationlayerIoc();
             // -----------------------------
             // CONFIGURACIÓN DE SERVICIOS
             // -----------------------------
 
+
+
+
+            /*
             // 1. DbContext
             builder.Services.AddDbContext<PetCareContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("AppConnection"))
             );
-
+            
             // 2. ✅ TODOS LOS REPOSITORIOS
             builder.Services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
             builder.Services.AddScoped<IRoleRepositorio, RoleRepositorio>();
@@ -39,7 +48,7 @@ namespace VetCareApp.Presentation.Web
             builder.Services.AddScoped<IPruebasMedicasRepository, PruebasMedicasRepository>();
             builder.Services.AddScoped<IRecetaRepository, RecetaRepository>();
             builder.Services.AddScoped<ITratamientoRepository, TratamientoRepository>();
-
+            
             // 3. ✅ TODOS LOS SERVICIOS DE APLICACIÓN
             builder.Services.AddScoped<IAutenticacionService, AutenticacionService>();
             builder.Services.AddScoped<TokenService>();
@@ -49,6 +58,10 @@ namespace VetCareApp.Presentation.Web
             builder.Services.AddScoped<IEstadoService, EstadoService>();
             builder.Services.AddScoped<IMascotaService, MascotaService>();
             builder.Services.AddScoped<IMotivoCitaService, MotivoCitaService>();
+            */
+
+
+
 
             // 4. Configuración SMTP (si la usas)
             builder.Services.Configure<ConfiguracionServices2>(

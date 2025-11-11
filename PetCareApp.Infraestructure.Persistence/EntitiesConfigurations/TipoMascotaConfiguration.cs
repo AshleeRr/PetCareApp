@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PetCareApp.Core.Domain.Entities;
 namespace PetCareApp.Infraestructure.Persistence.EntitiesConfigurations
 {
-    public class TipoMascotaConfiguration : IEntityTypeConfiguration<TipoMascota>
+    public class TipoMascotaConfiguration : IEntityTypeConfiguration<RazaMascota>
     {
-        public void Configure(EntityTypeBuilder<TipoMascota> builder)
+        public void Configure(EntityTypeBuilder<RazaMascota> builder)
         {
             #region base configuration
             builder.ToTable("TipoMascota");

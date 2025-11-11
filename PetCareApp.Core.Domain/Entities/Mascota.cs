@@ -15,5 +15,5 @@ public class Mascota
     public ICollection<MascotaPruebasMedica> MascotaPruebasMedicas { get; set; } = new List<MascotaPruebasMedica>();
     public ICollection<Cita> Cita { get; set; } = new List<Cita>();
 
-    public TipoMascota TipoMascota { get; set; }
+    public RazaMascota TipoMascota { get; set; } //cambiar a raza
 }
