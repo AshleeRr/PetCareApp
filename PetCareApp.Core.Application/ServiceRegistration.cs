@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PetCareApp.Core.Application.Interfaces;
 using PetCareApp.Core.Application.Services;
-using System.Reflection;
 
 namespace PetCareApp.Core.Application
 {
@@ -15,6 +14,7 @@ namespace PetCareApp.Core.Application
             #endregion
 
             #region Services IOC
+            services.AddTransient(typeof(IGenericService<>), typeof(GenericService<,>));
             services.AddTransient<IAutenticacionService, AutenticacionService>();
             services.AddTransient<IClienteService, ClienteService>();
             services.AddTransient<ICitaService, CitaService>();
@@ -22,6 +22,10 @@ namespace PetCareApp.Core.Application
             services.AddTransient<IMotivoCitaService, MotivoCitaService>();
             services.AddTransient<IMascotaService, MascotaService>();
             services.AddTransient<IEstadoService, EstadoService>();
+            services.AddTransient<IMascotaPruebaMedicaService, MascotaPruebaMedicaService>();
+            services.AddTransient<IPruebaMedicaService, PruebaMedicaService>();
+            services.AddTransient<IMedicamentoService, MedicamentoService>();
+            services.AddTransient<IHistorialService, HistorialService>();
             services.AddTransient<TokenService>();
             #endregion
         }

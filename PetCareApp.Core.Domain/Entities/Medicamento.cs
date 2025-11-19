@@ -10,5 +10,6 @@ public class Medicamento
 
     public required string EspecificadoPara { get; set; }
 
-    public ICollection<RecetaMedicamento> RecetaMedicamentos { get; set; } = new List<RecetaMedicamento>();
+    public ICollection<RecetaMedicamento> RecetaMedicamentos { get; set; }
+        = new List<RecetaMedicamento>();
 }

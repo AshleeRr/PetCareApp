@@ -29,7 +29,7 @@ namespace PetCareApp.Core.Application.Services
             {
                 MascotaId =  mascotaId,
                 HistorialCitas =  _mapper.Map<List<CitaDto>>(citas),
-                PruebasMedicas = _mapper.Map<List<MascotaPruebaMedicaDto>>(pruebasMedicas)
+                PruebasMedicas = _mapper.Map<List<CreateMascotaPruebaMedicaDto>>(pruebasMedicas)
 
             };
 

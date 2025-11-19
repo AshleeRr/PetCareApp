@@ -1,83 +1,40 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using PetCareApp.Core.Application.Dtos;
+using PetCareApp.Core.Application.Dtos.MascotasDtos;
+using PetCareApp.Core.Application.Interfaces;
 
 namespace VetCareApp.Presentation.Web.Controllers
 {
-    public class HistorialController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class HistorialController : ControllerBase
     {
-        // GET: HistorialController
-        public ActionResult Index()
+        private readonly IHistorialService _historialService;
+
+        public HistorialController(IHistorialService historialService)
         {
-            return View();
+            _historialService = historialService;
         }
 
-        // GET: HistorialController/Details/5
-        public ActionResult Details(int id)
+        // ==========================================================
+        // GET: api/historial/mascota/5 → obtener historial completo
+        // ==========================================================
+        [HttpGet("mascota/{mascotaId:int}")]
+        public async Task<ActionResult<MascotaHistorialDto>> GetHistorial(int mascotaId)
         {
-            return View();
-        }
+            if (mascotaId <= 0)
+                return BadRequest("El id de la mascota debe ser mayor a 0.");
 
-        // GET: HistorialController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
+            var historial = await _historialService.GetHistorialDeMascotaAsync(mascotaId);
 
-        // POST: HistorialController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
+            if (historial == null ||
+                (historial.HistorialCitas.Count == 0 && historial.PruebasMedicas.Count == 0))
             {
-                return RedirectToAction(nameof(Index));
+                return NotFound("Esta mascota no tiene historial registrado.");
             }
-            catch
-            {
-                return View();
-            }
-        }
 
-        // GET: HistorialController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: HistorialController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: HistorialController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: HistorialController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return Ok(historial);
         }
     }
 }

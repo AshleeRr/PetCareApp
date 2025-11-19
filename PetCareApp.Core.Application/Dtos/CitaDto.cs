@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 namespace PetCareApp.Core.Application.Dtos
 {
     public class CitaDto
@@ -11,5 +10,6 @@ namespace PetCareApp.Core.Application.Dtos
         public string Veterinario { get; set; } = string.Empty;
         public string Motivo { get; set; } = string.Empty;
         public string Mascota { get; set; } = string.Empty;
+        public string Observaciones { get; set; } = string.Empty;
     }
 }

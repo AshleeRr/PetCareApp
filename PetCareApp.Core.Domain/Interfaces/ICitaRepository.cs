@@ -11,7 +11,7 @@ namespace PetCareApp.Core.Domain.Interfaces
         //Task<Cita?> GetByIdAsync(int id);
         Task<List<Cita>> GetByFechaAsync(DateTime fecha);
         Task<List<Cita>> GetByClienteAsync(int clienteId);
-        Task<List<Cita?>> GetCitasAsiganasAVeterinarioAsync(int userId);
+        Task<List<Cita>> GetCitasAsiganasAVeterinarioAsync(int userId);
       //  Task<Cita> AddAsync(Cita cita);
       //  Task UpdateAsync(Cita cita);
       //  Task DeleteAsync(int id);

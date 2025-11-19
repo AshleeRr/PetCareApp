@@ -8,6 +8,6 @@ namespace PetCareApp.Core.Application.Dtos.MascotasDtos
         public int MascotaId { get; set; }
         public string NombreMascota { get; set; } = string.Empty;
         public List<CitaDto> HistorialCitas { get; set; } = new List<CitaDto>();
-        public List<MascotaPruebaMedicaDto> PruebasMedicas { get; set; } = new List<MascotaPruebaMedicaDto>();
+        public List<CreateMascotaPruebaMedicaDto> PruebasMedicas { get; set; } = new List<CreateMascotaPruebaMedicaDto>();
     }
 }

@@ -9,7 +9,8 @@ public class Receta
     public string? Observaciones { get; set; }
 
     public ICollection<RecetaMedicamento> RecetaMedicamentos { get; set; } = new List<RecetaMedicamento>();
-
-    public required Usuario Veterinario { get; set; }
+    public Usuario? Veterinario { get; set; }
     public int VeterinarioId { get; set; }
-    }
+    public int CitaId { get; set; }
+    public Cita? Cita { get; set; }
+}

@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PetCareApp.Core.Application.Dtos.MedicamentosDtos;
 
 namespace PetCareApp.Core.Application.Interfaces
 {
-    internal class IMedicamentoService
+    public interface IMedicamentoService : IGenericService<MedicamentoDto>
     {
+        Task<MedicamentoDto> GetMedicamentoByNameAsync(string nombre);
+        Task<List<MedicamentoDto>> GetMedicamentosByPresentacionAsync(string presentacion);
     }
 }

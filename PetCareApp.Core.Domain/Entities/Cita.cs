@@ -19,5 +19,10 @@ public class Cita
 
     public int MotivoId { get; set; }
     public MotivoCita Motivo { get; set; } = null!;
+
+    public string? Observaciones { get; set; } 
+    public int? RecetaId { get; set; }
+    public Receta? Receta { get; set; }
+
 }
 
