@@ -15,7 +15,7 @@ namespace PetCareApp.Core.Application
             #endregion
 
             #region Services IOC
-            services.AddTransient(typeof(IGenericService<>), typeof(GenericService<,>));
+            services.AddTransient(typeof(IGenericService<,>), typeof(GenericService<,>));
             services.AddTransient<IAutenticacionService, AutenticacionService>();
             services.AddTransient<IClienteService, ClienteService>();
             services.AddTransient<ICitaService, CitaService>();
