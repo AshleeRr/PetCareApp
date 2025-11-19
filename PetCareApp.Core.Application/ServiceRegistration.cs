@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Infraestructura.Servicios;
+using Microsoft.Extensions.DependencyInjection;
 using PetCareApp.Core.Application.Interfaces;
 using PetCareApp.Core.Application.Services;
 
@@ -26,6 +27,9 @@ namespace PetCareApp.Core.Application
             services.AddTransient<IPruebaMedicaService, PruebaMedicaService>();
             services.AddTransient<IMedicamentoService, MedicamentoService>();
             services.AddTransient<IHistorialService, HistorialService>();
+            services.AddTransient<IRecetaService, RecetaService>();
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<ConfiguracionServices2>();
             services.AddTransient<TokenService>();
             #endregion
         }
