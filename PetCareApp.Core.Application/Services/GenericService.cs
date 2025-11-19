@@ -4,7 +4,7 @@ using PetCareApp.Core.Domain.Interfaces;
 
 namespace PetCareApp.Core.Application.Services
 {
-    public class GenericService<Entity, Dto> : IGenericService<Dto>
+    public class GenericService<Entity, Dto> : IGenericService<Entity,Dto>
         where Dto : class
         where Entity : class
     {
