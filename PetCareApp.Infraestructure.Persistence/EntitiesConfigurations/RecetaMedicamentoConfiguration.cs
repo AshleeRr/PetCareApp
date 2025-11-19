@@ -22,11 +22,13 @@ namespace PetCareApp.Infraestructure.Persistence.EntitiesConfigurations
             #region relations configuration
             builder.HasOne(d => d.Medicamento).WithMany(p => p.RecetaMedicamentos)
                 .HasForeignKey(d => d.MedicamentoId)
-                .HasConstraintName("FK_RM_Medicamentos");
+                .HasConstraintName("FK_RM_Medicamentos")
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(d => d.Receta).WithMany(p => p.RecetaMedicamentos)
                 .HasForeignKey(d => d.RecetaId)
-                .HasConstraintName("FK_RM_Recetas");
+                .HasConstraintName("FK_RM_Recetas")
+                .OnDelete(DeleteBehavior.Cascade);
             #endregion
         }
     }

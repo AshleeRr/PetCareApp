@@ -8,5 +8,6 @@ namespace PetCareApp.Core.Application.Dtos
         public int EstadoId { get; set; }
         public int VeterinarioId { get; set; }
         public int MotivoId { get; set; }
+        public string? Observaciones { get; set; }
     }
 }

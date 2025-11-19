@@ -18,7 +18,7 @@ namespace PetCareApp.Core.Application.Mappings.Dtos_Vm
 
             // Submapeos de los elementos internos
             CreateMap<CitaDto, CitaViewModel>();
-            CreateMap<MascotaPruebaMedicaDto, PruebaViewModel>();
+            CreateMap<CreateMascotaPruebaMedicaDto, PruebaMedicaViewModel>();
         }
     }
 }

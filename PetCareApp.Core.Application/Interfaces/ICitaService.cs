@@ -17,6 +17,7 @@ namespace PetCareApp.Core.Application.Interfaces
         Task<CitaDto> CrearCitaAsync(CrearCitaDto dto);
         Task<bool> EditarCitaAsync(int id, ActualizarCitaDto dto);
         Task<bool> EliminarCitaAsync(int id);
+        Task<List<CitaDto>> GetCitasOfMascotaById(int mascota);
         Task<List<CitaDto>> GetCitasAsiganasAVeterinarioAsync(int userId);
 
     }

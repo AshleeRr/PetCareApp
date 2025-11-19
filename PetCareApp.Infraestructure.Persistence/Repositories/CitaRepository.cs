@@ -79,7 +79,7 @@ namespace PetCareApp.Infraestructure.Persistence.Repositories
                 .ToListAsync();
         }
 
-        public async Task<List<Cita?>> GetCitasAsiganasAVeterinarioAsync(int userId)
+        public async Task<List<Cita>> GetCitasAsiganasAVeterinarioAsync(int userId)
         {
             return await _context.Citas
                 .Include(c => c.Mascota)

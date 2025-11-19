@@ -75,6 +75,7 @@ namespace PetCareApp.Core.Application.Services
             cita.EstadoId = dto.EstadoId;
             cita.VeterinarioId = dto.VeterinarioId;
             cita.MotivoId = dto.MotivoId;
+            cita.Observaciones = dto.Observaciones;
 
             await _repo.UpdateAsync(id, cita);
             return true;
@@ -91,6 +92,12 @@ namespace PetCareApp.Core.Application.Services
         public async Task<List<CitaDto>> GetCitasAsiganasAVeterinarioAsync(int userId)
         {
             var citas = await _repo.GetCitasAsiganasAVeterinarioAsync(userId);
+            return _mapper.Map<List<CitaDto>>(citas);
+        }
+
+        public async Task<List<CitaDto>> GetCitasOfMascotaById(int mascota)
+        {
+            var citas = await _repo.GetCitasOfMascotaById(mascota);
             return _mapper.Map<List<CitaDto>>(citas);
         }
     }

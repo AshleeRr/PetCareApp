@@ -16,6 +16,7 @@ namespace PetCareApp.Core.Application.Interfaces
         Task<MascotaDto> CrearAsync(CrearMascotaDto dto);
         Task<bool> EditarAsync(int id, CrearMascotaDto dto);
         Task<bool> EliminarAsync(int id);
+        Task<List<CitaDto>> GetCitasOfMascotaById(int mascota);
 
     }
 }

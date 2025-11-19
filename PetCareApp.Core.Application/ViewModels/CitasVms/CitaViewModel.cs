@@ -5,8 +5,8 @@ namespace PetCareApp.Core.Application.ViewModels.CitasVms
     {
         public int Id { get; set; }
         public DateTime Fecha { get; set; }
-        public string Motivo { get; set; }
-        public string Estado { get; set; }
+        public required string Motivo { get; set; }
+        public required string Estado { get; set; }
 
     }
 }

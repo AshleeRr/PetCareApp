@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using PetCareApp.Core.Application.Dtos;
 using PetCareApp.Core.Application.Interfaces;
@@ -10,10 +10,12 @@ namespace VetCareApp.Presentation.Web.Controllers
     public class CitasController : ControllerBase
     {
         private readonly ICitaService _service;
+        private readonly IMapper _mapper;
 
-        public CitasController(ICitaService service)
+        public CitasController(ICitaService service, IMapper mapper)
         {
             _service = service;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -34,6 +36,26 @@ namespace VetCareApp.Presentation.Web.Controllers
             var cita = await _service.ObtenerPorIdAsync(id);
             if (cita == null) return NotFound();
             return Ok(cita);
+        }
+
+        [HttpGet("{userId:int}")]
+        public async Task<ActionResult<List<CitaDto>>> GetCitasByVeterinarioId(int userId)
+        {
+            var citas = await _service.GetCitasAsiganasAVeterinarioAsync(userId);
+            if (citas == null) return NotFound();
+            //if(!citas.Any()) return BadRequest("No se ha podido encontrar citas asignadas a este veterinario");
+           // var vm = _mapper.Map<List<CitaViewModel>>(citas);
+
+            return Ok(citas);
+        }
+
+        [HttpGet("{mascotaId:int}")]
+        public async Task<ActionResult<List<CitaDto>>> GetCitasOfMascotaId(int mascotaId)
+        {
+            var citas = await _service.GetCitasOfMascotaById(mascotaId);
+            if (citas == null) return NotFound();
+
+            return Ok(citas);
         }
 
         [HttpPost]
@@ -58,5 +80,6 @@ namespace VetCareApp.Presentation.Web.Controllers
             if (!ok) return NotFound();
             return NoContent();
         }
+
     }
 }

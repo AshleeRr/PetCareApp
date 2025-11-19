@@ -76,5 +76,9 @@ namespace PetCareApp.Core.Application.Services
             return true;
         }
 
+        public Task<List<CitaDto>> GetCitasOfMascotaById(int mascota)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
