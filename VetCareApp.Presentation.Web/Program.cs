@@ -1,14 +1,16 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Infraestructura.Persistencia.Repositorios;
+using Infraestructura.Servicios;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using PetCareApp.Infraestructure.Persistence.Context;
-using PetCareApp.Core.Domain.Interfaces;
-using PetCareApp.Infraestructure.Persistence.Repositories;
-using Infraestructura.Persistencia.Repositorios;
-using PetCareApp.Core.Application.Services;
+using Microsoft.OpenApi.Models;
 using PetCareApp.Core.Application.Interfaces;
-using Infraestructura.Servicios;
+using PetCareApp.Core.Application.Services;
+using PetCareApp.Core.Domain.Interfaces;
+using PetCareApp.Infraestructure.Persistence.Context;
+using PetCareApp.Infraestructure.Persistence.Repositories;
 using System.Text;
+
 
 namespace VetCareApp.Presentation.Web
 {
@@ -29,7 +31,11 @@ namespace VetCareApp.Presentation.Web
 
             // 2. ✅ TODOS LOS REPOSITORIOS
             builder.Services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
+            builder.Services.AddScoped<IUsuarioAdminRepository, UsuarioAdminRepository>(); // ✅ Nuevo
+            builder.Services.AddScoped<IPersonalRepository, PersonalRepository>(); // ✅ Nuevo
+            builder.Services.AddScoped<ISistemaLogRepository, SistemaLogRepository>(); // ✅ Nuevo
             builder.Services.AddScoped<IRoleRepositorio, RoleRepositorio>();
+            builder.Services.AddScoped<IPasswordResetTokenRepository, PasswordResetTokenRepository>(); 
             builder.Services.AddScoped<ICitaRepository, CitaRepository>();
             builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
             builder.Services.AddScoped<IEstadoRepository, EstadoRepository>();
@@ -39,11 +45,20 @@ namespace VetCareApp.Presentation.Web
             builder.Services.AddScoped<IPruebasMedicasRepository, PruebasMedicasRepository>();
             builder.Services.AddScoped<IRecetaRepository, RecetaRepository>();
             builder.Services.AddScoped<ITratamientoRepository, TratamientoRepository>();
+            builder.Services.AddScoped<IProductoRepository, ProductoRepository>();
+            builder.Services.AddScoped<ICarritoRepository, CarritoRepository>();
+            builder.Services.AddScoped<IVentaRepository, VentaRepository>();
 
             // 3. ✅ TODOS LOS SERVICIOS DE APLICACIÓN
             builder.Services.AddScoped<IAutenticacionService, AutenticacionService>();
             builder.Services.AddScoped<TokenService>();
             builder.Services.AddScoped<Ilogger, Logger>();
+            builder.Services.AddScoped<IPasswordResetService, PasswordResetService>();
+            builder.Services.AddScoped<IEmailService, EmailService>();
+            builder.Services.AddScoped<IProductoService, ProductoService>(); // ✅ Nuevo
+            builder.Services.AddScoped<ICarritoService, CarritoService>(); // ✅ Nuevo
+            builder.Services.AddScoped<IVentaService, VentaService>();
+            builder.Services.AddScoped<IAdminService, AdminService>(); // ✅ Nuevo
             builder.Services.AddScoped<ICitaService, CitaService>();
             builder.Services.AddScoped<IClienteService, ClienteService>();
             builder.Services.AddScoped<IEstadoService, EstadoService>();
@@ -51,6 +66,9 @@ namespace VetCareApp.Presentation.Web
             builder.Services.AddScoped<IMotivoCitaService, MotivoCitaService>();
 
             // 4. Configuración SMTP (si la usas)
+            builder.Services.Configure<ConfiguracionServices>(
+            builder.Configuration.GetSection("JwtSettings"));
+
             builder.Services.Configure<ConfiguracionServices2>(
                 builder.Configuration.GetSection("SmtpSettings")
             );
@@ -109,14 +127,40 @@ namespace VetCareApp.Presentation.Web
 
             // 8. Swagger
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen(c =>
+            builder.Services.AddSwaggerGen(options =>
             {
-                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+                options.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = "PetCare API",
                     Version = "v1",
                     Description = "API para el sistema de gestión veterinaria PetCare"
                 });
+
+                // ✅ CONFIGURACIÓN DE SEGURIDAD JWT
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "Ingrese 'Bearer' seguido de un espacio y el token JWT.\n\nEjemplo: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                });
+
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
             });
 
             var app = builder.Build();

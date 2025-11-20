@@ -1,4 +1,5 @@
-﻿using PetCareApp.Core.Application.Dtos;
+﻿using Infraestructura.Servicios;
+using PetCareApp.Core.Application.Dtos;
 using PetCareApp.Core.Application.Interfaces;
 using PetCareApp.Core.Domain.Entities;
 using PetCareApp.Core.Domain.Interfaces;
@@ -11,6 +12,7 @@ namespace PetCareApp.Core.Application.Services
     {
         private readonly IUsuarioRepositorio _usuarioRepo;
         private readonly IRoleRepositorio _roleRepo; // ✅ Usar IRoleRepositorio en lugar de DbContext
+        private readonly TokenService _tokenService; // ✅ Ya está correcto
         private readonly Ilogger _logger;
 
         public AutenticacionService(

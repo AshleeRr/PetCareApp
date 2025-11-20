@@ -9,34 +9,46 @@ namespace PetCareApp.Infraestructure.Persistence.EntitiesConfigurations
         public void Configure(EntityTypeBuilder<Cita> builder) {
 
             #region base configurations
-                builder.ToTable("Citas");
-                builder.HasKey(e => e.Id).HasName("PK__Citas__3214EC07F879E4C2");
+            builder.ToTable("Citas");
+            builder.HasKey(e => e.Id).HasName("PK__Citas__3214EC07F879E4C2");
             #endregion
 
             #region properties configurations
             builder.Property(e => e.FechaHora).HasColumnType("datetime");
-            #endregion region
+            #endregion
 
             #region relations
-            builder.HasOne(d => d.Dueño).WithMany(p => p.Cita)
-            .HasForeignKey(d => d.DueñoId)
-            .HasConstraintName("FK_Citas_Duenios");
+            // Relación con Dueño
+            builder.HasOne(d => d.Dueño)
+                .WithMany(p => p.Cita)
+                .HasForeignKey(d => d.DueñoId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Citas_Duenios");
 
-            builder.HasOne(d => d.Mascota).WithMany(p => p.Cita)
-            .HasForeignKey(d => d.DueñoId)
-            .HasConstraintName("FK_Citas_Mascotas");
+            // ✅ Relación con Mascota (CORREGIDO)
+            builder.HasOne(d => d.Mascota)
+                .WithMany(p => p.Cita)
+                .HasForeignKey(d => d.MascotaId) // ✅ Usar MascotaId, no DueñoId
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Citas_Mascota");
 
-            builder.HasOne(d => d.Estado).WithMany(p => p.Cita)
+            // Relación con Estado
+            builder.HasOne(d => d.Estado)
+                .WithMany(p => p.Cita)
                 .HasForeignKey(d => d.EstadoId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Citas_Estado");
 
-            builder.HasOne(d => d.Motivo).WithMany(p => p.Cita)
+            // Relación con MotivoCita
+            builder.HasOne(d => d.Motivo)
+                .WithMany(p => p.Cita)
                 .HasForeignKey(d => d.MotivoId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Citas_MotivoCita");
 
-            builder.HasOne(d => d.Veterinario).WithMany(p => p.Cita)
+            // Relación con Personal (Veterinario)
+            builder.HasOne(d => d.Veterinario)
+                .WithMany(p => p.Cita)
                 .HasForeignKey(d => d.VeterinarioId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Citas_Personal");
