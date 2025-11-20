@@ -19,6 +19,7 @@ namespace PetCareApp.Infraestructure.Persistence
             services.AddDbContext<PetCareContext>(opt => opt.UseSqlServer(connectionString, 
                 m => m.MigrationsAssembly(typeof(PetCareContext).Assembly.FullName)),
                 ServiceLifetime.Transient);
+
             #endregion
             
             #region Repositories IOC
