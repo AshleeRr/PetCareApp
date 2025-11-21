@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PetCareApp.Core.Domain.Entities;
+using System.Reflection.Emit;
 
 namespace PetCareApp.Infraestructure.Persistence.EntitiesConfigurations
 {
@@ -23,8 +24,9 @@ namespace PetCareApp.Infraestructure.Persistence.EntitiesConfigurations
             .HasConstraintName("FK_Citas_Duenios");
 
             builder.HasOne(d => d.Mascota).WithMany(p => p.Cita)
-            .HasForeignKey(d => d.DueñoId)
-            .HasConstraintName("FK_Citas_Mascotas");
+                .HasForeignKey(d => d.MascotaId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Citas_Mascota");
 
             builder.HasOne(d => d.Estado).WithMany(p => p.Cita)
                 .HasForeignKey(d => d.EstadoId)
@@ -45,6 +47,11 @@ namespace PetCareApp.Infraestructure.Persistence.EntitiesConfigurations
                 .HasForeignKey(m => m.MascotaId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Citas_Mascota");
+
+            builder.HasOne(c => c.Receta)
+                .WithOne(r => r.Cita)
+                .HasForeignKey<Receta>(r => r.CitaId);
+
             #endregion
 
 

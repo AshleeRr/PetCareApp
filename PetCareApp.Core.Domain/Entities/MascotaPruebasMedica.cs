@@ -9,6 +9,7 @@ public class MascotaPruebasMedica
     public  string Resultado { get; set; } = null!;
 
     public DateTime Fecha { get; set; }
+    public int CitaId { get; set; }
 
     public Mascota Mascota { get; set; } = null!;
 

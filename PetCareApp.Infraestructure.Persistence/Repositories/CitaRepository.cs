@@ -26,7 +26,9 @@ namespace PetCareApp.Infraestructure.Persistence.Repositories
 
         public async Task<List<Cita>> GetCitasOfMascotaById(int mascotaId)
         {
-            return await _context.Citas
+            Console.WriteLine(_context.Database.GetConnectionString());
+
+            var citas = await _context.Citas
                 .Include(c => c.Veterinario)
                 .Include(c => c.Estado)
                 .Include(c => c.Motivo)
@@ -34,6 +36,7 @@ namespace PetCareApp.Infraestructure.Persistence.Repositories
                 .Where(c => c.MascotaId == mascotaId)
                 .OrderByDescending(c => c.FechaHora)
                 .ToListAsync();
+            return citas; 
         }
 
         public async Task<List<Cita>> GetAllAsync()
