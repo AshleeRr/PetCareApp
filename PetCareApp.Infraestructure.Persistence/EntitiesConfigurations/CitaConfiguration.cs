@@ -27,10 +27,15 @@ namespace PetCareApp.Infraestructure.Persistence.EntitiesConfigurations
 
             // ✅ Relación con Mascota (CORREGIDO)
             builder.HasOne(d => d.Mascota)
-                .WithMany(p => p.Cita)
+                .WithMany(p => p.Citas)
                 .HasForeignKey(d => d.MascotaId) // ✅ Usar MascotaId, no DueñoId
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Citas_Mascota");
+
+               builder.HasMany(e => e.Receta)
+              .WithOne(r => r.Cita)
+              .HasForeignKey(r => r.CitaId)
+              .OnDelete(DeleteBehavior.Cascade);
 
             // Relación con Estado
             builder.HasOne(d => d.Estado)
@@ -53,7 +58,7 @@ namespace PetCareApp.Infraestructure.Persistence.EntitiesConfigurations
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Citas_Personal");
 
-            builder.HasOne(m => m.Mascota).WithMany(t => t.Cita)
+            builder.HasOne(m => m.Mascota).WithMany(t => t.Citas)
                 .HasForeignKey(m => m.MascotaId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Citas_Mascota");

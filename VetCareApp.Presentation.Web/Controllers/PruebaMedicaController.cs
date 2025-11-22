@@ -17,7 +17,7 @@ namespace VetCareApp.Presentation.Web.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("{nombre:name}")]
+        [HttpGet("{nombre}")]
         public async Task<ActionResult<PruebaMedicaViewModel>> GetPruebaByNameAsync(string name)
         {
             

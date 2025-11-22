@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PetCareApp.Core.Application.ViewModels.MascotasPruebasMedicasVms;
 using PetCareApp.Core.Domain.Entities;
 using PetCareApp.Infraestructure.Persistence.EntitiesConfigurations;
 
@@ -34,7 +35,9 @@ public class PetCareContext : DbContext
     public DbSet<CarritoItem> CarritoItems { get; set; }
     public DbSet<Venta> Ventas { get; set; }
     public DbSet<VentaDetalle> VentaDetalles { get; set; }
-    public DbSet<SistemaLog> SistemaLogs { get; set; } 
+    public DbSet<SistemaLog> SistemaLogs { get; set; }
+    public DbSet<TipoMascota> TiposMascotas { get; set; }
+    public DbSet<RazaMascota> RazasMascotas { get; set; }
 
     #endregion
 
@@ -45,7 +48,9 @@ public class PetCareContext : DbContext
         modelBuilder.ApplyConfiguration(new RoleConfiguration());
         modelBuilder.ApplyConfiguration(new ProductoConfiguration());
         modelBuilder.ApplyConfiguration(new TipoProductoConfiguration()); // ✅ Agregar esta línea
-     
+        modelBuilder.ApplyConfiguration(new RecetaConfiguration());
+        modelBuilder.ApplyConfiguration(new CitaConfiguration());
+
 
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(PetCareContext).Assembly);
 
