@@ -1,7 +1,6 @@
 ﻿using Infraestructura.Persistencia.Repositorios;
 using Infraestructura.Servicios;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using PetCareApp.Core.Application.Interfaces;
@@ -12,6 +11,8 @@ using PetCareApp.Infraestructure.Persistence.Repositories;
 using System.Text;
 
 
+using PetCareApp.Core.Application;
+using PetCareApp.Infraestructure.Persistence;
 namespace VetCareApp.Presentation.Web
 {
     public class Program
@@ -19,16 +20,21 @@ namespace VetCareApp.Presentation.Web
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
+            builder.Services.AddPersistencelayerIoc(builder.Configuration);
+            builder.Services.AddApplicationlayerIoc();
             // -----------------------------
             // CONFIGURACIÓN DE SERVICIOS
             // -----------------------------
 
+
+
+
+            /*
             // 1. DbContext
             builder.Services.AddDbContext<PetCareContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("AppConnection"))
             );
-
+            
             // 2. ✅ TODOS LOS REPOSITORIOS
             builder.Services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
             builder.Services.AddScoped<IUsuarioAdminRepository, UsuarioAdminRepository>(); // ✅ Nuevo
@@ -64,6 +70,10 @@ namespace VetCareApp.Presentation.Web
             builder.Services.AddScoped<IEstadoService, EstadoService>();
             builder.Services.AddScoped<IMascotaService, MascotaService>();
             builder.Services.AddScoped<IMotivoCitaService, MotivoCitaService>();
+            */
+
+
+
 
             // 4. Configuración SMTP (si la usas)
             builder.Services.Configure<ConfiguracionServices>(
@@ -124,6 +134,10 @@ namespace VetCareApp.Presentation.Web
                                     .AllowAnyMethod()
                                     .AllowAnyHeader());
             });
+
+            builder.Services.Configure<Infraestructura.Servicios.ConfiguracionServices2>(
+                builder.Configuration.GetSection("SmtpSettings")
+            );
 
             // 8. Swagger
             builder.Services.AddEndpointsApiExplorer();

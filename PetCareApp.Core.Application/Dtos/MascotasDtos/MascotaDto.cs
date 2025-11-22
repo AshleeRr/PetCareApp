@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PetCareApp.Core.Application.Dtos
+namespace PetCareApp.Core.Application.Dtos.MascotasDtos
 {
     public class MascotaDto
     {

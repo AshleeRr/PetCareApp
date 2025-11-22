@@ -15,6 +15,7 @@ public class Usuario
     public int RoleId { get; set; }
 
     public Role Role { get; set; } = null!;
+    public ICollection<Receta>? Recetas { get; set; } 
 
     public DateTime? UltimaConexion { get; set; } // ✅ Nuevo
     public bool Activo { get; set; } = true; // ✅ Nuevo

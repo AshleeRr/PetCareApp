@@ -109,6 +109,24 @@ namespace PetCareApp.Infraestructure.Persistence.Repositories
                 .ToListAsync();
         }
 
+        public async Task<List<Cita>> GetCitasAsiganasAVeterinarioAsync(int userId)
+        {
+            return await _context.Citas
+                .Include(c => c.Mascota)
+                .Include(c => c.Dueño)
+                .Include(c => c.Estado)
+                .Include(c => c.Motivo)
+                .Where(c => c.VeterinarioId == userId)
+                .ToListAsync();
+        }
+        /*
+public async Task<Cita> AddAsync(Cita cita)
+{
+   var entry = await _context.Citas.AddAsync(cita);
+   await _context.SaveChangesAsync();
+   return entry.Entity;
+}
+
         // ====================================
         // MÉTODOS PARA ADMIN
         // ====================================
@@ -122,6 +140,11 @@ namespace PetCareApp.Infraestructure.Persistence.Repositories
                 .Where(c => c.FechaHora >= inicioMes && c.FechaHora <= finMes) // ✅ Usar FechaHora
                 .CountAsync();
         }
+public async Task UpdateAsync(Cita cita)
+{
+   _context.Citas.Update(cita);
+   await _context.SaveChangesAsync();
+}
 
         public async Task<IEnumerable<Cita>> ObtenerCitasPorRangoFechaAsync(DateTime desde, DateTime hasta)
         {
@@ -134,5 +157,15 @@ namespace PetCareApp.Infraestructure.Persistence.Repositories
                 .Where(c => c.FechaHora >= desde && c.FechaHora <= hasta) // ✅ Usar FechaHora
                 .ToListAsync();
         }
+public async Task DeleteAsync(int id)
+{
+   var cita = await _context.Citas.FindAsync(id);
+   if (cita != null)
+{
+       _context.Citas.Remove(cita);
+       await _context.SaveChangesAsync();
+   }
+}
+*/
     }
 }

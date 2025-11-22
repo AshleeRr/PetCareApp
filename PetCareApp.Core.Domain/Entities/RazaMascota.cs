@@ -1,6 +1,6 @@
 ﻿namespace PetCareApp.Core.Domain.Entities;
 
-public class TipoMascota
+public class RazaMascota
 {
     public int Id { get; set; }
 

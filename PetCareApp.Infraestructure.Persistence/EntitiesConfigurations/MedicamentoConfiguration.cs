@@ -14,12 +14,18 @@ namespace PetCareApp.Infraestructure.Persistence.EntitiesConfigurations
             #endregion
 
             #region properties configuration
+            builder.Property(e => e.Nombre).HasMaxLength(100);
             builder.Property(e => e.EspecificadoPara).HasMaxLength(255);
             builder.Property(e => e.Presentacion).HasMaxLength(100);
             builder.Property(e => e.Uso).HasMaxLength(100);
             #endregion
 
             #region relations configuration
+
+            builder.HasMany(m => m.RecetaMedicamentos)
+                .WithOne(rm => rm.Medicamento)
+                .HasForeignKey(rm => rm.MedicamentoId)
+                .OnDelete(DeleteBehavior.Restrict);
             #endregion
 
 

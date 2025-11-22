@@ -21,6 +21,15 @@ namespace PetCareApp.Infraestructure.Persistence.EntitiesConfigurations
             #endregion
 
             #region relations configuration
+            builder.HasOne(d => d.Veterinario).WithMany(p => p.Recetas)
+                .HasForeignKey(d => d.VeterinarioId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Recetas_Usuarios");
+
+            builder.HasMany(r => r.RecetaMedicamentos)
+                .WithOne(rm => rm.Receta)
+                .HasForeignKey(rm => rm.RecetaId)
+                .OnDelete(DeleteBehavior.Cascade);
             #endregion
         }
     }

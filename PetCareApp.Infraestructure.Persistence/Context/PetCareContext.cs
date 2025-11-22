@@ -27,7 +27,7 @@ public class PetCareContext : DbContext
     public  DbSet<RecetaMedicamento> RecetaMedicamentos { get; set; }
     public  DbSet<Role> Roles { get; set; }
     public  DbSet<Telefono> Telefonos { get; set; }
-    public  DbSet<TipoMascota> TipoMascota { get; set; }
+    public  DbSet<RazaMascota> TipoMascota { get; set; }
     public  DbSet<TipoProducto> TipoProductos { get; set; }
     public  DbSet<Usuario> Usuarios { get; set; }
     public DbSet<Carrito> Carritos { get; set; }

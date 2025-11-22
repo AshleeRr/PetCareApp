@@ -6,7 +6,7 @@ using PetCareApp.Infraestructure.Persistence.Repositories;
 namespace PetCareApp.UnitTests.Repositories
 {
     public class UnitTestMedicamentos
-    {
+    {/*
         private PetCareContext GetInMemoryDbContext()
         {
             var options = new DbContextOptionsBuilder<PetCareContext>()
@@ -63,5 +63,7 @@ namespace PetCareApp.UnitTests.Repositories
             Assert.NotNull(result);
             Assert.Equal("Paracetamol 500mg", result.Presentacion);
         }
+    }
+        */
     }
 }

@@ -10,18 +10,27 @@ namespace PetCareApp.Core.Application
         public static void AddApplicationlayerIoc(this IServiceCollection services)
         {
             #region Configurations
-           // services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            //services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             #endregion
 
             #region Services IOC
-            services.AddScoped<IAutenticacionService, AutenticacionService>();
-            services.AddScoped<IClienteService, ClienteService>();
-            services.AddScoped<ICitaService, CitaService>();
-            services.AddScoped<IEstadoService, EstadoService>();
-            services.AddScoped<IMotivoCitaService, MotivoCitaService>();
-            services.AddScoped<IMascotaService, MascotaService>();
-            services.AddScoped<IEstadoService, EstadoService>();
-            services.AddScoped<TokenService>();
+            services.AddTransient(typeof(IGenericService<,>), typeof(GenericService<,>));
+            services.AddTransient<IAutenticacionService, AutenticacionService>();
+            services.AddTransient<IClienteService, ClienteService>();
+            services.AddTransient<ICitaService, CitaService>();
+            services.AddTransient<IEstadoService, EstadoService>();
+            services.AddTransient<IMotivoCitaService, MotivoCitaService>();
+            services.AddTransient<IMascotaService, MascotaService>();
+            services.AddTransient<IEstadoService, EstadoService>();
+            services.AddTransient<IMascotaPruebaMedicaService, MascotaPruebaMedicaService>();
+            services.AddTransient<IPruebaMedicaService, PruebaMedicaService>();
+            services.AddTransient<IMedicamentoService, MedicamentoService>();
+            services.AddTransient<IHistorialService, HistorialService>();
+            services.AddTransient<IRecetaService, RecetaService>();
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<ConfiguracionServices2>();
+            services.AddTransient<TokenService>();
             #endregion
         }
     }

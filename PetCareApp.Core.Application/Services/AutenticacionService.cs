@@ -1,5 +1,7 @@
-﻿using Infraestructura.Servicios;
+﻿using AutoMapper;
+using Infraestructura.Servicios;
 using PetCareApp.Core.Application.Dtos;
+using PetCareApp.Core.Application.Dtos.UsersDtos;
 using PetCareApp.Core.Application.Interfaces;
 using PetCareApp.Core.Domain.Entities;
 using PetCareApp.Core.Domain.Interfaces;
@@ -90,7 +92,7 @@ namespace PetCareApp.Core.Application.Services
             _logger.Info($"Usuario {user.Email} inició sesión exitosamente con rol {user.Role.Rol}");
             return user;
         }
-
+   
         private static string Hash(string input)
         {
             using var sha = SHA256.Create();

@@ -1,22 +1,20 @@
-﻿using PetCareApp.Core.Application.Dtos;
+﻿using AutoMapper;
+using PetCareApp.Core.Application.Dtos;
 using PetCareApp.Core.Application.Interfaces;
 using PetCareApp.Core.Domain.Entities;
 using PetCareApp.Core.Domain.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PetCareApp.Core.Application.Services
 {
     public class CitaService : ICitaService
     {
         private readonly ICitaRepository _repo;
+        private readonly IMapper _mapper;
 
-        public CitaService(ICitaRepository repo)
+        public CitaService(ICitaRepository repo, IMapper mapper)
         {
             _repo = repo;
+            _mapper = mapper;
         }
 
         private static CitaDto MapToDto(Cita c) => new()
@@ -77,6 +75,7 @@ namespace PetCareApp.Core.Application.Services
             cita.EstadoId = dto.EstadoId;
             cita.VeterinarioId = dto.VeterinarioId;
             cita.MotivoId = dto.MotivoId;
+            cita.Observaciones = dto.Observaciones;
 
             await _repo.UpdateAsync(id, cita);
             return true;
@@ -88,6 +87,18 @@ namespace PetCareApp.Core.Application.Services
             if (cita == null) return false;
             await _repo.RemoveAsync(id);
             return true;
+        }
+
+        public async Task<List<CitaDto>> GetCitasAsiganasAVeterinarioAsync(int userId)
+        {
+            var citas = await _repo.GetCitasAsiganasAVeterinarioAsync(userId);
+            return _mapper.Map<List<CitaDto>>(citas);
+        }
+
+        public async Task<List<CitaDto>> GetCitasOfMascotaById(int mascota)
+        {
+            var citas = await _repo.GetCitasOfMascotaById(mascota);
+            return _mapper.Map<List<CitaDto>>(citas);
         }
     }
 }
