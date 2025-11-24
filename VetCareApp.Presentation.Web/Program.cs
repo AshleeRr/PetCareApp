@@ -65,6 +65,7 @@ namespace VetCareApp.Presentation.Web
             builder.Services.AddScoped<ICarritoRepository, CarritoRepository>();
             builder.Services.AddScoped<IVentaRepository, VentaRepository>();
 
+
             // ====================================
             // 3. SERVICIOS DE APLICACIÓN
             // ====================================
@@ -85,6 +86,7 @@ namespace VetCareApp.Presentation.Web
             builder.Services.AddScoped<IMascotaService, MascotaService>();
             builder.Services.AddScoped<IEstadoService, EstadoService>();
             builder.Services.AddScoped<IMotivoCitaService, MotivoCitaService>();
+            builder.Services.AddScoped<IHistorialService, HistorialService>();  // ✅ AGREGAR ESTA LÍNEA
             builder.Services.AddScoped<IProductoService, ProductoService>();
             builder.Services.AddScoped<ICarritoService, CarritoService>();
             builder.Services.AddScoped<IVentaService, VentaService>();

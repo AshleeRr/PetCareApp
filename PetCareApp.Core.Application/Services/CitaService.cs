@@ -24,7 +24,10 @@ namespace PetCareApp.Core.Application.Services
             Estado = c.Estado?.Nombre ?? "",
             Cliente = $"{c.Dueño?.Nombre} {c.Dueño?.Apellido}",
             Veterinario = $"{c.Veterinario?.Nombre} {c.Veterinario?.Apellido}",
-            Motivo = c.Motivo?.Motivo ?? ""
+            Motivo = c.Motivo?.Motivo ?? "",
+            Mascota = c.Mascota?.Nombre ?? "",  
+            Observaciones = c.Observaciones ?? ""
+
         };
 
         public async Task<List<CitaDto>> ObtenerCitasAsync()
@@ -58,8 +61,11 @@ namespace PetCareApp.Core.Application.Services
                 FechaHora = dto.FechaHora,
                 EstadoId = dto.EstadoId,
                 DueñoId = dto.DueñoId,
+                MascotaId = dto.MascotaId, 
                 VeterinarioId = dto.VeterinarioId,
-                MotivoId = dto.MotivoId
+                MotivoId = dto.MotivoId,
+                Observaciones = dto.Observaciones
+
             };
 
             var created = await _repo.AddAsync(cita);
@@ -73,6 +79,7 @@ namespace PetCareApp.Core.Application.Services
 
             cita.FechaHora = dto.FechaHora;
             cita.EstadoId = dto.EstadoId;
+            cita.MascotaId = dto.MascotaId;  
             cita.VeterinarioId = dto.VeterinarioId;
             cita.MotivoId = dto.MotivoId;
             cita.Observaciones = dto.Observaciones;

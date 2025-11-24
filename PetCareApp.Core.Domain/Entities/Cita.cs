@@ -26,5 +26,6 @@ public class Cita
     public ICollection<VentaDetalle> VentaDetalles { get; set; } = new List<VentaDetalle>();
 
 
+
 }
 

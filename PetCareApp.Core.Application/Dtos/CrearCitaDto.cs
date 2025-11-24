@@ -15,12 +15,14 @@ namespace PetCareApp.Core.Application.Dtos
         public int DueñoId { get; set; }
 
         [Required]
-        public int MascotaId { get; set; } // ✅ Agregar MascotaId
+        public int MascotaId { get; set; } 
 
         [Required]
         public int VeterinarioId { get; set; }
 
         [Required]
         public int MotivoId { get; set; }
+
+        public string Observaciones { get; set; }
     }
 }

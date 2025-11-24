@@ -10,5 +10,9 @@ namespace PetCareApp.Core.Application.Interfaces
     public interface IMotivoCitaService
     {
         Task<List<MotivoCitaDto>> ObtenerMotivosAsync();
+        Task<MotivoCitaDto?> ObtenerPorIdAsync(int id);
+        Task<MotivoCitaDto> CrearAsync(CrearMotivoCitaDto dto);
+        Task<MotivoCitaDto?> ActualizarAsync(int id, ActualizarMotivoCitaDto dto);
+        Task<bool> EliminarAsync(int id);
     }
 }
