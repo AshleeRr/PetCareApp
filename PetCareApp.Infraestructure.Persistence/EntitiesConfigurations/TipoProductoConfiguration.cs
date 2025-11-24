@@ -9,7 +9,7 @@ namespace PetCareApp.Infraestructure.Persistence.EntitiesConfigurations
         public void Configure(EntityTypeBuilder<TipoProducto> builder)
         {
             #region base configuration
-            builder.ToTable("TipoProducto");
+            builder.ToTable("TipoProductos");
             builder.HasKey(e => e.Id).HasName("PK__TipoProd__3214EC07A5FB8501");
             #endregion
 
