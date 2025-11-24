@@ -1,6 +1,4 @@
-﻿
-
-namespace PetCareApp.Core.Application.ViewModels.PruebasVms
+﻿namespace PetCareApp.Core.Application.ViewModels.PruebasMedicasVms
 {
     public class PruebaMedicaViewModel
     {

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PetCareApp.Core.Application.Dtos.MascotaPruebaMedicaDtos;
 using PetCareApp.Core.Application.Interfaces;
+using PetCareApp.Core.Application.ViewModels.MascotasPruebasMedicasVms;
 
 namespace VetCareApp.Presentation.Web.Controllers
 {
@@ -31,9 +32,9 @@ namespace VetCareApp.Presentation.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Crear([FromBody] CreateMascotaPruebaMedicaDto dto)
+        public async Task<ActionResult> Crear([FromBody] CreateMascotaPruebaMedicaVm vm)
         { 
-
+            var dto = _mapper.Map<CreateMascotaPruebaMedicaDto>(vm);
             var mpm = await _service.CrearPruebaParaMascotaAsync(dto);
             return Ok(mpm);
         }
