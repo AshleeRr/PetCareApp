@@ -28,28 +28,37 @@ namespace PetCareApp.Infraestructure.Persistence.EntitiesConfigurations
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Citas_Duenios");
 
-            // Relación con Mascota (N:1)
+<<<<<<<<< Temporary merge branch 1
+            builder.HasOne(d => d.Mascota).WithMany(p => p.Cita)
+                .HasForeignKey(d => d.MascotaId)
+=========
+            // ✅ Relación con Mascota (CORREGIDO)
             builder.HasOne(d => d.Mascota)
                 .WithMany(p => p.Citas) 
                 .HasForeignKey(d => d.MascotaId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Citas_Mascota");
 
-            // Relación con Estado (N:1)
+               builder.HasMany(e => e.Receta)
+              .WithOne(r => r.Cita)
+              .HasForeignKey(r => r.CitaId)
+              .OnDelete(DeleteBehavior.Cascade);
+
+            // Relación con Estado
             builder.HasOne(d => d.Estado)
                 .WithMany(p => p.Cita)
                 .HasForeignKey(d => d.EstadoId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Citas_Estado");
 
-            // Relación con MotivoCita (N:1)
+            // Relación con MotivoCita
             builder.HasOne(d => d.Motivo)
                 .WithMany(p => p.Cita)
                 .HasForeignKey(d => d.MotivoId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Citas_MotivoCita");
 
-            // Relación con Personal/Veterinario (N:1)
+            // Relación con Personal (Veterinario)
             builder.HasOne(d => d.Veterinario)
                 .WithMany(p => p.Cita)
                 .HasForeignKey(d => d.VeterinarioId)

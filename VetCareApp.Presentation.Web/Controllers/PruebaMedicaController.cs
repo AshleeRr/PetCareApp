@@ -17,7 +17,10 @@ namespace VetCareApp.Presentation.Web.Controllers
             _mapper = mapper;
         }
 
+
+=========
         [HttpGet("{nombre}")]
+>>>>>>>>> Temporary merge branch 2
         public async Task<ActionResult<PruebaMedicaViewModel>> GetPruebaByNameAsync(string name)
         {
             
