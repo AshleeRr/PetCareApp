@@ -43,9 +43,18 @@ namespace PetCareApp.Infraestructure.Persistence.Repositories
 
         public async Task<Cita> AddAsync(Cita cita)
         {
-            var entry = await _context.Citas.AddAsync(cita);
+            await _context.Citas.AddAsync(cita);
             await _context.SaveChangesAsync();
-            return entry.Entity;
+
+            var citaCompleta = await _context.Citas
+                .Include(c => c.Estado)
+                .Include(c => c.Dueño)
+                .Include(c => c.Mascota)
+                .Include(c => c.Veterinario)
+                .Include(c => c.Motivo)
+                .FirstOrDefaultAsync(c => c.Id == cita.Id);
+
+            return citaCompleta ?? cita;
         }
 
         public async Task<Cita?> UpdateAsync(Cita cita)
@@ -75,7 +84,9 @@ namespace PetCareApp.Infraestructure.Persistence.Repositories
 
         public async Task<List<Cita>> GetCitasOfMascotaById(int mascotaId)
         {
-            return await _context.Citas
+            Console.WriteLine(_context.Database.GetConnectionString());
+
+            var citas = await _context.Citas
                 .Include(c => c.Veterinario)
                 .Include(c => c.Estado)
                 .Include(c => c.Motivo)
@@ -83,6 +94,7 @@ namespace PetCareApp.Infraestructure.Persistence.Repositories
                 .Where(c => c.MascotaId == mascotaId)
                 .OrderByDescending(c => c.FechaHora)
                 .ToListAsync();
+            return citas; 
         }
 
         public async Task<List<Cita>> GetByFechaAsync(DateTime fecha)

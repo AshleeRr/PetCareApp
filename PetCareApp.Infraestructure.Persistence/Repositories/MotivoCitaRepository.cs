@@ -25,7 +25,34 @@ namespace PetCareApp.Infraestructure.Persistence.Repositories
 
         public async Task<MotivoCita?> GetByIdAsync(int id)
         {
-            return await _context.MotivoCita.AsNoTracking().FirstOrDefaultAsync(m => m.Id == id);
+            return await _context.MotivoCita.FirstOrDefaultAsync(m => m.Id == id);
+        }
+
+        public async Task<MotivoCita> AddAsync(MotivoCita motivo)
+        {
+            await _context.MotivoCita.AddAsync(motivo);
+            await _context.SaveChangesAsync();
+            return motivo;
+        }
+
+        public async Task<MotivoCita?> UpdateAsync(MotivoCita motivo)
+        {
+            var existe = await _context.MotivoCita.AnyAsync(m => m.Id == motivo.Id);
+            if (!existe) return null;
+
+            _context.MotivoCita.Update(motivo);
+            await _context.SaveChangesAsync();
+            return motivo;
+        }
+
+        public async Task<bool> DeleteAsync(int id)
+        {
+            var motivo = await _context.MotivoCita.FindAsync(id);
+            if (motivo == null) return false;
+
+            _context.MotivoCita.Remove(motivo);
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 }

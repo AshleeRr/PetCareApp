@@ -42,10 +42,11 @@ namespace VetCareApp.Presentation.Web.Controllers
 
             var dto = _mapper.Map<CreateRecetaDto>(vm);
 
-            await _service.CreateRecetaAsync(dto);
+            var receta =await _service.CreateRecetaAsync(dto);
 
-            return RedirectToAction("Details", "Cita", new { id = vm.CitaId });
+            return Ok(receta);
         }
+
         [HttpPost("agregar-medicamento")]
         public async Task<ActionResult> AddMedicamento([FromBody] AddMedicamentoToRecetaDto dto)
         {

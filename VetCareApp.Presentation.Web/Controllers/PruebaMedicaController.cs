@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using PetCareApp.Core.Application.Interfaces;
-using PetCareApp.Core.Application.ViewModels.PruebasVms;
+using PetCareApp.Core.Application.ViewModels.PruebasMedicasVms;
 
 namespace VetCareApp.Presentation.Web.Controllers
 {

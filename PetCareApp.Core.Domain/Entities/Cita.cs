@@ -24,7 +24,6 @@ public class Cita
     public int? RecetaId { get; set; }
     public Receta? Recetas { get; set; }
     public ICollection<VentaDetalle> VentaDetalles { get; set; } = new List<VentaDetalle>();
-    public ICollection<Receta> Receta { get; set; } = new List<Receta>();
 
 
 

@@ -1,5 +1,6 @@
 ﻿using PetCareApp.Core.Application.ViewModels.CitasVms;
-using PetCareApp.Core.Application.ViewModels.PruebasVms;
+using PetCareApp.Core.Application.ViewModels.PruebasMedicasVms;
+
 namespace PetCareApp.Core.Application.ViewModels.HistorialVms
 {
     public class HistorialViewModel //mascotapruebameedica-entidad
