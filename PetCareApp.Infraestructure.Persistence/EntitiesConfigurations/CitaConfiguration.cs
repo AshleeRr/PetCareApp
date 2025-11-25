@@ -1,60 +1,77 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PetCareApp.Core.Domain.Entities;
-using System.Reflection.Emit;
 
 namespace PetCareApp.Infraestructure.Persistence.EntitiesConfigurations
 {
     public class CitaConfiguration : IEntityTypeConfiguration<Cita>
     {
-        public void Configure(EntityTypeBuilder<Cita> builder) {
-
+        public void Configure(EntityTypeBuilder<Cita> builder)
+        {
             #region base configurations
-                builder.ToTable("Citas");
-                builder.HasKey(e => e.Id).HasName("PK__Citas__3214EC07F879E4C2");
+            builder.ToTable("Citas");
+            builder.HasKey(e => e.Id).HasName("PK__Citas__3214EC07F879E4C2");
             #endregion
 
             #region properties configurations
             builder.Property(e => e.FechaHora).HasColumnType("datetime");
-            #endregion region
+            builder.Property(e => e.Observaciones).HasMaxLength(255);
+            builder.Ignore(e => e.RecetaId);
+            #endregion
 
             #region relations
-            builder.HasOne(d => d.Dueño).WithMany(p => p.Cita)
-            .HasForeignKey(d => d.DueñoId)
-            .HasConstraintName("FK_Citas_Duenios");
 
+            // Relación con Dueño (N:1)
+            builder.HasOne(d => d.Dueño)
+                .WithMany(p => p.Cita)
+                .HasForeignKey(d => d.DueñoId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Citas_Duenios");
+
+<<<<<<<<< Temporary merge branch 1
             builder.HasOne(d => d.Mascota).WithMany(p => p.Cita)
+                .HasForeignKey(d => d.MascotaId)
+=========
+            // ✅ Relación con Mascota (CORREGIDO)
+            builder.HasOne(d => d.Mascota)
+                .WithMany(p => p.Citas) 
                 .HasForeignKey(d => d.MascotaId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Citas_Mascota");
 
-            builder.HasOne(d => d.Estado).WithMany(p => p.Cita)
+               builder.HasMany(e => e.Receta)
+              .WithOne(r => r.Cita)
+              .HasForeignKey(r => r.CitaId)
+              .OnDelete(DeleteBehavior.Cascade);
+
+            // Relación con Estado
+            builder.HasOne(d => d.Estado)
+                .WithMany(p => p.Cita)
                 .HasForeignKey(d => d.EstadoId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Citas_Estado");
 
-            builder.HasOne(d => d.Motivo).WithMany(p => p.Cita)
+            // Relación con MotivoCita
+            builder.HasOne(d => d.Motivo)
+                .WithMany(p => p.Cita)
                 .HasForeignKey(d => d.MotivoId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Citas_MotivoCita");
 
-            builder.HasOne(d => d.Veterinario).WithMany(p => p.Cita)
+            // Relación con Personal (Veterinario)
+            builder.HasOne(d => d.Veterinario)
+                .WithMany(p => p.Cita)
                 .HasForeignKey(d => d.VeterinarioId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Citas_Personal");
 
-            builder.HasOne(m => m.Mascota).WithMany(t => t.Cita)
-                .HasForeignKey(m => m.MascotaId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Citas_Mascota");
-
-            builder.HasOne(c => c.Receta)
+            // Una Cita tiene UNA Receta (opcional), y la FK está en la tabla Recetas
+            builder.HasOne(c => c.Recetas)
                 .WithOne(r => r.Cita)
-                .HasForeignKey<Receta>(r => r.CitaId);
+                .HasForeignKey<Receta>(r => r.CitaId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             #endregion
-
-
         }
     }
 }

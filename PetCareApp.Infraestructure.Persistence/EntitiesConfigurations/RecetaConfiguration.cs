@@ -15,17 +15,28 @@ namespace PetCareApp.Infraestructure.Persistence.EntitiesConfigurations
 
             #region properties configuration
             builder.Property(e => e.Fecha)
-               .HasDefaultValueSql("(getdate())")
-               .HasColumnType("datetime");
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
             builder.Property(e => e.Observaciones).HasMaxLength(255);
             #endregion
 
             #region relations configuration
-            builder.HasOne(d => d.Veterinario).WithMany(p => p.Recetas)
+
+            // Relación con Veterinario (Usuario)
+            builder.HasOne(d => d.Veterinario)
+                .WithMany() 
                 .HasForeignKey(d => d.VeterinarioId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Recetas_Usuarios");
 
+            // Relación 1:1 con Cita
+            builder.HasOne(e => e.Cita)
+                .WithOne(c => c.Recetas) 
+                .HasForeignKey<Receta>(e => e.CitaId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_Recetas_Citas");
+
+            // Relación con RecetaMedicamentos
             builder.HasMany(r => r.RecetaMedicamentos)
                 .WithOne(rm => rm.Receta)
                 .HasForeignKey(rm => rm.RecetaId)

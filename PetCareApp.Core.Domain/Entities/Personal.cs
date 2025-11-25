@@ -9,7 +9,10 @@ public class Personal
 
     public required string Cedula { get; set; } 
 
-    public required string Cargo { get; set; } 
+    public required string Cargo { get; set; }
+
+    public bool Activo { get; set; } = true; // ✅ Nuevo
+
 
     public ICollection<Cita> Cita { get; set; } = new List<Cita>();
 

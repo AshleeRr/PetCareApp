@@ -23,7 +23,7 @@ namespace PetCareApp.Core.Application.Services
                 Apellido = c.Apellido,
                 Direccion = c.Direccion,
                 Cedula = c.Cedula,
-              //  Email = c.Email
+                Email = c.Email
             };
 
         public async Task<List<ClienteDto>> ObtenerClientesAsync()
@@ -58,7 +58,7 @@ namespace PetCareApp.Core.Application.Services
                 Apellido = dto.Apellido,
                 Direccion = dto.Direccion,
                 Cedula = dto.Cedula,
-               // Email = dto.Email
+                Email = dto.Email
             };
 
             
@@ -75,7 +75,7 @@ namespace PetCareApp.Core.Application.Services
             cliente.Nombre = dto.Nombre ?? cliente.Nombre;
             cliente.Apellido = dto.Apellido ?? cliente.Apellido;
             cliente.Direccion = dto.Direccion ?? cliente.Direccion;
-           // cliente.Email = dto.Email ?? cliente.Email;
+            cliente.Email = dto.Email ?? cliente.Email;
 
             await _repo.UpdateAsync(cliente);
             return true;

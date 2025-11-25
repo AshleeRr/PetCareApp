@@ -14,5 +14,6 @@ namespace PetCareApp.Core.Application.Dtos
         public bool EstaCastrado { get; set; }
         public int DueñoId { get; set; }
         public int TipoMascotaId { get; set; }
+    
     }
 }
