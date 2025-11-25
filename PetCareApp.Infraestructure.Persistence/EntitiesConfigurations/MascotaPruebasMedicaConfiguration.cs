@@ -9,8 +9,8 @@ namespace PetCareApp.Infraestructure.Persistence.EntitiesConfigurations
         public void Configure(EntityTypeBuilder<MascotaPruebasMedica> builder)
         {
             #region base configuration
-                builder.ToTable("Mascota_PruebasMedicas");
-            builder.HasIndex(e => new { e.MascotaId, e.PruebaMedicaId, e.Fecha }).IsUnique();
+            builder.ToTable("Mascota_PruebasMedicas");
+            builder.HasKey(e => new { e.MascotaId, e.PruebaMedicaId });
             #endregion
 
             #region properties configuration
@@ -31,6 +31,8 @@ namespace PetCareApp.Infraestructure.Persistence.EntitiesConfigurations
                 .HasForeignKey(d => d.PruebaMedicaId)
                 .HasConstraintName("FK_MP_PruebasMedicas");
             #endregion
+
+
         }
     }
 }

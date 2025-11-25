@@ -18,9 +18,8 @@ namespace VetCareApp.Presentation.Web.Controllers
         }
 
 
-=========
+
         [HttpGet("{nombre}")]
->>>>>>>>> Temporary merge branch 2
         public async Task<ActionResult<PruebaMedicaViewModel>> GetPruebaByNameAsync(string name)
         {
             

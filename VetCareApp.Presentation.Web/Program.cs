@@ -3,6 +3,7 @@ using Infraestructura.Servicios;
 using System.Text;
 using PetCareApp.Core.Application;
 using PetCareApp.Infraestructure.Persistence;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 namespace VetCareApp.Presentation.Web
 {
     public class Program
