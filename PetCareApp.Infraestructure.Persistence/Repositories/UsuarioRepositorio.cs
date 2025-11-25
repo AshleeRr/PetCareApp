@@ -21,6 +21,13 @@ namespace PetCareApp.Infraestructure.Persistence.Repositories
                 .Include(u => u.Role) // ✅ IMPORTANTE: Cargar la relación Role
                 .FirstOrDefaultAsync(u => u.Email == email);
         }
+
+        public async Task UpdateAsync(Usuario usuario)
+        {
+            _context.Usuarios.Update(usuario);
+            await _context.SaveChangesAsync();
+        }
+
         /*
         public async Task AddAsync(Usuario usuario)
         {

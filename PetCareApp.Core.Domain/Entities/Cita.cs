@@ -21,7 +21,11 @@ public class Cita
     public MotivoCita Motivo { get; set; } = null!;
 
     public string? Observaciones { get; set; } 
-    public Receta? Receta { get; set; }
+    public int? RecetaId { get; set; }
+    public Receta? Recetas { get; set; }
+    public ICollection<VentaDetalle> VentaDetalles { get; set; } = new List<VentaDetalle>();
+
+
 
 }
 
