@@ -6,6 +6,7 @@ namespace PetCareApp.Infraestructure.Persistence.EntitiesConfigurations
 {
     public class MascotaPruebasMedicaConfiguration : IEntityTypeConfiguration<MascotaPruebasMedica>
     {
+
         public void Configure(EntityTypeBuilder<MascotaPruebasMedica> builder)
         {
             #region base configuration
