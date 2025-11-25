@@ -28,21 +28,12 @@ namespace PetCareApp.Infraestructure.Persistence.EntitiesConfigurations
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Citas_Duenios");
 
-<<<<<<<<< Temporary merge branch 1
-            builder.HasOne(d => d.Mascota).WithMany(p => p.Cita)
-                .HasForeignKey(d => d.MascotaId)
-=========
-            // ✅ Relación con Mascota (CORREGIDO)
+            // Relación con Mascota (CORREGIDO)
             builder.HasOne(d => d.Mascota)
-                .WithMany(p => p.Citas) 
+                .WithMany(p => p.Citas)
                 .HasForeignKey(d => d.MascotaId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Citas_Mascota");
-
-               builder.HasMany(e => e.Receta)
-              .WithOne(r => r.Cita)
-              .HasForeignKey(r => r.CitaId)
-              .OnDelete(DeleteBehavior.Cascade);
 
             // Relación con Estado
             builder.HasOne(d => d.Estado)
