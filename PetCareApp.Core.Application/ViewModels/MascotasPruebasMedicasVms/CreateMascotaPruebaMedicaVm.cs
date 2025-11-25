@@ -7,6 +7,6 @@ namespace PetCareApp.Core.Application.ViewModels.MascotasPruebasMedicasVms
         public int PruebaMedicaId { get; set; }
         public required string Resultado { get; set; }
         public int CitaId { get; set; }
-        public DateTime Fecha { get; set; }
+       // public DateTime Fecha { get; set; }
     }
 }

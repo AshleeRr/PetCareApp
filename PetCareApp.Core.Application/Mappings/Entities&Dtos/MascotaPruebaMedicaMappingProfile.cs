@@ -16,7 +16,7 @@ public class MascotaPruebaMedicaMappingProfile : Profile
             .ForMember(dest => dest.PruebaMedicaId, opt => opt.MapFrom(src => src.PruebaMedicaId))
             .ForMember(dest => dest.Resultado, opt => opt.MapFrom(src => src.Resultado))
             .ForMember(dest => dest.CitaId, opt => opt.MapFrom(src => src.CitaId))
-            .ForMember(dest => dest.Fecha, opt => opt.MapFrom(src => src.Fecha))
+            //.ForMember(dest => dest.Fecha, opt => opt.MapFrom(src => src.Fecha))
             .ForMember(dest => dest.Mascota, opt => opt.Ignore())
             .ForMember(dest => dest.PruebaMedica, opt => opt.Ignore());
     }
