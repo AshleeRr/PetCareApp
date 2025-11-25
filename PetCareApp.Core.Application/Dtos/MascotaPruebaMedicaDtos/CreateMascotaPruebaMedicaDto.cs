@@ -7,6 +7,5 @@ namespace PetCareApp.Core.Application.Dtos.MascotaPruebaMedicaDtos
         public int PruebaMedicaId { get; set; }
         public required string Resultado { get; set; }
         public int CitaId { get; set; }
-        public DateTime Fecha { get; set; }
     }
 }

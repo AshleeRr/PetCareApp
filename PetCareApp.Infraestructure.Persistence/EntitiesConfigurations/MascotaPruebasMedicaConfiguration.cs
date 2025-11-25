@@ -10,13 +10,15 @@ namespace PetCareApp.Infraestructure.Persistence.EntitiesConfigurations
         {
             #region base configuration
                 builder.ToTable("Mascota_PruebasMedicas");
-            builder.HasKey(e => new { e.MascotaId, e.PruebaMedicaId });
+            builder.HasIndex(e => new { e.MascotaId, e.PruebaMedicaId, e.Fecha }).IsUnique();
             #endregion
 
             #region properties configuration
+
             builder.Property(e => e.Fecha)
             .HasDefaultValueSql("(getdate())")
             .HasColumnType("datetime");
+
             builder.Property(e => e.Resultado).HasMaxLength(255);
             #endregion
 
