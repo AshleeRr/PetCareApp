@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetCare - Panel Administrador</title>
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-left">
+            <span class="paw-icon">🐾</span>
+            <h1>Panel de Administración</h1>
+        </div>
+        <div class="header-right">
+            <span class="user-info" id="userName">Administrador</span>
+            <button class="btn-logout" id="logoutBtn">Cerrar Sesión</button>
+        </div>
+    </div>
+
+    <!-- Contenedor principal -->
+    <div class="container">
+        <div class="layout">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <h3>Administración</h3>
+                <div class="menu-item active" data-section="dashboard">
+                    <span class="icon">📊</span>
+                    <span>Dashboard</span>
+                </div>
+                <div class="menu-item" data-section="usuarios">
+                    <span class="icon">👤</span>
+                    <span>Usuarios</span>
+                </div>
+                <div class="menu-item" data-section="roles">
+                    <span class="icon">🔐</span>
+                    <span>Roles</span>
+                </div>
+                <div class="menu-item" data-section="personal">
+                    <span class="icon">👨‍⚕️</span>
+                    <span>Personal</span>
+                </div>
+                <div class="menu-item" data-section="reportes">
+                    <span class="icon">📈</span>
+                    <span>Reportes</span>
+                </div>
+                <div class="menu-item" data-section="configuracion">
+                    <span class="icon">⚙️</span>
+                    <span>Configuración</span>
+                </div>
+                <div class="menu-item" data-section="logs">
+                    <span class="icon">📋</span>
+                    <span>Logs del Sistema</span>
+                </div>
+            </aside>
+
+            <!-- Contenido principal -->
+            <main class="main-content">
+                <!-- Dashboard Administrativo -->
+                <section id="dashboard" class="section active">
+                    <h2>Panel de Control Administrativo</h2>
+                    
+                    <!-- Estadísticas principales -->
+                    <div class="stats-grid">
+                        <div class="stat-card stat-primary">
+                            <div class="icon">👥</div>
+                            <div class="stat-info">
+                                <div class="number" id="totalUsuarios">0</div>
+                                <div class="label">Usuarios Totales</div>
+                            </div>
+                        </div>
+                        <div class="stat-card stat-success">
+                            <div class="icon">👨‍⚕️</div>
+                            <div class="stat-info">
+                                <div class="number" id="totalPersonal">0</div>
+                                <div class="label">Personal Activo</div>
+                            </div>
+                        </div>
+                        <div class="stat-card stat-warning">
+                            <div class="icon">📅</div>
+                            <div class="stat-info">
+                                <div class="number" id="citasMes">0</div>
+                                <div class="label">Citas este Mes</div>
+                            </div>
+                        </div>
+                        <div class="stat-card stat-info">
+                            <div class="icon">💰</div>
+                            <div class="stat-info">
+                                <div class="number" id="ingresosMes">RD$ 0</div>
+                                <div class="label">Ingresos del Mes</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gráficos y métricas -->
+                    <div class="charts-grid">
+                        <div class="chart-card">
+                            <h3>Actividad del Sistema</h3>
+                            <div class="chart-placeholder">
+                                <p>📊 Gráfico de actividad</p>
+                                <p style="font-size: 0.9rem; color: #6B7280;">Próximamente con Chart.js</p>
+                            </div>
+                        </div>
+                        <div class="chart-card">
+                            <h3>Usuarios por Rol</h3>
+                            <div class="role-stats">
+                                <div class="role-item">
+                                    <span class="role-badge badge-admin">Administrador</span>
+                                    <span class="role-count" id="countAdmin">0</span>
+                                </div>
+                                <div class="role-item">
+                                    <span class="role-badge badge-vet">Veterinario</span>
+                                    <span class="role-count" id="countVet">0</span>
+                                </div>
+                                <div class="role-item">
+                                    <span class="role-badge badge-recep">Recepcionista</span>
+                                    <span class="role-count" id="countRecep">0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Accesos rápidos -->
+                    <h3 class="subtitle-section">Accesos Rápidos</h3>
+                    <div class="quick-actions">
+                        <button class="quick-btn" onclick="irSeccion('usuarios')">
+                            <span class="icon">➕</span>
+                            Nuevo Usuario
+                        </button>
+                        <button class="quick-btn" onclick="irSeccion('personal')">
+                            <span class="icon">👨‍⚕️</span>
+                            Gestionar Personal
+                        </button>
+                        <button class="quick-btn" onclick="irSeccion('reportes')">
+                            <span class="icon">📊</span>
+                            Ver Reportes
+                        </button>
+                        <button class="quick-btn" onclick="generarBackup()">
+                            <span class="icon">💾</span>
+                            Backup del Sistema
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Gestión de Usuarios -->
+                <section id="usuarios" class="section">
+                    <h2>Gestión de Usuarios</h2>
+                    <div class="search-bar">
+                        <input type="text" id="buscarUsuario" class="search-input" placeholder="Buscar usuario por nombre o email...">
+                        <button class="btn-search" id="btnBuscarUsuario">Buscar</button>
+                        <button class="btn-add" id="btnAgregarUsuario">+ Nuevo Usuario</button>
+                    </div>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Username</th>
+                                    <th>Email</th>
+                                    <th>Rol</th>
+                                    <th>Estado</th>
+                                    <th>Última Conexión</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tablaUsuarios">
+                                <tr>
+                                    <td colspan="7" style="text-align: center; color: #6B7280;">Cargando usuarios...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Gestión de Roles -->
+                <section id="roles" class="section">
+                    <h2>Gestión de Roles y Permisos</h2>
+                    <p style="color: #6B7280; margin-bottom: 2rem;">Define los roles y permisos del sistema</p>
+
+                    <div class="roles-grid">
+                        <div class="role-card">
+                            <div class="role-header">
+                                <h3>Administrador</h3>
+                                <span class="role-badge badge-admin">Admin</span>
+                            </div>
+                            <ul class="permissions-list">
+                                <li>✓ Acceso total al sistema</li>
+                                <li>✓ Gestión de usuarios</li>
+                                <li>✓ Configuración del sistema</li>
+                                <li>✓ Ver todos los reportes</li>
+                                <li>✓ Gestión de roles</li>
+                            </ul>
+                            <button class="btn-edit-role">Editar Permisos</button>
+                        </div>
+
+                        <div class="role-card">
+                            <div class="role-header">
+                                <h3>Veterinario</h3>
+                                <span class="role-badge badge-vet">Vet</span>
+                            </div>
+                            <ul class="permissions-list">
+                                <li>✓ Gestión de mascotas</li>
+                                <li>✓ Gestión de citas</li>
+                                <li>✓ Historial médico</li>
+                                <li>✓ Recetas y medicamentos</li>
+                                <li>✗ Gestión de usuarios</li>
+                            </ul>
+                            <button class="btn-edit-role">Editar Permisos</button>
+                        </div>
+
+                        <div class="role-card">
+                            <div class="role-header">
+                                <h3>Recepcionista</h3>
+                                <span class="role-badge badge-recep">Recep</span>
+                            </div>
+                            <ul class="permissions-list">
+                                <li>✓ Gestión de clientes</li>
+                                <li>✓ Agendar citas</li>
+                                <li>✓ Gestión de productos</li>
+                                <li>✓ Inventario básico</li>
+                                <li>✗ Reportes financieros</li>
+                            </ul>
+                            <button class="btn-edit-role">Editar Permisos</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Gestión de Personal -->
+                <section id="personal" class="section">
+                    <h2>Gestión de Personal</h2>
+                    <div class="search-bar">
+                        <input type="text" id="buscarPersonal" class="search-input" placeholder="Buscar por nombre o cédula...">
+                        <button class="btn-search" id="btnBuscarPersonal">Buscar</button>
+                        <button class="btn-add" id="btnAgregarPersonal">+ Agregar Personal</button>
+                    </div>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre Completo</th>
+                                    <th>Cédula</th>
+                                    <th>Cargo</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tablaPersonal">
+                                <tr>
+                                    <td colspan="6" style="text-align: center; color: #6B7280;">Cargando personal...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Reportes -->
+                <section id="reportes" class="section">
+                    <h2>Reportes y Análisis</h2>
+                    
+                    <div class="reports-filters">
+                        <div class="filter-group">
+                            <label>Tipo de Reporte</label>
+                            <select class="form-control" id="tipoReporte">
+                                <option value="ventas">Ventas</option>
+                                <option value="citas">Citas</option>
+                                <option value="inventario">Inventario</option>
+                                <option value="clientes">Clientes</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Fecha Inicio</label>
+                            <input type="date" class="form-control" id="fechaInicio">
+                        </div>
+                        <div class="filter-group">
+                            <label>Fecha Fin</label>
+                            <input type="date" class="form-control" id="fechaFin">
+                        </div>
+                        <button class="btn-generate-report" id="btnGenerarReporte">
+                            📊 Generar Reporte
+                        </button>
+                    </div>
+
+                    <div class="report-results" id="reportResults">
+                        <p style="text-align: center; color: #6B7280; padding: 3rem;">
+                            Selecciona los filtros y genera un reporte
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Configuración -->
+                <section id="configuracion" class="section">
+                    <h2>Configuración del Sistema</h2>
+                    
+                    <div class="config-grid">
+                        <div class="config-card">
+                            <h3>🏢 Información de la Empresa</h3>
+                            <div class="config-item">
+                                <label>Nombre de la Clínica</label>
+                                <input type="text" class="form-control" value="PetCare Veterinaria">
+                            </div>
+                            <div class="config-item">
+                                <label>Dirección</label>
+                                <input type="text" class="form-control" value="Av. Principal #123, Santo Domingo">
+                            </div>
+                            <div class="config-item">
+                                <label>Teléfono</label>
+                                <input type="text" class="form-control" value="809-000-0000">
+                            </div>
+                            <button class="btn-save-config">Guardar Cambios</button>
+                        </div>
+
+                        <div class="config-card">
+                            <h3>⏰ Horarios de Atención</h3>
+                            <div class="config-item">
+                                <label>Hora de Apertura</label>
+                                <input type="time" class="form-control" value="08:00">
+                            </div>
+                            <div class="config-item">
+                                <label>Hora de Cierre</label>
+                                <input type="time" class="form-control" value="18:00">
+                            </div>
+                            <div class="config-item">
+                                <label>Días Laborables</label>
+                                <div class="days-selector">
+                                    <label><input type="checkbox" checked> Lunes</label>
+                                    <label><input type="checkbox" checked> Martes</label>
+                                    <label><input type="checkbox" checked> Miércoles</label>
+                                    <label><input type="checkbox" checked> Jueves</label>
+                                    <label><input type="checkbox" checked> Viernes</label>
+                                    <label><input type="checkbox"> Sábado</label>
+                                    <label><input type="checkbox"> Domingo</label>
+                                </div>
+                            </div>
+                            <button class="btn-save-config">Guardar Horarios</button>
+                        </div>
+
+                        <div class="config-card">
+                            <h3>💰 Configuración Financiera</h3>
+                            <div class="config-item">
+                                <label>Moneda</label>
+                                <select class="form-control">
+                                    <option value="DOP" selected>Peso Dominicano (RD$)</option>
+                                    <option value="USD">Dólar (USD)</option>
+                                </select>
+                            </div>
+                            <div class="config-item">
+                                <label>IVA (%)</label>
+                                <input type="number" class="form-control" value="18">
+                            </div>
+                            <button class="btn-save-config">Guardar Configuración</button>
+                        </div>
+
+                        <div class="config-card">
+                            <h3>🔒 Seguridad</h3>
+                            <div class="config-item">
+                                <label>Sesión Expira en (minutos)</label>
+                                <input type="number" class="form-control" value="30">
+                            </div>
+                            <div class="config-item">
+                                <label><input type="checkbox" checked> Requerir contraseña fuerte</label>
+                            </div>
+                            <div class="config-item">
+                                <label><input type="checkbox"> Autenticación de dos factores</label>
+                            </div>
+                            <button class="btn-save-config">Guardar Seguridad</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Logs del Sistema -->
+                <section id="logs" class="section">
+                    <h2>Logs del Sistema</h2>
+                    <div class="search-bar">
+                        <select class="search-input" id="filtroTipoLog" style="max-width: 200px;">
+                            <option value="">Todos</option>
+                            <option value="INFO">Info</option>
+                            <option value="WARNING">Advertencia</option>
+                            <option value="ERROR">Error</option>
+                        </select>
+                        <input type="date" class="search-input" id="filtroFechaLog" style="max-width: 200px;">
+                        <button class="btn-search" id="btnBuscarLogs">Filtrar</button>
+                    </div>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Timestamp</th>
+                                    <th>Usuario</th>
+                                    <th>Acción</th>
+                                    <th>Tipo</th>
+                                    <th>Detalles</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tablaLogs">
+                                <tr>
+                                    <td colspan="5" style="text-align: center; color: #6B7280;">Cargando logs...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Nuevo Registro</h3>
+                <button class="btn-close" id="btnCloseModal">✕</button>
+            </div>
+            <form id="modalForm">
+                <div id="modalFormContent"></div>
+                <button type="submit" class="btn-submit">Guardar</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/usuarios.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>

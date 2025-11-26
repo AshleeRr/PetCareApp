@@ -1,5 +1,4 @@
-﻿
-using PetCareApp.Core.Domain.Entities;
+﻿using PetCareApp.Core.Domain.Entities;
 
 namespace PetCareApp.Core.Domain.Interfaces
 {

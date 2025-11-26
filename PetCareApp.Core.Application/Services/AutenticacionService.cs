@@ -97,5 +97,21 @@ namespace PetCareApp.Core.Application.Services
             var bytes = sha.ComputeHash(Encoding.UTF8.GetBytes(input));
             return Convert.ToHexString(bytes);
         }
+        public async Task<Usuario> LoginConGoogleAsync(string email, string name)
+        {
+            // Retornar un usuario "temporal" sin tocar la DB
+            return new Usuario
+            {
+                Email = email,
+                UserName = name,
+                PasswordHashed = "", // sin contraseña
+                RoleId = 1, // siempre Recepcionista
+                Role = new Role
+                {
+                    Id = 1,
+                    Rol = "Cliente" // ⚠️ esto evita el error en TokenService
+                }
+            };
+        }
     }
 }
