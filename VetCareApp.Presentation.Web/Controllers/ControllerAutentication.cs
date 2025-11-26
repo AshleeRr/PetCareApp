@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using PetCareApp.Core.Application.Dtos;
 using PetCareApp.Core.Application.Interfaces;
 using PetCareApp.Core.Application.Services;
+using System.Security.Claims;
 
 namespace VetCareApp.Presentation.Web.Controllers
 {
@@ -82,6 +83,51 @@ namespace VetCareApp.Presentation.Web.Controllers
                 return BadRequest(new { mensaje = "Token inválido, expirado o ya usado" });
 
             return Ok(new { mensaje = "Contraseña actualizada exitosamente" });
+        }
+
+
+
+        [HttpGet("google-login")]
+        public IActionResult GoogleLogin()
+        {
+            var redirectUrl = Url.Action("GoogleResponse", "ControllerAutenticacion");
+            var properties = new AuthenticationProperties { RedirectUri = redirectUrl };
+            return Challenge(properties, "Google");
+        }
+
+        [HttpGet("google-response")]
+        public async Task<IActionResult> GoogleResponse()
+        {
+            var result = await HttpContext.AuthenticateAsync("Cookies");
+            if (!result.Succeeded)
+                return BadRequest("Error al autenticarse con Google");
+
+            var email = result.Principal.FindFirst(c => c.Type == ClaimTypes.Email)?.Value ?? "";
+            var name = result.Principal.FindFirst(c => c.Type == ClaimTypes.Name)?.Value ?? "";
+
+            var user = await _auth.LoginConGoogleAsync(email, name);
+            var token = _tokenService.GenerateToken(user);
+
+            // Escapar comillas simples y caracteres problemáticos
+            string safeName = name.Replace("'", "\\'");
+            string safeEmail = email.Replace("'", "\\'");
+
+            string html = $@"
+<html>
+    <body>
+        <script>
+            const data = {{
+                token: '{token}',
+                roleId: {user.RoleId},
+                userName: '{safeName}',
+                email: '{safeEmail}'
+            }};
+            window.opener.postMessage(data, '*');
+            window.close();
+        </script>
+        <p>Autenticando... si la ventana no se cierra automáticamente, ciérrala manualmente.</p>
+    </body>
+</html>";           
         }
     }
 }
