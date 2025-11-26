@@ -23,18 +23,14 @@ public class RecetaService : IRecetaService
     }
     public async Task<RecetaDto> CreateRecetaAsync(CreateRecetaDto dto)
     {
+        // 1. Validar cita existe
         var cita = await _citasRepository.GetByIdAsync(dto.CitaId);
         if (cita == null)
             throw new Exception("La cita no existe.");
-
         var receta = _mapper.Map<Receta>(dto);
         receta.Fecha = DateTime.Now;
 
         receta = await _recetaRepository.AddAsync(receta);
-
-        cita.RecetaId = receta.Id;
-        await _citasRepository.UpdateAsync(cita.Id, cita);
-
         return _mapper.Map<RecetaDto>(receta);
     }
 

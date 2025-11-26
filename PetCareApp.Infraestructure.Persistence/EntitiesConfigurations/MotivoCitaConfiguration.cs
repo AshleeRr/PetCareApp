@@ -14,7 +14,9 @@ namespace PetCareApp.Infraestructure.Persistence.EntitiesConfigurations
             #endregion
 
             #region properties configuration
-            builder.Property(e => e.Motivo).HasMaxLength(100);
+            builder.Property(e => e.Motivo).HasColumnName("MotivoCita")
+               .HasMaxLength(100)
+               .IsRequired();
             #endregion
 
             #region relations configuration

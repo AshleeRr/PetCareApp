@@ -16,7 +16,7 @@ namespace PetCareApp.Infraestructure.Persistence.Repositories
         public async Task<Medicamento> GetMedicamentoByNameAsync(string nombre)
         {
             var medicamento = await _context.Medicamentos
-                .FirstOrDefaultAsync(m => m.Presentacion.ToLower() == nombre.ToLower().Trim());
+                .FirstOrDefaultAsync(m => m.Nombre.ToLower() == nombre.ToLower().Trim());
 
             if (medicamento == null)
             {
@@ -28,7 +28,7 @@ namespace PetCareApp.Infraestructure.Persistence.Repositories
         public async Task<List<Medicamento>> GetMedicamentosByPresentacionAsync(string presentacion)
         {
             return await _context.Medicamentos
-                .Where(m => m.Presentacion.Contains(presentacion.ToLower().Trim(), StringComparison.CurrentCultureIgnoreCase))
+                .Where(m => m.Presentacion.ToLower() == presentacion.ToLower().Trim())
                 .ToListAsync();
         }
     }

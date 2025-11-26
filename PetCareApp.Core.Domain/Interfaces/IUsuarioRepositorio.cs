@@ -6,7 +6,8 @@ namespace PetCareApp.Core.Domain.Interfaces
     public interface IUsuarioRepositorio : IGenericRepositorio<Usuario>
     {
         Task<Usuario?> GetByEmailAsync(string email);
-       // Task AddAsync(Usuario usuario); // por que add async esta aqui si lo esta heredando
+        // Task AddAsync(Usuario usuario); // por que add async esta aqui si lo esta heredando
         //Task SaveChangesAsync(); //esto tmb se supone que se hereda
+        Task UpdateAsync(Usuario usuario);
     }
 }

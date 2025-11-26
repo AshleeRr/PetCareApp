@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using Infraestructura.Servicios;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PetCareApp.Core.Application.Dtos;
@@ -13,19 +14,23 @@ namespace VetCareApp.Presentation.Web.Controllers
     public class ControllerAutenticacion : ControllerBase
     {
         private readonly IAutenticacionService _auth;
-        private readonly TokenService _tokenService;
+        private readonly TokenService _tokenService; // ✅ Ya está correcto
+        private readonly IPasswordResetService _passwordResetService; // ✅ Agregar
 
-        public ControllerAutenticacion(IAutenticacionService auth, TokenService tokenService)
+        public ControllerAutenticacion(
+            IAutenticacionService auth,
+            TokenService tokenService,
+            IPasswordResetService passwordResetService) // ✅ Inyectar
         {
             _auth = auth;
             _tokenService = tokenService;
+            _passwordResetService = passwordResetService;
         }
 
         [HttpPost("register")]
         public async Task<ActionResult<UsuarioResponseDto>> Register([FromBody] RegistroDto dto)
         {
             var usuario = await _auth.RegistrarAsync(dto);
-
             if (usuario == null)
                 return BadRequest("No se pudo registrar el usuario.");
 
@@ -81,6 +86,7 @@ namespace VetCareApp.Presentation.Web.Controllers
         }
 
 
+
         [HttpGet("google-login")]
         public IActionResult GoogleLogin()
         {
@@ -121,9 +127,7 @@ namespace VetCareApp.Presentation.Web.Controllers
         </script>
         <p>Autenticando... si la ventana no se cierra automáticamente, ciérrala manualmente.</p>
     </body>
-</html>";
-
-            return Content(html, "text/html");
+</html>";           
         }
     }
 }

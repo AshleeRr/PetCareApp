@@ -13,4 +13,6 @@ public class Receta
     public int VeterinarioId { get; set; }
     public int CitaId { get; set; }
     public Cita? Cita { get; set; }
+    public ICollection<VentaDetalle> VentaDetalles { get; set; } = new List<VentaDetalle>();
+
 }

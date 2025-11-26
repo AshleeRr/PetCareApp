@@ -1,19 +1,9 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-/*
-using Microsoft.EntityFrameworkCore;
-
-using PetCareApp.Infraestructure.Persistence.Context;
-using PetCareApp.Core.Domain.Interfaces;
-using PetCareApp.Infraestructure.Persistence.Repositories;
-using Infraestructura.Persistencia.Repositorios;
-using PetCareApp.Core.Application.Services;
-using PetCareApp.Core.Application.Interfaces;
-*/
 using Infraestructura.Servicios;
 using System.Text;
 using PetCareApp.Core.Application;
 using PetCareApp.Infraestructure.Persistence;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 namespace VetCareApp.Presentation.Web
 {
     public class Program
@@ -26,42 +16,6 @@ namespace VetCareApp.Presentation.Web
             // -----------------------------
             // CONFIGURACIÓN DE SERVICIOS
             // -----------------------------
-
-
-
-
-            /*
-            // 1. DbContext
-            builder.Services.AddDbContext<PetCareContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("AppConnection"))
-            );
-            
-            // 2. ✅ TODOS LOS REPOSITORIOS
-            builder.Services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
-            builder.Services.AddScoped<IRoleRepositorio, RoleRepositorio>();
-            builder.Services.AddScoped<ICitaRepository, CitaRepository>();
-            builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
-            builder.Services.AddScoped<IEstadoRepository, EstadoRepository>();
-            builder.Services.AddScoped<IMascotaRepository, MascotaRepository>();
-            builder.Services.AddScoped<IMedicamentoRepository, MedicamentosRepository>();
-            builder.Services.AddScoped<IMotivoCitaRepository, MotivoCitaRepository>();
-            builder.Services.AddScoped<IPruebasMedicasRepository, PruebasMedicasRepository>();
-            builder.Services.AddScoped<IRecetaRepository, RecetaRepository>();
-            builder.Services.AddScoped<ITratamientoRepository, TratamientoRepository>();
-            
-            // 3. ✅ TODOS LOS SERVICIOS DE APLICACIÓN
-            builder.Services.AddScoped<IAutenticacionService, AutenticacionService>();
-            builder.Services.AddScoped<TokenService>();
-            builder.Services.AddScoped<Ilogger, Logger>();
-            builder.Services.AddScoped<ICitaService, CitaService>();
-            builder.Services.AddScoped<IClienteService, ClienteService>();
-            builder.Services.AddScoped<IEstadoService, EstadoService>();
-            builder.Services.AddScoped<IMascotaService, MascotaService>();
-            builder.Services.AddScoped<IMotivoCitaService, MotivoCitaService>();
-            */
-
-
-
 
             // 4. Configuración SMTP (si la usas)
             builder.Services.Configure<ConfiguracionServices2>(

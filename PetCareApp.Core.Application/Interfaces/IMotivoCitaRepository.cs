@@ -11,5 +11,8 @@ namespace PetCareApp.Core.Application.Interfaces
     {
         Task<List<MotivoCita>> GetAllAsync();
         Task<MotivoCita?> GetByIdAsync(int id);
+        Task<MotivoCita> AddAsync(MotivoCita motivo);
+        Task<MotivoCita?> UpdateAsync(MotivoCita motivo);
+        Task<bool> DeleteAsync(int id);
     }
 }

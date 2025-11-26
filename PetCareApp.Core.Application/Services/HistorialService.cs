@@ -25,16 +25,15 @@ namespace PetCareApp.Core.Application.Services
             var citas = await _citaRepository.GetCitasOfMascotaById(mascotaId);
             var pruebasMedicas = await _mascotaPruebaMedicaRepository.GetPruebasOfMascotaById(mascotaId);
 
-            var historialDto = new MascotaHistorialDto 
+            var historialDto = new MascotaHistorialDto
             {
-                MascotaId =  mascotaId,
-                HistorialCitas =  _mapper.Map<List<CitaDto>>(citas),
-                PruebasMedicas = _mapper.Map<List<CreateMascotaPruebaMedicaDto>>(pruebasMedicas)
+                MascotaId = mascotaId,
+                HistorialCitas = _mapper.Map<List<CitaDto>>(citas),
 
+                PruebasMedicas = _mapper.Map<List<MascotaPruebaMedicaHistorialDto>>(pruebasMedicas)
             };
 
             return historialDto;
-
         }
     }
 }

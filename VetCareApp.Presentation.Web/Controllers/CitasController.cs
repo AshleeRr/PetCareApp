@@ -38,7 +38,7 @@ namespace VetCareApp.Presentation.Web.Controllers
             return Ok(cita);
         }
 
-        [HttpGet("{userId:int}")]
+        [HttpGet("veterinario/{userId:int}")] 
         public async Task<ActionResult<List<CitaDto>>> GetCitasByVeterinarioId(int userId)
         {
             var citas = await _service.GetCitasAsiganasAVeterinarioAsync(userId);
@@ -49,7 +49,7 @@ namespace VetCareApp.Presentation.Web.Controllers
             return Ok(citas);
         }
 
-        [HttpGet("{mascotaId:int}")]
+        [HttpGet("mascota/{mascotaId:int}")] 
         public async Task<ActionResult<List<CitaDto>>> GetCitasOfMascotaId(int mascotaId)
         {
             var citas = await _service.GetCitasOfMascotaById(mascotaId);

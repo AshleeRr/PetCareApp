@@ -15,10 +15,11 @@ namespace PetCareApp.Infraestructure.Persistence
         public static void AddPersistencelayerIoc(this IServiceCollection services, IConfiguration configuration)
         {
             #region context
-            var connectionString = configuration.GetConnectionString("AshBdConnection");
+            var connectionString = configuration.GetConnectionString("AppConnection");
             services.AddDbContext<PetCareContext>(opt => opt.UseSqlServer(connectionString, 
                 m => m.MigrationsAssembly(typeof(PetCareContext).Assembly.FullName)),
                 ServiceLifetime.Transient);
+
             #endregion
             
             #region Repositories IOC
