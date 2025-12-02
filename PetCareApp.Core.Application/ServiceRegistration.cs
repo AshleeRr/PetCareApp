@@ -1,7 +1,7 @@
-﻿using Infraestructura.Servicios;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using PetCareApp.Core.Application.Interfaces;
 using PetCareApp.Core.Application.Services;
+using System.Reflection;
 
 namespace PetCareApp.Core.Application
 {
@@ -9,28 +9,39 @@ namespace PetCareApp.Core.Application
     {
         public static void AddApplicationlayerIoc(this IServiceCollection services)
         {
-            #region Configurations
-            //services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            #region AutoMapper
+            // Registra automáticamente todos los perfiles de mapeo en esta capa
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            // Si tienes perfiles en la capa Web, mantén el AppDomain en Program.cs o agrégalos aquí
             #endregion
 
-            #region Services IOC
-            services.AddTransient(typeof(IGenericService<,>), typeof(GenericService<,>));
-            services.AddTransient<IAutenticacionService, AutenticacionService>();
-            services.AddTransient<IClienteService, ClienteService>();
-            services.AddTransient<ICitaService, CitaService>();
-            services.AddTransient<IEstadoService, EstadoService>();
-            services.AddTransient<IMotivoCitaService, MotivoCitaService>();
-            services.AddTransient<IMascotaService, MascotaService>();
-            services.AddTransient<IEstadoService, EstadoService>();
-            services.AddTransient<IMascotaPruebaMedicaService, MascotaPruebaMedicaService>();
-            services.AddTransient<IPruebaMedicaService, PruebaMedicaService>();
-            services.AddTransient<IMedicamentoService, MedicamentoService>();
-            services.AddTransient<IHistorialService, HistorialService>();
-            services.AddTransient<IRecetaService, RecetaService>();
-            services.AddTransient<IUserService, UserService>();
-            services.AddTransient<ConfiguracionServices2>();
-            services.AddTransient<TokenService>();
+            #region Services (Lógica de Negocio)
+            // Autenticación
+            services.AddScoped<IAutenticacionService, AutenticacionService>();
+            services.AddScoped<IPasswordResetService, PasswordResetService>();
+
+            // Administración
+            services.AddScoped<IAdminService, AdminService>();
+
+            // Flujos Principales
+            services.AddScoped<ICitaService, CitaService>();
+            services.AddScoped<IClienteService, ClienteService>();
+            services.AddScoped<IMascotaService, MascotaService>();
+
+            // Veterinario
+            services.AddScoped<IMedicamentoService, MedicamentoService>();
+            services.AddScoped<IMascotaPruebaMedicaService, MascotaPruebaMedicaService>();
+            services.AddScoped<IPruebaMedicaService, PruebaMedicaService>();
+            services.AddScoped<IHistorialService, HistorialService>();
+
+            // Catálogos y Auxiliares
+            services.AddScoped<IEstadoService, EstadoService>();
+            services.AddScoped<IMotivoCitaService, MotivoCitaService>();
+
+            // Ventas
+            services.AddScoped<IProductoService, ProductoService>();
+            services.AddScoped<ICarritoService, CarritoService>();
+            services.AddScoped<IVentaService, VentaService>();
             #endregion
         }
     }

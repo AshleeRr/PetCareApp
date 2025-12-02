@@ -37,13 +37,13 @@ namespace VetCareApp.Presentation.Web.Controllers
         }
 
     public class TipoProductosController : ControllerBase
-    {
-        private readonly IGenericRepositorio<PetCareApp.Core.Domain.Entities.TipoProducto> _tipoProductoRepo;
-
-        public TipoProductosController(IGenericRepositorio<PetCareApp.Core.Domain.Entities.TipoProducto> tipoProductoRepo)
         {
-            _tipoProductoRepo = tipoProductoRepo;
-        }
+            private readonly IGenericRepositorio<PetCareApp.Core.Domain.Entities.TipoProducto> _tipoProductoRepo;
+
+            public TipoProductosController(IGenericRepositorio<PetCareApp.Core.Domain.Entities.TipoProducto> tipoProductoRepo)
+            {
+                _tipoProductoRepo = tipoProductoRepo;
+            }
 
             /// <summary>
             /// Obtener todos los tipos de productos (categorías)
