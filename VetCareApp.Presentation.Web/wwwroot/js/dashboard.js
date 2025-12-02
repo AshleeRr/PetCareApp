@@ -153,21 +153,20 @@
         } else {
           tbody.innerHTML = proximas.map(c => {
             const dt = new Date(c.fechaHora);
-
             return `
-              <tr>
                 <td>${dt.toLocaleDateString('es-DO')}</td>
-                <td>${dt.toLocaleTimeString('es-DO', {hour:'2-digit', minute:'2-digit'})}</td>
-                <td>${c.cliente || '-'}</td>
                 <td>${c.mascota || '-'}</td>
                 <td>${c.motivo || '-'}</td>
                 <td>${c.estado || '-'}</td>
+                <td>${c.dueñoNombre || c.clienteNombre || '-'}</td>
+                <td>${c.mascotaNombre || '-'}</td>
+                <td>${c.motivo || '-'}</td>
+                <td>${estado}</td>
               </tr>
             `;
           }).join('');
         }
       }
-
     } catch (err) {
       console.error('Error cargando dashboard', err);
       if (q('totalClientes')) q('totalClientes').textContent = '0';
@@ -969,174 +968,3 @@ async function cargarInventario() {
   })();
 
 })();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// ============================================
-// 7. dashboard.js - Navegación e Init
-// ============================================
-// (function() {
-//   // Seguridad
-//   function requireAuth() {
-//     const token = CONFIG.getToken();
-//     const user = CONFIG.getUser();
-    
-//     if (!token || !user) {
-//       window.location.href = "index.html";
-//       return false;
-//     }
-//     return true;
-//   }
-
-//   if (!requireAuth()) return;
-
-//   // Cargar Dashboard Stats
-//   async function cargarDashboardStats() {
-//     try {
-//       const [resClientes, resMascotas, resCitas, resProductos] = await Promise.all([
-//         Utils.fetchAPI('/Clientes'),
-//         Utils.fetchAPI('/Mascotas'),
-//         Utils.fetchAPI('/Citas'),
-//         Utils.fetchAPI('/Productos')
-//       ]);
-
-//       const clientes = resClientes.ok ? await resClientes.json() : [];
-//       const mascotas = resMascotas.ok ? await resMascotas.json() : [];
-//       const citas = resCitas.ok ? await resCitas.json() : [];
-//       const productos = resProductos.ok ? await resProductos.json() : [];
-
-//       if (Utils.q('totalClientes')) Utils.q('totalClientes').textContent = clientes.length;
-//       if (Utils.q('totalMascotas')) Utils.q('totalMascotas').textContent = mascotas.length;
-
-//       const hoy = new Date().toISOString().split('T')[0];
-//       const citasHoy = citas.filter(c => c.fechaHora?.startsWith(hoy));
-//       if (Utils.q('citasHoy')) Utils.q('citasHoy').textContent = citasHoy.length;
-
-//       const totalStock = productos.reduce((acc, p) => acc + (Number(p.stock) || 0), 0);
-//       if (Utils.q('productosStock')) Utils.q('productosStock').textContent = totalStock;
-
-//       // Próximas citas
-//       if (Utils.q('tablaCitasRecientes')) {
-//         const tbody = Utils.q('tablaCitasRecientes');
-//         const proximas = citas.slice(0, 5);
-        
-//         if (proximas.length === 0) {
-//           tbody.innerHTML = `<tr><td colspan="6" style="text-align:center">No hay citas próximas</td></tr>`;
-//         } else {
-//           tbody.innerHTML = proximas.map(c => {
-//             const dt = new Date(c.fechaHora);
-//             const estado = Utils.getEstadoBadge(c.estado || 'Pendiente');
-//             return `
-//               <tr>
-//                 <td>${dt.toLocaleDateString('es-DO')}</td>
-//                 <td>${dt.toLocaleTimeString('es-DO', {hour:'2-digit', minute:'2-digit'})}</td>
-//                 <td>${c.dueñoNombre || '-'}</td>
-//                 <td>${c.mascotaNombre || '-'}</td>
-//                 <td>${c.motivo || '-'}</td>
-//                 <td>${estado}</td>
-//               </tr>
-//             `;
-//           }).join('');
-//         }
-//       }
-//     } catch (err) {
-//       console.error('Error cargando dashboard', err);
-//     }
-//   }
-
-//   // Navegación entre secciones
-//   function configurarNavegacion() {
-//     const menuItems = document.querySelectorAll('.menu-item');
-//     const sections = document.querySelectorAll('.section');
-
-//     menuItems.forEach(item => {
-//       item.addEventListener('click', () => {
-//         const sec = item.dataset.section;
-        
-//         menuItems.forEach(m => m.classList.remove('active'));
-//         sections.forEach(s => s.classList.remove('active'));
-        
-//         item.classList.add('active');
-//         const el = Utils.q(sec);
-//         if (el) el.classList.add('active');
-
-//         // Cargar datos de la sección
-//         switch (sec) {
-//           case 'dashboard': cargarDashboardStats(); break;
-//           case 'clientes': if(window.cargarClientes) cargarClientes(); break;
-//           case 'mascotas': Mascotas.cargar(); break;
-//           case 'citas': Citas.cargar(); break;
-//           case 'productos': Productos.cargar(); break;
-//           case 'inventario': Inventario.cargar(); break;
-//         }
-//       });
-//     });
-//   }
-
-//   // Event Listeners de botones
-//   function configurarEventos() {
-//     // Modal close
-//     Utils.on(Utils.q('btnCloseModal'), 'click', Utils.cerrarModal);
-//     Utils.on(Utils.q('modal'), 'click', (e) => {
-//       if (e.target.id === 'modal') Utils.cerrarModal();
-//     });
-
-//     // Logout
-//     Utils.on(Utils.q('logoutBtn'), 'click', () => {
-//       localStorage.removeItem('token');
-//       localStorage.removeItem('user');
-//       window.location.href = 'index.html';
-//     });
-
-//     // Botones Mascotas
-//     Utils.on(Utils.q('btnBuscarMascota'), 'click', () => {
-//       const filtro = Utils.q('buscarMascota')?.value.trim() || '';
-//       Mascotas.cargar(filtro);
-//     });
-//     Utils.on(Utils.q('btnAgregarMascota'), 'click', () => Mascotas.mostrarModal());
-
-//     // Botones Citas
-//     Utils.on(Utils.q('btnBuscarCita'), 'click', () => {
-//       const fecha = Utils.q('buscarFechaCita')?.value || null;
-//       Citas.cargar(fecha);
-//     });
-//     Utils.on(Utils.q('btnAgregarCita'), 'click', () => Citas.mostrarModal());
-
-//     // Botones Productos
-//     Utils.on(Utils.q('btnBuscarProducto'), 'click', () => {
-//       const filtro = Utils.q('buscarProducto')?.value.trim() || '';
-//       Productos.cargar(filtro);
-//     });
-//     Utils.on(Utils.q('btnAgregarProducto'), 'click', () => Productos.mostrarModal());
-//   }
-
-//   // Inicialización
-//   function init() {
-//     configurarNavegacion();
-//     configurarEventos();
-//     cargarDashboardStats();
-//   }
-
-//   // Start
-//   if (document.readyState === 'loading') {
-//     document.addEventListener('DOMContentLoaded', init);
-//   } else {
-//     init();
-//   }
-// })();

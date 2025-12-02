@@ -7,7 +7,6 @@ using PetCareApp.Core.Application.Dtos;
 using PetCareApp.Application.Interfaces;
 
 
-
 namespace VetCareApp.Presentation.Web.Controllers
 {
     [Route("api/[controller]")] // Cambios realizados

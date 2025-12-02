@@ -24,6 +24,9 @@ namespace PetCareApp.Infraestructure.Persistence.EntitiesConfigurations
             //builder.Property(e => e.Email)
             //    .HasMaxLength(100)
             //    .IsRequired(false);
+            builder.Property(e => e.Email)
+                .HasMaxLength(100)
+                .IsRequired(false);
             #endregion
 
             #region relationship configurations

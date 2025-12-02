@@ -143,6 +143,7 @@ namespace PetCareApp.Core.Application.Services
                         Precio = item.Producto.Precio,
                         TipoProductoId = item.Producto.TipoProductoId,
                         //ImagenUrl = item.Producto.ImagenUrl
+                        ImagenUrl = item.Producto.ImagenUrl
                     });
                 }
 
@@ -223,6 +224,7 @@ namespace PetCareApp.Core.Application.Services
                                 Precio = producto.Precio,
                                 TipoProductoId = producto.TipoProductoId,
                                 //ImagenUrl = producto.ImagenUrl
+                                ImagenUrl = producto.ImagenUrl
                             });
                         }
                     }
@@ -268,6 +270,7 @@ namespace PetCareApp.Core.Application.Services
                                 Precio = producto.Precio,
                                 TipoProductoId = producto.TipoProductoId,
                                 //ImagenUrl = producto.ImagenUrl
+                                ImagenUrl = producto.ImagenUrl
                             });
                         }
                     }

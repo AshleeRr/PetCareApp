@@ -91,6 +91,7 @@ namespace PetCareApp.Core.Application.Services
                     Nombre = p.Nombre,
                     Precio = p.Precio,
                     //ImagenUrl = p.ImagenUrl,
+                    ImagenUrl = p.ImagenUrl,
                     TipoProducto = p.TipoProducto.Tipo,
                     DisponibleParaVenta = p.Stock > 0
                 });
@@ -113,6 +114,7 @@ namespace PetCareApp.Core.Application.Services
                     Precio = dto.Precio,
                     TipoProductoId = dto.TipoProductoId,
                     //ImagenUrl = dto.ImagenUrl
+                    ImagenUrl = dto.ImagenUrl
                 };
 
                 var resultado = await _productoRepo.AddAsync(producto);
@@ -145,6 +147,7 @@ namespace PetCareApp.Core.Application.Services
                     Precio = dto.Precio,
                     TipoProductoId = dto.TipoProductoId,
                     //ImagenUrl = dto.ImagenUrl
+                    ImagenUrl = dto.ImagenUrl
                 };
 
                 var resultado = await _productoRepo.UpdateAsync(id, producto);
@@ -202,6 +205,7 @@ namespace PetCareApp.Core.Application.Services
                     Precio = producto.Precio,
                     TipoProductoId = producto.TipoProductoId,
                     //ImagenUrl = producto.ImagenUrl
+                    ImagenUrl = producto.ImagenUrl
                 };
 
                 var resultado = await _productoRepo.UpdateAsync(id, actualizado);
@@ -226,6 +230,7 @@ namespace PetCareApp.Core.Application.Services
                 TipoProductoId = producto.TipoProductoId,
                 TipoProducto = producto.TipoProducto.Tipo,
                 //ImagenUrl = producto.ImagenUrl
+                ImagenUrl = producto.ImagenUrl
             };
         }
     }

@@ -14,6 +14,8 @@ public class Dueño
     
     //public string? Email { get; set; }
 
+    public string? Email { get; set; }
+
     public ICollection<Cita>? Cita { get; set; } 
 
     public ICollection<Mascota>? Mascota { get; set; } 
