@@ -5,7 +5,6 @@ using PetCareApp.Core.Domain.Interfaces;
 
 using PetCareApp.Core.Application.Dtos;
 using PetCareApp.Application.Interfaces;
-=======
 
 
 namespace VetCareApp.Presentation.Web.Controllers
@@ -35,31 +34,32 @@ namespace VetCareApp.Presentation.Web.Controllers
             var tipo = await _service.ObtenerPorIdAsync(id);
             if (tipo == null) return NotFound();
             return Ok(tipo);
-=======
-    public class TipoProductosController : ControllerBase
-    {
-        private readonly IGenericRepositorio<PetCareApp.Core.Domain.Entities.TipoProducto> _tipoProductoRepo;
-
-        public TipoProductosController(IGenericRepositorio<PetCareApp.Core.Domain.Entities.TipoProducto> tipoProductoRepo)
-        {
-            _tipoProductoRepo = tipoProductoRepo;
         }
-
-        /// <summary>
-        /// Obtener todos los tipos de productos (categorías)
-        /// </summary>
-        [HttpGet]
-        [AllowAnonymous]
-        public async Task<ActionResult> GetAll()
+    public class TipoProductosController : ControllerBase
         {
-            try
+            private readonly IGenericRepositorio<PetCareApp.Core.Domain.Entities.TipoProducto> _tipoProductoRepo;
+
+            public TipoProductosController(IGenericRepositorio<PetCareApp.Core.Domain.Entities.TipoProducto> tipoProductoRepo)
             {
-                var tipos = await _tipoProductoRepo.GetAllAsync();
-                return Ok(tipos);
+                _tipoProductoRepo = tipoProductoRepo;
             }
-            catch (Exception ex)
+
+            /// <summary>
+            /// Obtener todos los tipos de productos (categorías)
+            /// </summary>
+            [HttpGet]
+            [AllowAnonymous]
+            public async Task<ActionResult> GetAll()
             {
-                return StatusCode(500, new { mensaje = $"Error interno: {ex.Message}" });
+                try
+                {
+                    var tipos = await _tipoProductoRepo.GetAllAsync();
+                    return Ok(tipos);
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(500, new { mensaje = $"Error interno: {ex.Message}" });
+                }
             }
         }
     }

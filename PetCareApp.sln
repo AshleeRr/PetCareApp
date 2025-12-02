@@ -23,6 +23,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{6BAC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetCareApp.Testing.PersistenceTest", "PetCareApp.UnitTests.Repositories\PetCareApp.Testing.PersistenceTest.csproj", "{D834909A-A23C-45C7-9A49-04428D7DD378}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetCareApp.Testing.ApplicationTest", "ApplicationTest\PetCareApp.Testing.ApplicationTest.csproj", "{69FC2490-BD37-41BC-85FA-26785B0103F7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +51,10 @@ Global
 		{D834909A-A23C-45C7-9A49-04428D7DD378}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D834909A-A23C-45C7-9A49-04428D7DD378}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D834909A-A23C-45C7-9A49-04428D7DD378}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69FC2490-BD37-41BC-85FA-26785B0103F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69FC2490-BD37-41BC-85FA-26785B0103F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69FC2490-BD37-41BC-85FA-26785B0103F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69FC2490-BD37-41BC-85FA-26785B0103F7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -63,6 +69,7 @@ Global
 		{88895000-745B-4CFA-8876-916DABFC1ABF} = {62BEF2A8-81C0-483C-92D5-5DCEEBAA39F4}
 		{6BACB38D-B6D9-4290-AB45-B8F6DD06D217} = {43C27E27-7E7D-4AC0-9BB8-188F3936A169}
 		{D834909A-A23C-45C7-9A49-04428D7DD378} = {6BACB38D-B6D9-4290-AB45-B8F6DD06D217}
+		{69FC2490-BD37-41BC-85FA-26785B0103F7} = {6BACB38D-B6D9-4290-AB45-B8F6DD06D217}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {889AF1C0-18A1-4F42-BC70-0CB49763058A}

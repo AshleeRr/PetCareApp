@@ -1,9 +1,11 @@
-using Microsoft.IdentityModel.Tokens;
 using Infraestructura.Servicios;
-using System.Text;
-using PetCareApp.Core.Application;
-using PetCareApp.Infraestructure.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using PetCareApp.Core.Application; 
+using PetCareApp.Infraestructure.Persistence; 
+using System.Text;
+
 namespace VetCareApp.Presentation.Web
 {
     public class Program

@@ -10,7 +10,7 @@ namespace Infraestructura.Persistencia.Repositorios
     {
         private readonly PetCareContext _context;
 
-        public RoleRepositorio(PetCareContext context) : base(context) // ✅ Pasar al constructor base
+        public RoleRepositorio(PetCareContext context) : base(context) //  Pasar al constructor base
         {
             _context = context;
         }
