@@ -12,5 +12,6 @@ namespace PetCareApp.Core.Application.Interfaces
     {
         Task<Usuario> RegistrarAsync(RegistroDto dto);
         Task<Usuario?> LoginAsync(RegistrarDTOS dto);
+        Task<Usuario> LoginConGoogleAsync(string email, string name);
     }
 }

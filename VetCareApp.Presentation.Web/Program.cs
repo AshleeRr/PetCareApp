@@ -1,19 +1,17 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Infraestructura.Servicios;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-/*
-using Microsoft.EntityFrameworkCore;
-
-using PetCareApp.Infraestructure.Persistence.Context;
-using PetCareApp.Core.Domain.Interfaces;
-using PetCareApp.Infraestructure.Persistence.Repositories;
-using Infraestructura.Persistencia.Repositorios;
-using PetCareApp.Core.Application.Services;
-using PetCareApp.Core.Application.Interfaces;
-*/
-using Infraestructura.Servicios;
-using System.Text;
+using PetCareApp.Application.Interfaces;
+using PetCareApp.Application.Services;
 using PetCareApp.Core.Application;
+using PetCareApp.Core.Application.Interfaces;
+using PetCareApp.Core.Application.Services;
+using PetCareApp.Core.Domain.Interfaces;
 using PetCareApp.Infraestructure.Persistence;
+using PetCareApp.Infraestructure.Persistence.Repositories;
+using System.Text;
+
 namespace VetCareApp.Presentation.Web
 {
     public class Program
@@ -21,79 +19,101 @@ namespace VetCareApp.Presentation.Web
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            // ========================
+            // IOC
+            // ========================
             builder.Services.AddPersistencelayerIoc(builder.Configuration);
             builder.Services.AddApplicationlayerIoc();
-            // -----------------------------
-            // CONFIGURACIÓN DE SERVICIOS
-            // -----------------------------
 
-
-
-
-            /*
-            // 1. DbContext
-            builder.Services.AddDbContext<PetCareContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("AppConnection"))
-            );
-            
-            // 2. ✅ TODOS LOS REPOSITORIOS
-            builder.Services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
-            builder.Services.AddScoped<IRoleRepositorio, RoleRepositorio>();
-            builder.Services.AddScoped<ICitaRepository, CitaRepository>();
-            builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
-            builder.Services.AddScoped<IEstadoRepository, EstadoRepository>();
-            builder.Services.AddScoped<IMascotaRepository, MascotaRepository>();
-            builder.Services.AddScoped<IMedicamentoRepository, MedicamentosRepository>();
-            builder.Services.AddScoped<IMotivoCitaRepository, MotivoCitaRepository>();
-            builder.Services.AddScoped<IPruebasMedicasRepository, PruebasMedicasRepository>();
-            builder.Services.AddScoped<IRecetaRepository, RecetaRepository>();
-            builder.Services.AddScoped<ITratamientoRepository, TratamientoRepository>();
-            
-            // 3. ✅ TODOS LOS SERVICIOS DE APLICACIÓN
-            builder.Services.AddScoped<IAutenticacionService, AutenticacionService>();
-            builder.Services.AddScoped<TokenService>();
-            builder.Services.AddScoped<Ilogger, Logger>();
-            builder.Services.AddScoped<ICitaService, CitaService>();
-            builder.Services.AddScoped<IClienteService, ClienteService>();
-            builder.Services.AddScoped<IEstadoService, EstadoService>();
-            builder.Services.AddScoped<IMascotaService, MascotaService>();
-            builder.Services.AddScoped<IMotivoCitaService, MotivoCitaService>();
-            */
-
-
-
-
-            // 4. Configuración SMTP (si la usas)
+            // ========================
+            // SMTP
+            // ========================
             builder.Services.Configure<ConfiguracionServices2>(
                 builder.Configuration.GetSection("SmtpSettings")
             );
 
-            // 5. Controladores y vistas
             builder.Services.AddControllersWithViews()
                 .AddJsonOptions(options =>
                 {
-                    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+                    options.JsonSerializerOptions.ReferenceHandler =
+                        System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
                 });
+
             builder.Services.AddRazorPages();
 
-            // 6. Configuración JWT
+            // ========================
+            // SERVICIOS EXTRAS
+            // ========================
+            builder.Services.AddScoped<IEmailService, EmailService>();
+            builder.Services.AddScoped<IPasswordResetTokenRepository, PasswordResetTokenRepository>();
+            builder.Services.AddScoped<IPasswordResetService, PasswordResetService>();
+
+            // ========================
+            // PRODUCTOS
+            // ========================
+            builder.Services.AddScoped<IProductoService, ProductoService>();
+            builder.Services.AddScoped<IProductoRepository, ProductoRepository>();
+            
+            builder.Services.AddScoped<IMascotaService, MascotaService>();
+            builder.Services.AddScoped<IAdminService, AdminService>();
+            builder.Services.AddScoped<IUsuarioAdminRepository, UsuarioAdminRepository>();
+            builder.Services.AddScoped<IPersonalRepository, PersonalRepository>();
+            builder.Services.AddScoped<ISistemaLogRepository, SistemaLogRepository>();
+            builder.Services.AddScoped<IVentaRepository, VentaRepository>();
+            //
+
+
+
+            builder.Services.AddScoped<ITipoProductoService, TipoProductoService>();
+            builder.Services.AddScoped<ITipoProductoRepository, TipoProductoRepository>();
+
+            // ========================
+            // MASCOTAS
+            // ========================
+            builder.Services.AddScoped<IMascotaService, MascotaService>();
+            builder.Services.AddScoped<IMascotaRepository, MascotaRepository>();
+
+            builder.Services.AddScoped<ITipoMascotaService, TipoMascotaService>();
+            builder.Services.AddScoped<ITipoMascotaRepository, TipoMascotaRepository>();
+
+            // ========================
+            // JWT SETTINGS
+            // ========================
             var jwtKey = builder.Configuration["JwtSettings:SecretKey"];
             var jwtIssuer = builder.Configuration["JwtSettings:Issuer"];
             var jwtAudience = builder.Configuration["JwtSettings:Audience"];
 
-            if (string.IsNullOrEmpty(jwtKey))
-                throw new ArgumentNullException("JwtSettings:SecretKey", "La clave JWT no está configurada");
+            if (string.IsNullOrEmpty(jwtKey) ||
+                string.IsNullOrEmpty(jwtIssuer) ||
+                string.IsNullOrEmpty(jwtAudience))
+                throw new Exception("Faltan configuraciones de JWT.");
 
-            if (string.IsNullOrEmpty(jwtIssuer))
-                throw new ArgumentNullException("JwtSettings:Issuer", "El Issuer JWT no está configurado");
+            builder.Services.Configure<ConfiguracionServices>(
+                builder.Configuration.GetSection("JwtSettings")
+            );
 
-            if (string.IsNullOrEmpty(jwtAudience))
-                throw new ArgumentNullException("JwtSettings:Audience", "El Audience JWT no está configurado");
-
+            // ========================
+            // AUTHENTICATION ✅ (SIN DUPLICADOS)
+            // ========================
             builder.Services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddCookie(options =>
+            {
+                options.Events.OnRedirectToLogin = context =>
+                {
+                    context.Response.StatusCode = 401;
+                    return Task.CompletedTask;
+                };
+
+                options.Events.OnRedirectToAccessDenied = context =>
+                {
+                    context.Response.StatusCode = 403;
+                    return Task.CompletedTask;
+                };
             })
             .AddJwtBearer(options =>
             {
@@ -105,56 +125,38 @@ namespace VetCareApp.Presentation.Web
                     ValidateIssuerSigningKey = true,
                     ValidIssuer = jwtIssuer,
                     ValidAudience = jwtAudience,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
+                    IssuerSigningKey = new SymmetricSecurityKey(
+                        Encoding.UTF8.GetBytes(jwtKey)
+                    )
                 };
+            })
+            .AddGoogle("Google", googleOptions =>
+            {
+                googleOptions.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+                googleOptions.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+                googleOptions.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             });
 
             builder.Services.AddAuthorization();
 
-            // 7. CORS
+            // ========================
+            // CORS
+            // ========================
             builder.Services.AddCors(options =>
             {
-                options.AddPolicy("AllowAll",
-                    policy => policy.AllowAnyOrigin()
-                                    .AllowAnyMethod()
-                                    .AllowAnyHeader());
+                options.AddPolicy("AllowAll", policy =>
+                    policy.AllowAnyOrigin()
+                          .AllowAnyMethod()
+                          .AllowAnyHeader());
             });
 
-            builder.Services.Configure<Infraestructura.Servicios.ConfiguracionServices2>(
-                builder.Configuration.GetSection("SmtpSettings")
-            );
-
-            // 8. Swagger
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
-                {
-                    Title = "PetCare API",
-                    Version = "v1",
-                    Description = "API para el sistema de gestión veterinaria PetCare"
-                });
-            });
-
-            builder.Services.AddControllersWithViews()
-                .AddJsonOptions(options =>
-                {
-                    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
-                });
-            // -----------------------------
-            // CONFIGURACIÓN DE SERVICIOS
-            // -----------------------------
-
-            // Controladores tipo API
-            builder.Services.AddControllers();
+            // ========================
+            // SWAGGER
+            // ========================
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
-
-            // -----------------------------
-            // CONFIGURACIÓN DEL PIPELINE
-            // -----------------------------
 
             if (app.Environment.IsDevelopment())
             {
@@ -162,13 +164,7 @@ namespace VetCareApp.Presentation.Web
                 app.UseSwaggerUI(c =>
                 {
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "PetCare API V1");
-                    c.RoutePrefix = string.Empty; // Swagger en la raíz
                 });
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-                app.UseHsts();
             }
 
             app.UseHttpsRedirection();
@@ -176,6 +172,7 @@ namespace VetCareApp.Presentation.Web
             app.UseRouting();
 
             app.UseCors("AllowAll");
+
             app.UseAuthentication();
             app.UseAuthorization();
 

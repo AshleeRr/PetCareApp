@@ -1,7 +1,7 @@
 ﻿
 using AutoMapper;
 using PetCareApp.Core.Application.Dtos.PruebasMedicasDtos;
-using PetCareApp.Core.Application.ViewModels.PruebasVms;
+using PetCareApp.Core.Application.ViewModels.PruebasMedicasVms;
 
 namespace PetCareApp.Core.Application.Mappings.Dtos_Vm
 {

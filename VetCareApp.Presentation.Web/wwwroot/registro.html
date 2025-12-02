@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro - VetCare</title>
+  
+  <link rel="stylesheet" href="css/registro.css">
+
+</head>
+<body>
+  <div class="login-container">
+    <h2>Crear cuenta</h2>
+
+    <form id="registerForm">
+      <input 
+        type="text" 
+        id="nombre" 
+        placeholder="Nombre completo" 
+        class="form-input" 
+        required
+      >
+      <input 
+        type="email" 
+        id="email" 
+        placeholder="Correo electrónico" 
+        class="form-input" 
+        required
+      >
+      <input 
+        type="password" 
+        id="password" 
+        placeholder="Contraseña" 
+        class="form-input" 
+        required
+      >
+
+      <p id="error-msg" class="error-msg"></p>
+
+      <button type="submit" class="btn-submit">Registrarse</button>
+      <p class="small-text">¿Ya tienes cuenta? <a href="index.html">Inicia sesión</a></p>
+    </form>
+  </div>
+
+  <script src="js/registro.js"></script>
+</body>
+</html>

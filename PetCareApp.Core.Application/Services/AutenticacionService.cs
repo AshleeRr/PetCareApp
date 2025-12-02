@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Infraestructura.Servicios;
 using PetCareApp.Core.Application.Dtos;
 using PetCareApp.Core.Application.Dtos.UsersDtos;
 using PetCareApp.Core.Application.Interfaces;
@@ -13,6 +14,7 @@ namespace PetCareApp.Core.Application.Services
     {
         private readonly IUsuarioRepositorio _usuarioRepo;
         private readonly IRoleRepositorio _roleRepo; // ✅ Usar IRoleRepositorio en lugar de DbContext
+        private readonly TokenService _tokenService; // ✅ Ya está correcto
         private readonly Ilogger _logger;
 
         public AutenticacionService(
@@ -96,6 +98,22 @@ namespace PetCareApp.Core.Application.Services
             using var sha = SHA256.Create();
             var bytes = sha.ComputeHash(Encoding.UTF8.GetBytes(input));
             return Convert.ToHexString(bytes);
+        }
+        public async Task<Usuario> LoginConGoogleAsync(string email, string name)
+        {
+            // Retornar un usuario "temporal" sin tocar la DB
+            return new Usuario
+            {
+                Email = email,
+                UserName = name,
+                PasswordHashed = "", // sin contraseña
+                RoleId = 1, // siempre Recepcionista
+                Role = new Role
+                {
+                    Id = 1,
+                    Rol = "Cliente" // ⚠️ esto evita el error en TokenService
+                }
+            };
         }
     }
 }

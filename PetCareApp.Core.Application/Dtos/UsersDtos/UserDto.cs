@@ -9,6 +9,6 @@
         public required string Email { get; set; }
 
         public string? PhotoUrl { get; set; }
-        public string Role { get; set; } = string.Empty;
+        public int Role { get; set; } = 1;
     }
 }

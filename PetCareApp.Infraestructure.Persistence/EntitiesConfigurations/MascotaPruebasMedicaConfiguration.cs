@@ -6,17 +6,20 @@ namespace PetCareApp.Infraestructure.Persistence.EntitiesConfigurations
 {
     public class MascotaPruebasMedicaConfiguration : IEntityTypeConfiguration<MascotaPruebasMedica>
     {
+
         public void Configure(EntityTypeBuilder<MascotaPruebasMedica> builder)
         {
             #region base configuration
-                builder.ToTable("Mascota_PruebasMedicas");
+            builder.ToTable("Mascota_PruebasMedicas");
             builder.HasKey(e => new { e.MascotaId, e.PruebaMedicaId });
             #endregion
 
             #region properties configuration
+
             builder.Property(e => e.Fecha)
             .HasDefaultValueSql("(getdate())")
             .HasColumnType("datetime");
+
             builder.Property(e => e.Resultado).HasMaxLength(255);
             #endregion
 
@@ -29,6 +32,8 @@ namespace PetCareApp.Infraestructure.Persistence.EntitiesConfigurations
                 .HasForeignKey(d => d.PruebaMedicaId)
                 .HasConstraintName("FK_MP_PruebasMedicas");
             #endregion
+
+
         }
     }
 }

@@ -10,7 +10,7 @@ namespace PetCareApp.Infraestructure.Persistence.EntitiesConfigurations
         {
             #region base configuration
             builder.ToTable("Recetas");
-            builder.HasKey(e => e.Id).HasName("PK__Recetas__3214EC070CE8C4A1");
+            builder.HasKey(e => e.Id).HasName("PK_Recetas_3214EC070CE8C4A1");
             #endregion
 
             #region properties configuration
