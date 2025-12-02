@@ -11,6 +11,8 @@ public class Dueño
     public required string Direccion { get; set; }
 
     public required string Cedula { get; set; }
+    
+    //public string? Email { get; set; }
 
     public string? Email { get; set; }
 

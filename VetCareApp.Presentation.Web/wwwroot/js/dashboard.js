@@ -1,7 +1,7 @@
 // js/dashboard.js - VERSION UNIFICADA PARA TODO EL DASHBOARD
 // Reemplaza tus otros scripts por este (o usa solo este).
 (function () {
-  const API = "https://localhost:7245/api";
+  const API = "https://localhost:7164/api";
   const token = localStorage.getItem("token");
   const rawUser = localStorage.getItem("user");
   const user = rawUser ? JSON.parse(rawUser) : null;
@@ -143,19 +143,21 @@
       if (q('productosStock')) q('productosStock').textContent = totalStock;
 
       // proximas citas (primeras 5)
+      // proximas citas (primeras 5)
       if (q('tablaCitasRecientes')) {
         const tbody = q('tablaCitasRecientes');
         const proximas = (citas || []).slice(0, 5);
+
         if (proximas.length === 0) {
           tbody.innerHTML = `<tr><td colspan="6" style="text-align:center">No hay citas próximas</td></tr>`;
         } else {
           tbody.innerHTML = proximas.map(c => {
             const dt = new Date(c.fechaHora);
-            const estado = getEstadoBadge(c.estado || c.estadoNombre || 'Pendiente');
             return `
-              <tr>
                 <td>${dt.toLocaleDateString('es-DO')}</td>
-                <td>${dt.toLocaleTimeString('es-DO', {hour:'2-digit', minute:'2-digit'})}</td>
+                <td>${c.mascota || '-'}</td>
+                <td>${c.motivo || '-'}</td>
+                <td>${c.estado || '-'}</td>
                 <td>${c.dueñoNombre || c.clienteNombre || '-'}</td>
                 <td>${c.mascotaNombre || '-'}</td>
                 <td>${c.motivo || '-'}</td>
@@ -253,40 +255,54 @@
   /* ===========================
       MASCOTAS
      =========================== */
-  async function cargarMascotas(filtro = '') {
-    try {
-      let url = `${API}/Mascotas`;
-      if (filtro) url += `?nombre=${encodeURIComponent(filtro)}`;
-      const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
-      if (!res.ok) throw new Error('Error al cargar mascotas');
-      const items = await res.json();
-      const tbody = q('tablaMascotas');
-      if (!tbody) return;
-      if (!items || items.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center">No se encontraron mascotas</td></tr>`;
-        return;
-      }
-      tbody.innerHTML = items.map(m => `
+  async function cargarMascotas() {
+  try {
+    const [resMascotas, resClientes, resTipos] = await Promise.all([
+      fetch(`${API}/Mascotas`, { headers: { Authorization: `Bearer ${token}` } }),
+      fetch(`${API}/Clientes`, { headers: { Authorization: `Bearer ${token}` } }),
+      fetch(`${API}/TipoMascota`, { headers: { Authorization: `Bearer ${token}` } })
+    ]);
+
+    const mascotas = resMascotas.ok ? await resMascotas.json() : [];
+    const clientes = resClientes.ok ? await resClientes.json() : [];
+    const tipos = resTipos.ok ? await resTipos.json() : [];
+
+    const tbody = q('tablaMascotas');
+    if (!tbody) return;
+
+    if (mascotas.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="8" style="text-align:center">No hay mascotas</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = mascotas.map(m => {
+      const dueño = clientes.find(c => c.id === m.dueñoId);
+      const tipo = tipos.find(t => t.id === m.tipoMascotaId);
+
+      return `
         <tr>
           <td>${m.id}</td>
           <td>${m.nombre}</td>
-          <td>${m.tipoMascota || m.tipo || '-'}</td>
-          <td>${m.edad ?? '-'}</td>
-          <td>${m.peso ?? '-'}</td>
-          <td>${m.dueñoNombre || m.duenoNombre || '-'}</td>
+          <td>${tipo ? tipo.tipo : '-'}</td>
+          <td>${m.edad}</td>
+          <td>${m.peso}</td>
+          <td>${dueño ? `${dueño.nombre} ${dueño.apellido}` : '-'}</td>
           <td>${m.estaCastrado ? '✅' : '❌'}</td>
           <td>
             <button class="btn-action btn-edit" data-id="${m.id}" data-type="mascota">Editar</button>
             <button class="btn-action btn-delete" data-id="${m.id}" data-type="mascota">Eliminar</button>
           </td>
         </tr>
-      `).join('');
-      attachTableButtons();
-    } catch (err) {
-      console.error(err);
-      if (q('tablaMascotas')) q('tablaMascotas').innerHTML = `<tr><td colspan="8" style="text-align:center;color:#EF4444">Error al cargar datos</td></tr>`;
-    }
+      `;
+    }).join('');
+
+    attachTableButtons();
+
+  } catch (err) {
+    console.error(err);
+    q('tablaMascotas').innerHTML = `<tr><td colspan="8" style="text-align:center;color:red">Error al cargar mascotas</td></tr>`;
   }
+}
 
   async function mostrarModalMascota(mascota = null) {
     // necesitamos tipos y dueños
@@ -334,91 +350,391 @@
       }
     });
   }
+/* ===========================
+    CITAS (LISTAR + CREAR + EDITAR)
+//    =========================== */
 
-  /* ===========================
-      CITAS
-     =========================== */
-  async function cargarCitas(fecha = null) {
-    try {
-      let url = `${API}/Citas`;
-      if (fecha) url += `?fecha=${encodeURIComponent(fecha)}`;
-      const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` }});
-      if (!res.ok) throw new Error('Error al cargar citas');
-      const items = await res.json();
-      const tbody = q('tablaCitas');
-      if (!tbody) return;
-      if (!items || items.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center">No se encontraron citas</td></tr>`;
-        return;
-      }
-      tbody.innerHTML = items.map(c => {
-        const dt = new Date(c.fechaHora);
-        const estado = getEstadoBadge(c.estado || c.estadoNombre || 'Pendiente');
-        return `
-          <tr>
-            <td>${c.id}</td>
-            <td>${dt.toLocaleString('es-DO')}</td>
-            <td>${c.dueñoNombre || '-'}</td>
-            <td>${c.veterinarioNombre || '-'}</td>
-            <td>${c.motivo || '-'}</td>
-            <td>${estado}</td>
-            <td>
-              <button class="btn-action btn-edit" data-id="${c.id}" data-type="cita">Editar</button>
-              <button class="btn-action btn-delete" data-id="${c.id}" data-type="cita">Cancelar</button>
-            </td>
-          </tr>
-        `;
-      }).join('');
-      attachTableButtons();
-    } catch (err) {
-      console.error(err);
-      if (q('tablaCitas')) q('tablaCitas').innerHTML = `<tr><td colspan="7" style="text-align:center;color:#EF4444">Error al cargar datos</td></tr>`;
+// // LISTAR CITAS
+// async function cargarCitas() {
+//   try {
+//     const res = await fetch(`${API}/Citas`, {
+//       headers: { Authorization: `Bearer ${token}` }
+//     });
+
+//     if (!res.ok) throw new Error('Error al cargar citas');
+
+//     const citas = await res.json();
+//     const tbody = q('tablaCitas');
+//     if (!tbody) return;
+
+//     if (!citas || citas.length === 0) {
+//       tbody.innerHTML = `<tr><td colspan="8" style="text-align:center">No hay citas</td></tr>`;
+//       return;
+//     }
+
+//     tbody.innerHTML = citas.map(c => {
+//       const fecha = new Date(c.fechaHora);
+
+//       return `
+//         <tr>
+//           <td>${c.id}</td>
+//           <td>${fecha.toLocaleDateString('es-DO')}</td>
+//           <td>${fecha.toLocaleTimeString('es-DO', { hour: '2-digit', minute: '2-digit' })}</td>
+//           <td>${c.clienteNombre || c.dueñoNombre || '-'}</td>
+//           <td>${c.mascotaNombre || '-'}</td>
+//           <td>${c.motivo || '-'}</td>
+//           <td>${c.estadoNombre || '-'}</td>
+//           <td>
+//             <button class="btn-action btn-edit" data-id="${c.id}" data-type="cita">Editar</button>
+//             <button class="btn-action btn-delete" data-id="${c.id}" data-type="cita">Eliminar</button>
+//           </td>
+//         </tr>
+//       `;
+//     }).join('');
+
+//     attachTableButtons();
+
+//   } catch (err) {
+//     console.error(err);
+//     if (q('tablaCitas')) {
+//       q('tablaCitas').innerHTML = `
+//         <tr><td colspan="8" style="text-align:center;color:#EF4444">Error al cargar citas</td></tr>
+//       `;
+//     }
+//   }
+// }
+
+
+// // MODAL DE CITA
+// async function mostrarModalCita(cita = null) {
+//   let estados = [], motivos = [], duenos = [], mascotas = [];
+
+//   try {
+//     const r1 = await fetch(`${API}/Estados`, { headers: { Authorization: `Bearer ${token}` }});
+//     estados = r1.ok ? await r1.json() : [];
+
+//     const r2 = await fetch(`${API}/MotivosCita`, { headers: { Authorization: `Bearer ${token}` }});
+//     motivos = r2.ok ? await r2.json() : [];
+
+//     const r3 = await fetch(`${API}/Clientes`, { headers: { Authorization: `Bearer ${token}` }});
+//     duenos = r3.ok ? await r3.json() : [];
+
+//     const r4 = await fetch(`${API}/Mascotas`, { headers: { Authorization: `Bearer ${token}` }});
+//     mascotas = r4.ok ? await r4.json() : [];
+
+//   } catch (e) {
+//     console.warn('Error cargando datos cita', e);
+//   }
+
+//   const html = `
+//     <div class="form-group">
+//       <label>Fecha y Hora</label>
+//       <input id="inputFechaHora" type="datetime-local" class="form-control"
+//         value="${cita ? new Date(cita.fechaHora).toISOString().slice(0,16) : ''}" required>
+//     </div>
+
+//     <div class="form-group">
+//       <label>Cliente</label>
+//       <select id="inputDuenoCita" class="form-control" required>
+//         <option value="">Seleccionar...</option>
+//         ${duenos.map(d => `
+//           <option value="${d.id}" ${cita?.dueñoId === d.id ? 'selected' : ''}>
+//             ${d.nombre} ${d.apellido}
+//           </option>
+//         `).join('')}
+//       </select>
+//     </div>
+
+//     <div class="form-group">
+//       <label>Mascota</label>
+//       <select id="inputMascota" class="form-control" required>
+//         <option value="">Seleccionar...</option>
+//         ${mascotas.map(m => `
+//           <option value="${m.id}" ${cita?.mascotaId === m.id ? 'selected' : ''}>
+//             ${m.nombre}
+//           </option>
+//         `).join('')}
+//       </select>
+//     </div>
+
+//     <div class="form-group">
+//       <label>Veterinario</label>
+//       <input id="inputVeterinario" class="form-control" value="1" disabled>
+//     </div>
+
+//     <div class="form-group">
+//       <label>Motivo</label>
+//       <select id="inputMotivo" class="form-control" required>
+//         ${motivos.map(m => `
+//           <option value="${m.id}" ${cita?.motivoId === m.id ? 'selected' : ''}>
+//             ${m.motivo}
+//           </option>
+//         `).join('')}
+//       </select>
+//     </div>
+
+//     <div class="form-group">
+//       <label>Estado</label>
+//       <select id="inputEstado" class="form-control" required>
+//         ${estados.map(e => `
+//           <option value="${e.id}" ${cita?.estadoId === e.id ? 'selected' : ''}>
+//             ${e.nombre}
+//           </option>
+//         `).join('')}
+//       </select>
+//     </div>
+
+//     <div class="form-group">
+//       <label>Observaciones</label>
+//       <textarea id="inputObservaciones" class="form-control" rows="3" required>
+// ${cita?.observaciones || ''}
+//       </textarea>
+//     </div>
+//   `;
+
+//   abrirModal(cita ? 'Editar Cita' : 'Nueva Cita', html, async () => {
+
+//     const payload = {
+//       fechaHora: new Date(q('inputFechaHora').value).toISOString(),
+//       dueñoId: Number(q('inputDuenoCita').value),
+//       mascotaId: Number(q('inputMascota').value),
+//       veterinarioId: 1,
+//       motivoId: Number(q('inputMotivo').value),
+//       estadoId: Number(q('inputEstado').value),
+//       observaciones: q('inputObservaciones').value.trim()
+//     };
+
+//     try {
+//       let res;
+
+//       if (cita) {
+//         res = await fetch(`${API}/Citas/${cita.id}`, {
+//           method: 'PUT',
+//           headers: {
+//             'Content-Type': 'application/json',
+//             Authorization: `Bearer ${token}`
+//           },
+//           body: JSON.stringify(payload)
+//         });
+//       } else {
+//         res = await fetch(`${API}/Citas`, {
+//           method: 'POST',
+//           headers: {
+//             'Content-Type': 'application/json',
+//             Authorization: `Bearer ${token}`
+//           },
+//           body: JSON.stringify(payload)
+//         });
+//       }
+
+//       if (!res.ok) {
+//         const err = await res.text();
+//         throw new Error(err);
+//       }
+
+//       cerrarModal();
+//       cargarCitas();
+
+//     } catch (e) {
+//       alert('Error guardando cita: ' + e.message);
+//     }
+//   });
+// }
+
+// // EXponer funciones globales
+// window.cargarCitas = cargarCitas;
+// window.mostrarModalCita = mostrarModalCita;
+
+
+/* ===========================
+          CITAS
+=========================== */
+
+const API_CITAS = `${API}/Citas`;
+
+/* ===== LISTAR CITAS ===== */
+async function cargarCitas(fecha = null) {
+  try {
+    let url = `${API}/Citas`;
+    if (fecha) url += `?fecha=${encodeURIComponent(fecha)}`;
+
+    const res = await fetch(url, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+
+    if (!res.ok) throw new Error('Error al cargar citas');
+
+    const items = await res.json();
+    const tbody = q('tablaCitas');
+
+    if (!tbody) return;
+
+    if (!items || items.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="7" style="text-align:center">No se encontraron citas</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = items.map(c => {
+      const dt = new Date(c.fechaHora);
+
+      return `
+        <tr>
+          <td>${c.id}</td>
+          <td>${dt.toLocaleDateString('es-DO')} ${dt.toLocaleTimeString('es-DO', {hour:'2-digit',minute:'2-digit'})}</td>
+          <td>${c.cliente || '-'}</td>
+          <td>${c.veterinario || '-'}</td>
+          <td>${c.motivo || '-'}</td>
+          <td>${c.estado || '-'}</td>
+          <td>
+            <button class="btn-action btn-edit" data-id="${c.id}" data-type="cita">Editar</button>
+            <button class="btn-action btn-delete" data-id="${c.id}" data-type="cita">Eliminar</button>
+          </td>
+        </tr>
+      `;
+    }).join('');
+
+    attachTableButtons();
+
+  } catch (err) {
+    console.error(err);
+    if (q('tablaCitas')) {
+      q('tablaCitas').innerHTML = `<tr><td colspan="7" style="text-align:center;color:#EF4444">Error al cargar datos</td></tr>`;
     }
   }
+}
 
-  async function mostrarModalCita(cita = null) {
-    // cargar estados, motivos, dueños
-    let estados = [], motivos = [], duenos = [], veterinarios = [];
-    try {
-      const r1 = await fetch(`${API}/Estados`, { headers: { Authorization: `Bearer ${token}` }});
-      estados = r1.ok ? await r1.json() : [];
-      const r2 = await fetch(`${API}/MotivosCita`, { headers: { Authorization: `Bearer ${token}` }});
-      motivos = r2.ok ? await r2.json() : [];
-      const r3 = await fetch(`${API}/Clientes`, { headers: { Authorization: `Bearer ${token}` }});
-      duenos = r3.ok ? await r3.json() : [];
-      // veterinarios: si no hay endpoint, usar valores dummy
-      // TODO: si tienes un endpoint de personal filtrado por veterinario, úsalo
-      veterinarios = [{ id: 1, nombre: 'Dr. Juan Pérez' }, { id: 2, nombre: 'Dra. Ana Torres' }];
-    } catch (e) { console.warn('error cargando datos cita', e); }
 
-    const html = `
-      <div class="form-group"><label>Fecha y Hora</label><input id="inputFechaHora" type="datetime-local" class="form-control" value="${cita ? new Date(cita.fechaHora).toISOString().slice(0,16) : ''}" required></div>
-      <div class="form-group"><label>Cliente</label><select id="inputDuenoCita" class="form-control" required><option value="">Seleccionar...</option>${duenos.map(d => `<option value="${d.id}" ${cita?.dueñoId === d.id ? 'selected' : ''}>${d.nombre} ${d.apellido}</option>`).join('')}</select></div>
-      <div class="form-group"><label>Veterinario</label><select id="inputVeterinario" class="form-control" required><option value="">Seleccionar...</option>${veterinarios.map(v => `<option value="${v.id}" ${cita?.veterinarioId === v.id ? 'selected' : ''}>${v.nombre}</option>`).join('')}</select></div>
-      <div class="form-group"><label>Motivo</label><select id="inputMotivo" class="form-control" required><option value="">Seleccionar...</option>${motivos.map(m => `<option value="${m.id}" ${cita?.motivoId === m.id ? 'selected' : ''}>${m.motivo || m.motivoCita || 'Motivo'}</option>`).join('')}</select></div>
-      <div class="form-group"><label>Estado</label><select id="inputEstado" class="form-control" required>${estados.map(e => `<option value="${e.id}" ${cita?.estadoId === e.id ? 'selected' : ''}>${e.nombre}</option>`).join('')}</select></div>
-    `;
-    abrirModal(cita ? 'Editar Cita' : 'Nueva Cita', html, async () => {
-      const payload = {
-        fechaHora: new Date(q('inputFechaHora').value).toISOString(),
-        dueñoId: Number(q('inputDuenoCita').value),
-        veterinarioId: Number(q('inputVeterinario').value),
-        motivoId: Number(q('inputMotivo').value),
-        estadoId: Number(q('inputEstado').value)
-      };
-      try {
-        let res;
-        if (cita) {
-          res = await fetch(`${API}/Citas/${cita.id}`, { method: 'PUT', headers: {'Content-Type':'application/json', Authorization:`Bearer ${token}`}, body: JSON.stringify(payload) });
-        } else {
-          res = await fetch(`${API}/Citas`, { method: 'POST', headers: {'Content-Type':'application/json', Authorization:`Bearer ${token}`}, body: JSON.stringify(payload) });
-        }
-        if (!res.ok) throw new Error('Error guardando cita');
-        cerrarModal();
-        cargarCitas();
-      } catch (e) { alert('Error: '+e.message) }
-    });
+
+/* ===== MODAL CREAR / EDITAR ===== */
+async function mostrarModalCita(citaId = null) {
+  let estados = [], motivos = [], duenos = [], mascotas = [];
+  let cita = null;
+
+  try {
+    const r1 = await fetch(`${API}/Estados`, { headers: { Authorization: `Bearer ${token}` }});
+    estados = r1.ok ? await r1.json() : [];
+
+    const r2 = await fetch(`${API}/MotivosCita`, { headers: { Authorization: `Bearer ${token}` }});
+    motivos = r2.ok ? await r2.json() : [];
+
+    const r3 = await fetch(`${API}/Clientes`, { headers: { Authorization: `Bearer ${token}` }});
+    duenos = r3.ok ? await r3.json() : [];
+
+    const r4 = await fetch(`${API}/Mascotas`, { headers: { Authorization: `Bearer ${token}` }});
+    mascotas = r4.ok ? await r4.json() : [];
+
+    if (citaId) {
+      const rc = await fetch(`${API}/Citas/${citaId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      cita = rc.ok ? await rc.json() : null;
+    }
+
+  } catch (e) {
+    console.warn('Error cargando datos de citas', e);
   }
+
+  const html = `
+    <div class="form-group">
+      <label>Fecha y Hora</label>
+      <input id="inputFechaHora" type="datetime-local" class="form-control"
+        value="${cita ? new Date(cita.fechaHora).toISOString().slice(0,16) : ''}" required>
+    </div>
+
+    <div class="form-group">
+      <label>Cliente</label>
+      <select id="inputDuenoCita" class="form-control" required>
+        <option value="">Seleccionar...</option>
+        ${duenos.map(d => `<option value="${d.id}" ${cita?.dueñoId == d.id ? 'selected' : ''}>${d.nombre} ${d.apellido}</option>`).join('')}
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Mascota</label>
+      <select id="inputMascota" class="form-control" required>
+        <option value="">Seleccionar...</option>
+        ${mascotas.map(m => `<option value="${m.id}" ${cita?.mascotaId == m.id ? 'selected' : ''}>${m.nombre}</option>`).join('')}
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Veterinario</label>
+      <input id="inputVeterinario" class="form-control" value="1" disabled>
+    </div>
+
+    <div class="form-group">
+      <label>Motivo</label>
+      <select id="inputMotivo" class="form-control" required>
+        <option value="">Seleccionar...</option>
+        ${motivos.map(m => `<option value="${m.id}" ${cita?.motivoId == m.id ? 'selected' : ''}>${m.motivo}</option>`).join('')}
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Estado</label>
+      <select id="inputEstado" class="form-control" required>
+        ${estados.map(e => `<option value="${e.id}" ${cita?.estadoId == e.id ? 'selected' : ''}>${e.nombre}</option>`).join('')}
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Observaciones</label>
+      <textarea id="inputObservaciones" class="form-control" rows="3">${cita?.observaciones || ''}</textarea>
+    </div>
+  `;
+
+  abrirModal(cita ? 'Editar Cita' : 'Nueva Cita', html, async () => {
+    const payload = {
+      fechaHora: new Date(q('inputFechaHora').value).toISOString(),
+      dueñoId: Number(q('inputDuenoCita').value),
+      mascotaId: Number(q('inputMascota').value),
+      veterinarioId: 1,
+      motivoId: Number(q('inputMotivo').value),
+      estadoId: Number(q('inputEstado').value),
+      observaciones: q('inputObservaciones').value.trim()
+    };
+
+    try {
+      const res = await fetch(
+        cita ? `${API}/Citas/${cita.id}` : `${API}/Citas`,
+        {
+          method: cita ? 'PUT' : 'POST',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+          body: JSON.stringify(payload)
+        }
+      );
+
+      if (!res.ok) throw new Error(await res.text());
+
+      cerrarModal();
+      cargarCitas();
+
+    } catch (e) {
+      alert('Error guardando cita: ' + e.message);
+    }
+  });
+}
+
+
+/* ===== ELIMINAR ===== */
+async function eliminarCita(id) {
+  if (!confirm('¿Eliminar esta cita?')) return;
+
+  try {
+    const res = await fetch(`${API}/Citas/${id}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${token}` }
+    });
+
+    if (!res.ok) throw new Error('No se pudo eliminar');
+
+    cargarCitas();
+  } catch (e) {
+    alert('Error al eliminar: ' + e.message);
+  }
+}
+
+
 
   /* ===========================
       PRODUCTOS
@@ -501,35 +817,47 @@
   /* ===========================
       INVENTARIO (solo listado básico)
      =========================== */
-  async function cargarInventario(fecha = null) {
-    try {
-      let url = `${API}/Inventario`;
-      if (fecha) url += `?fecha=${encodeURIComponent(fecha)}`;
-      const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` }});
-      if (!res.ok) throw new Error('Error al cargar inventario');
-      const items = await res.json();
-      const tbody = q('tablaInventario');
-      if (!tbody) return;
-      if (!items || items.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center">No se encontraron movimientos</td></tr>`;
-        return;
-      }
-      tbody.innerHTML = items.map(l => `
+async function cargarInventario() {
+  try {
+    const res = await fetch(`${API}/Admin/logs`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+
+    if (!res.ok) throw new Error('No se pudo cargar logs');
+
+    const logs = await res.json();
+    const tbody = q('tablaInventario');
+
+    if (!tbody) return;
+
+    if (logs.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="7" style="text-align:center">No hay movimientos registrados</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = logs.map(l => {
+      const fecha = new Date(l.timestamp).toLocaleString('es-DO');
+
+      return `
         <tr>
           <td>${l.id}</td>
-          <td>${l.productoNombre || l.producto?.nombre || '-'}</td>
-          <td>${l.tipoMovimiento || '-'}</td>
-          <td>${l.cantidad}</td>
-          <td>${new Date(l.fecha).toLocaleString('es-DO')}</td>
-          <td>${l.personalNombre || '-'}</td>
-          <td>${l.observaciones || '-'}</td>
+          <td>${l.accion}</td>
+          <td>${l.tipo}</td>
+          <td>1</td>
+          <td>${fecha}</td>
+          <td>${l.usuario}</td>
+          <td>${l.detalles}</td>
         </tr>
-      `).join('');
-    } catch (err) {
-      console.error(err);
-      if (q('tablaInventario')) q('tablaInventario').innerHTML = `<tr><td colspan="7" style="text-align:center;color:#EF4444">Error al cargar inventario</td></tr>`;
-    }
+      `;
+    }).join('');
+
+  } catch (err) {
+    console.error(err);
+    q('tablaInventario').innerHTML =
+      `<tr><td colspan="7" style="text-align:center;color:red">Error al cargar inventario</td></tr>`;
   }
+}
+
 
   /* ===========================
       BOTONES DE TABLA (delegación)

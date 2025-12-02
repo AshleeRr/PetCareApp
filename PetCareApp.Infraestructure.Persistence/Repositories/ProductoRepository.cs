@@ -84,7 +84,7 @@ namespace PetCareApp.Infraestructure.Persistence.Repositories
             existente.Stock = producto.Stock;
             existente.Precio = producto.Precio;
             existente.TipoProductoId = producto.TipoProductoId;
-            existente.ImagenUrl = producto.ImagenUrl;
+            //existente.ImagenUrl = producto.ImagenUrl;
 
             await _context.SaveChangesAsync();
 

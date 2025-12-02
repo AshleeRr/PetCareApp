@@ -1,4 +1,4 @@
-const API_URL = "https://localhost:7245/api/ControllerAutenticacion";
+const API_URL = "https://localhost:7164/api/ControllerAutenticacion";
 
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("registerForm");

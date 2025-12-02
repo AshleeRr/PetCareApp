@@ -1,4 +1,4 @@
-const API_URL = "https://localhost:7245/api/ControllerAutenticacion";
+const API_URL = "https://localhost:7164/api/ControllerAutenticacion";
 
 document.addEventListener("DOMContentLoaded", () => {
   const loginForm = document.getElementById("loginForm");
@@ -21,6 +21,9 @@ document.addEventListener("DOMContentLoaded", () => {
         break;
       case "admin":
         window.location.href = "admin.html";
+        break;
+      case "veterinario":
+        window.location.href = "veterinario.html";
         break;
       default:
         console.warn("Rol desconocido:", r);

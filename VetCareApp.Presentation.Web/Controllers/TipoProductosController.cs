@@ -5,12 +5,11 @@ using PetCareApp.Core.Domain.Interfaces;
 
 using PetCareApp.Core.Application.Dtos;
 using PetCareApp.Application.Interfaces;
-=======
 
 
 namespace VetCareApp.Presentation.Web.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]")] // Cambios realizados
     [ApiController]
 
     public class TipoProductoController : ControllerBase
@@ -35,7 +34,8 @@ namespace VetCareApp.Presentation.Web.Controllers
             var tipo = await _service.ObtenerPorIdAsync(id);
             if (tipo == null) return NotFound();
             return Ok(tipo);
-=======
+        }
+
     public class TipoProductosController : ControllerBase
     {
         private readonly IGenericRepositorio<PetCareApp.Core.Domain.Entities.TipoProducto> _tipoProductoRepo;
@@ -45,21 +45,22 @@ namespace VetCareApp.Presentation.Web.Controllers
             _tipoProductoRepo = tipoProductoRepo;
         }
 
-        /// <summary>
-        /// Obtener todos los tipos de productos (categorías)
-        /// </summary>
-        [HttpGet]
-        [AllowAnonymous]
-        public async Task<ActionResult> GetAll()
-        {
-            try
+            /// <summary>
+            /// Obtener todos los tipos de productos (categorías)
+            /// </summary>
+            [HttpGet]
+            [AllowAnonymous]
+            public async Task<ActionResult> GetAll()
             {
-                var tipos = await _tipoProductoRepo.GetAllAsync();
-                return Ok(tipos);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { mensaje = $"Error interno: {ex.Message}" });
+                try
+                {
+                    var tipos = await _tipoProductoRepo.GetAllAsync();
+                    return Ok(tipos);
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(500, new { mensaje = $"Error interno: {ex.Message}" });
+                }
             }
         }
     }

@@ -8,6 +8,9 @@ namespace PetCareApp.Application.Services
 {
     public class TipoMascotaService : ITipoMascotaService
     {
+        private readonly ITipoMascotaRepository _repository;
+
+        public TipoMascotaService(ITipoMascotaRepository repository);
         private readonly IRepository<TipoMascota> _repository;
 
         public TipoMascotaService(IRepository<TipoMascota> repository)
@@ -17,6 +20,7 @@ namespace PetCareApp.Application.Services
 
         public async Task<List<TipoMascotaDto>> ObtenerTodosAsync()
         {
+            var tipos = await _repository.GetAllAsync(); // ENTIDADES, no DTOs
             var tipos = await _repository.GetAllAsync(); // del repositorio genérico
 
             return tipos.Select(t => new TipoMascotaDto

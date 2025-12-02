@@ -90,6 +90,7 @@ namespace PetCareApp.Core.Application.Services
                     Id = p.Id,
                     Nombre = p.Nombre,
                     Precio = p.Precio,
+                    //ImagenUrl = p.ImagenUrl,
                     ImagenUrl = p.ImagenUrl,
                     TipoProducto = p.TipoProducto.Tipo,
                     DisponibleParaVenta = p.Stock > 0
@@ -112,6 +113,7 @@ namespace PetCareApp.Core.Application.Services
                     Stock = dto.Stock,
                     Precio = dto.Precio,
                     TipoProductoId = dto.TipoProductoId,
+                    //ImagenUrl = dto.ImagenUrl
                     ImagenUrl = dto.ImagenUrl
                 };
 
@@ -144,6 +146,7 @@ namespace PetCareApp.Core.Application.Services
                     Stock = dto.Stock,
                     Precio = dto.Precio,
                     TipoProductoId = dto.TipoProductoId,
+                    //ImagenUrl = dto.ImagenUrl
                     ImagenUrl = dto.ImagenUrl
                 };
 
@@ -201,6 +204,7 @@ namespace PetCareApp.Core.Application.Services
                     Stock = producto.Stock,
                     Precio = producto.Precio,
                     TipoProductoId = producto.TipoProductoId,
+                    //ImagenUrl = producto.ImagenUrl
                     ImagenUrl = producto.ImagenUrl
                 };
 
@@ -225,6 +229,7 @@ namespace PetCareApp.Core.Application.Services
                 Precio = producto.Precio,
                 TipoProductoId = producto.TipoProductoId,
                 TipoProducto = producto.TipoProducto.Tipo,
+                //ImagenUrl = producto.ImagenUrl
                 ImagenUrl = producto.ImagenUrl
             };
         }

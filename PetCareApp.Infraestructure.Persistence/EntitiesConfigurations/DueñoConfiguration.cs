@@ -21,6 +21,9 @@ namespace PetCareApp.Infraestructure.Persistence.EntitiesConfigurations
             builder.Property(e => e.Direccion).HasMaxLength(100);
             builder.Property(e => e.Nombre).HasMaxLength(50);
 
+            //builder.Property(e => e.Email)
+            //    .HasMaxLength(100)
+            //    .IsRequired(false);
             builder.Property(e => e.Email)
                 .HasMaxLength(100)
                 .IsRequired(false);
