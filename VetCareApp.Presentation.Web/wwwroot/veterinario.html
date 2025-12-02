@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo Veterinario</title>
+  <link rel="stylesheet" href="css/veterinario.css">
+</head>
+<body>
+  <button class="btn btn-logout" onclick="cerrarSesion()">Cerrar Sesión</button>
+
+  <div class="container">
+    <div class="header">
+      <h1>🏥 Panel Veterinario</h1>
+      <div class="vet-info" id="vet-info">
+        <p><strong>Veterinario:</strong> <span id="vet-nombre">Cargando...</span></p>
+        <p><strong>Email:</strong> <span id="vet-email">-</span></p>
+      </div>
+    </div>
+
+    <div class="content">
+      <!-- Estadísticas -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h3 id="stat-citas-hoy">0</h3>
+          <p>Citas Hoy</p>
+        </div>
+        <div class="stat-card">
+          <h3 id="stat-mascotas">0</h3>
+          <p>Mascotas Asignadas</p>
+        </div>
+        <div class="stat-card">
+          <h3 id="stat-pendientes">0</h3>
+          <p>Citas Pendientes</p>
+        </div>
+      </div>
+
+      <!-- Citas del Día -->
+      <div class="section">
+        <h2>📅 Citas del Día</h2>
+        <div class="filter-buttons">
+          <button class="btn btn-primary" onclick="filtrarCitas('all')">Todas</button>
+          <button class="btn btn-warning" onclick="filtrarCitas('Pendiente')">Pendientes</button>
+          <button class="btn btn-success" onclick="filtrarCitas('Completada')">Completadas</button>
+        </div>
+        <div id="loading-citas" class="loading">Cargando citas...</div>
+        <table id="tabla-citas" style="display: none;">
+          <thead>
+            <tr>
+              <th>Hora</th>
+              <th>Mascota</th>
+              <th>Dueño</th>
+              <th>Motivo</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-citas"></tbody>
+        </table>
+        <div id="empty-citas" class="empty-state" style="display: none;">
+          No hay citas programadas para hoy
+        </div>
+      </div>
+
+      <!-- Mascotas Asignadas -->
+      <div class="section">
+        <h2>🐾 Mis Mascotas</h2>
+        <div class="search-bar">
+          <input type="text" id="search-mascota" placeholder="Buscar mascota por nombre..." onkeyup="buscarMascota()">
+        </div>
+        <div id="loading-mascotas" class="loading">Cargando mascotas...</div>
+        <table id="tabla-mascotas" style="display: none;">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Especie</th>
+              <th>Raza</th>
+              <th>Edad</th>
+              <th>Dueño</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-mascotas"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Atender Cita -->
+  <div id="modal-atender" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Atender Cita</h2>
+        <span class="close-modal" onclick="cerrarModal('modal-atender')">&times;</span>
+      </div>
+      <div id="info-cita"></div>
+      
+      <form id="form-consulta">
+        <input type="hidden" id="cita-id">
+        <input type="hidden" id="mascota-id">
+        
+        <div class="form-group">
+          <label>Diagnóstico:</label>
+          <textarea id="diagnostico" required placeholder="Describa el diagnóstico..."></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label>Tratamiento:</label>
+          <textarea id="tratamiento" required placeholder="Indique el tratamiento..."></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label>Pruebas Médicas:</label>
+          <select id="prueba-medica">
+            <option value="">-- Seleccionar prueba (opcional) --</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label>
+            <input type="checkbox" id="crear-receta">
+            Crear receta médica
+          </label>
+        </div>
+        
+        <div id="receta-section" style="display: none;">
+          <h3>Medicamentos</h3>
+          <div id="medicamentos-list"></div>
+          <button type="button" class="btn btn-info" onclick="agregarMedicamento()">+ Agregar Medicamento</button>
+        </div>
+        
+        <button type="submit" class="btn btn-success" style="width: 100%; margin-top: 20px;">Guardar Consulta</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Historial -->
+  <div id="modal-historial" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Historial Clínico</h2>
+        <span class="close-modal" onclick="cerrarModal('modal-historial')">&times;</span>
+      </div>
+      <div id="info-mascota-historial"></div>
+      <div id="loading-historial" class="loading">Cargando historial...</div>
+      <table id="tabla-historial" style="display: none;">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Diagnóstico</th>
+            <th>Tratamiento</th>
+            <th>Receta</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-historial"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="js/veterinario.js"></script>
+</body>
+</html>

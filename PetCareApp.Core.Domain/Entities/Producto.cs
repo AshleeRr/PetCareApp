@@ -13,6 +13,8 @@ public class Producto
     public int TipoProductoId { get; set; }
 
     public TipoProducto TipoProducto { get; set; } = null!;
+    
+    //public string? ImagenUrl { get; set; } 
     public string? ImagenUrl { get; set; } 
 
     public ICollection<Despacho> Despachos { get; set; } = new List<Despacho>();

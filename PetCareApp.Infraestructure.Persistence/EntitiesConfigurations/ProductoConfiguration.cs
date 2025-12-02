@@ -17,6 +17,7 @@ namespace PetCareApp.Infraestructure.Persistence.EntitiesConfigurations
             builder.Property(e => e.Nombre).HasMaxLength(100);
             builder.Property(e => e.Stock).IsRequired();
             builder.Property(e => e.Precio).HasColumnType("decimal(10, 2)");
+            //builder.Property(e => e.ImagenUrl).HasMaxLength(500);
             builder.Property(e => e.ImagenUrl).HasMaxLength(500);
             #endregion
 

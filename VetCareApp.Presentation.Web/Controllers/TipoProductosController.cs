@@ -9,7 +9,7 @@ using PetCareApp.Application.Interfaces;
 
 namespace VetCareApp.Presentation.Web.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]")] // Cambios realizados
     [ApiController]
 
     public class TipoProductoController : ControllerBase
@@ -35,6 +35,7 @@ namespace VetCareApp.Presentation.Web.Controllers
             if (tipo == null) return NotFound();
             return Ok(tipo);
         }
+
     public class TipoProductosController : ControllerBase
         {
             private readonly IGenericRepositorio<PetCareApp.Core.Domain.Entities.TipoProducto> _tipoProductoRepo;

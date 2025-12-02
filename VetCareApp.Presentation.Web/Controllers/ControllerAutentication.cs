@@ -127,7 +127,8 @@ namespace VetCareApp.Presentation.Web.Controllers
         </script>
         <p>Autenticando... si la ventana no se cierra automáticamente, ciérrala manualmente.</p>
     </body>
-</html>";           
+</html>";
+            return Content(html, "text/html");
         }
     }
 }

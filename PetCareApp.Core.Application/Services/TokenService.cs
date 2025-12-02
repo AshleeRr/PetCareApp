@@ -18,7 +18,7 @@ namespace Infraestructura.Servicios
         }
 
         public string GenerateToken(Usuario usuario)
-        {
+        {                
             if (usuario.Role == null)
             {
                 throw new InvalidOperationException("El usuario no tiene un rol asignado");
