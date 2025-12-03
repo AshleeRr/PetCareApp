@@ -16,12 +16,12 @@ namespace PetCareApp.Application.Interfaces
     }
 }
 
-namespace PetCareApp.Application.Interfaces
+/*namespace PetCareApp.Application.Interfaces
 {
     public interface ITipoMascotaRepository
     {
         Task<List<TipoMascota>> ObtenerTodosAsync();
         Task<TipoMascota?> ObtenerPorIdAsync(int id);
     }
-}
+}*/
 

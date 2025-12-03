@@ -3,11 +3,14 @@ using Infraestructura.Servicios;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using PetCareApp.Application.Interfaces;
 using PetCareApp.Core.Application.Interfaces;
 using PetCareApp.Core.Application.Services;
 using PetCareApp.Core.Domain.Interfaces;
+using PetCareApp.Domain.Interfaces;
 using PetCareApp.Infraestructure.Persistence.Context;
 using PetCareApp.Infraestructure.Persistence.Repositories;
+using PetCareApp.Infrastructure.Repositorios;
 
 namespace PetCareApp.Infraestructure.Persistence
 {
@@ -43,6 +46,9 @@ namespace PetCareApp.Infraestructure.Persistence
             services.AddScoped<IEstadoRepository, EstadoRepository>();
             services.AddScoped<IMotivoCitaRepository, MotivoCitaRepository>();
             services.AddScoped<IRazaMascotaRepository, RazaMascotRepository>();
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped<ITipoMascotaRepository, TipoMascotaRepository>();
+            services.AddScoped<ITipoProductoRepository, TipoProductoRepository>();
 
             // Médicos y Tratamientos
             services.AddScoped<IMedicamentoRepository, MedicamentosRepository>();

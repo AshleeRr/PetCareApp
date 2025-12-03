@@ -14,5 +14,10 @@ namespace PetCareApp.Core.Application.Services
         {
             Console.WriteLine($"[ERROR] {DateTime.Now:yyyy-MM-dd HH:mm:ss} {(!string.IsNullOrEmpty(usuario) ? $"Usuario:{usuario}" : "")} - {mensaje}");
         }
+
+        public void Warning(string mensaje, string usuario = "")
+        {
+            Console.WriteLine($"[Warning] {DateTime.Now:yyyy-MM-dd HH:mm:ss} {(!string.IsNullOrEmpty(usuario) ? $"Usuario:{usuario}" : "")} - {mensaje}");
+        }
     }
 }

@@ -20,15 +20,11 @@ namespace VetCareApp.Presentation.Web
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // ========================
             // IOC
-            // ========================
             builder.Services.AddPersistencelayerIoc(builder.Configuration);
             builder.Services.AddApplicationlayerIoc();
 
-            // ========================
             // SMTP
-            // ========================
             builder.Services.Configure<ConfiguracionServices2>(
                 builder.Configuration.GetSection("SmtpSettings")
             );
@@ -42,60 +38,21 @@ namespace VetCareApp.Presentation.Web
 
             builder.Services.AddRazorPages();
 
-            // ========================
-            // SERVICIOS EXTRAS
-            // ========================
-            builder.Services.AddScoped<IEmailService, EmailService>();
-            builder.Services.AddScoped<IPasswordResetTokenRepository, PasswordResetTokenRepository>();
-            builder.Services.AddScoped<IPasswordResetService, PasswordResetService>();
-
-            // ========================
-            // PRODUCTOS
-            // ========================
-            builder.Services.AddScoped<IProductoService, ProductoService>();
-            builder.Services.AddScoped<IProductoRepository, ProductoRepository>();
-            
-            builder.Services.AddScoped<IMascotaService, MascotaService>();
-            builder.Services.AddScoped<IAdminService, AdminService>();
-            builder.Services.AddScoped<IUsuarioAdminRepository, UsuarioAdminRepository>();
-            builder.Services.AddScoped<IPersonalRepository, PersonalRepository>();
-            builder.Services.AddScoped<ISistemaLogRepository, SistemaLogRepository>();
-            builder.Services.AddScoped<IVentaRepository, VentaRepository>();
-            //
-
-
-
-            builder.Services.AddScoped<ITipoProductoService, TipoProductoService>();
-            builder.Services.AddScoped<ITipoProductoRepository, TipoProductoRepository>();
-
-            // ========================
-            // MASCOTAS
-            // ========================
-            builder.Services.AddScoped<IMascotaService, MascotaService>();
-            builder.Services.AddScoped<IMascotaRepository, MascotaRepository>();
-
-            builder.Services.AddScoped<ITipoMascotaService, TipoMascotaService>();
-            builder.Services.AddScoped<ITipoMascotaRepository, TipoMascotaRepository>();
-
-            // ========================
-            // JWT SETTINGS
-            // ========================
+            // JWT
             var jwtKey = builder.Configuration["JwtSettings:SecretKey"];
             var jwtIssuer = builder.Configuration["JwtSettings:Issuer"];
             var jwtAudience = builder.Configuration["JwtSettings:Audience"];
 
-            if (string.IsNullOrEmpty(jwtKey) ||
-                string.IsNullOrEmpty(jwtIssuer) ||
-                string.IsNullOrEmpty(jwtAudience))
-                throw new Exception("Faltan configuraciones de JWT.");
+            if (string.IsNullOrEmpty(jwtKey) || string.IsNullOrEmpty(jwtIssuer) || string.IsNullOrEmpty(jwtAudience))
+            {
+                throw new Exception("Faltan configuraciones de JWT en appsettings.json.");
+            }
 
             builder.Services.Configure<ConfiguracionServices>(
                 builder.Configuration.GetSection("JwtSettings")
             );
 
-            // ========================
-            // AUTHENTICATION ✅ (SIN DUPLICADOS)
-            // ========================
+            // AUTHENTICATION
             builder.Services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -108,7 +65,6 @@ namespace VetCareApp.Presentation.Web
                     context.Response.StatusCode = 401;
                     return Task.CompletedTask;
                 };
-
                 options.Events.OnRedirectToAccessDenied = context =>
                 {
                     context.Response.StatusCode = 403;
@@ -125,9 +81,7 @@ namespace VetCareApp.Presentation.Web
                     ValidateIssuerSigningKey = true,
                     ValidIssuer = jwtIssuer,
                     ValidAudience = jwtAudience,
-                    IssuerSigningKey = new SymmetricSecurityKey(
-                        Encoding.UTF8.GetBytes(jwtKey)
-                    )
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
                 };
             })
             .AddGoogle("Google", googleOptions =>
@@ -139,40 +93,43 @@ namespace VetCareApp.Presentation.Web
 
             builder.Services.AddAuthorization();
 
-            // ========================
             // CORS
-            // ========================
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll", policy =>
-                    policy.AllowAnyOrigin()
-                          .AllowAnyMethod()
-                          .AllowAnyHeader());
+                    policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             });
 
-            // ========================
             // SWAGGER
-            // ========================
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+                {
+                    Title = "PetCare API",
+                    Version = "v1",
+                    Description = "API para el sistema de gestión veterinaria PetCareApp"
+                });
+            });
 
             var app = builder.Build();
 
-            if (app.Environment.IsDevelopment())
+            // MIDDLEWARE
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
             {
-                app.UseSwagger();
-                app.UseSwaggerUI(c =>
-                {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "PetCare API V1");
-                });
-            }
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "PetCare API V1");
+                c.RoutePrefix = "swagger";
+            });
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
 
-            app.UseCors("AllowAll");
+            // Redirigir raíz a Swagger
+            app.MapGet("/", () => Results.Redirect("/swagger")).ExcludeFromDescription();
 
+            app.UseCors("AllowAll");
             app.UseAuthentication();
             app.UseAuthorization();
 
