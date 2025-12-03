@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using PetCareApp.Application.Interfaces;
+using PetCareApp.Application.Services;
 using PetCareApp.Core.Application.Interfaces;
 using PetCareApp.Core.Application.Services;
 using System.Reflection;
@@ -33,6 +35,8 @@ namespace PetCareApp.Core.Application
             services.AddScoped<IMascotaPruebaMedicaService, MascotaPruebaMedicaService>();
             services.AddScoped<IPruebaMedicaService, PruebaMedicaService>();
             services.AddScoped<IHistorialService, HistorialService>();
+            services.AddScoped<ITipoMascotaService, TipoMascotaService>();
+            services.AddScoped<ITipoProductoService, TipoProductoService>();
 
             // Catálogos y Auxiliares
             services.AddScoped<IEstadoService, EstadoService>();

@@ -9,6 +9,9 @@ namespace PetCareApp.Core.Application.Interfaces
     public interface Ilogger
     {
         void Info(string mensaje, string usuario = "");
+
+        void Warning(string mensaje, string usuario = "");
+
         void Error(string mensaje, string usuario = "");
     }
 }

@@ -13,20 +13,26 @@ namespace PetCareApp.Core.Application.Services
     public class AutenticacionService : IAutenticacionService
     {
         private readonly IUsuarioRepositorio _usuarioRepo;
-        private readonly IRoleRepositorio _roleRepo; // ✅ Usar IRoleRepositorio en lugar de DbContext
-        private readonly TokenService _tokenService; // ✅ Ya está correcto
+        private readonly IRoleRepositorio _roleRepo;
+        private readonly TokenService _tokenService;
         private readonly Ilogger _logger;
+        private readonly IEmailService _emailService; // ⭐ NUEVO
 
         public AutenticacionService(
             IUsuarioRepositorio usuarioRepo,
-            IRoleRepositorio roleRepo, // ✅ Inyectar IRoleRepositorio
-            Ilogger logger)
+            IRoleRepositorio roleRepo,
+            Ilogger logger,
+            IEmailService emailService) // ⭐ INYECTAR EmailService
         {
             _usuarioRepo = usuarioRepo;
             _roleRepo = roleRepo;
             _logger = logger;
+            _emailService = emailService;
         }
 
+        // ========================================
+        // REGISTRO DE USUARIO CON EMAIL
+        // ========================================
         public async Task<Usuario> RegistrarAsync(RegistroDto dto)
         {
             var existente = await _usuarioRepo.GetByEmailAsync(dto.Email);
@@ -35,7 +41,7 @@ namespace PetCareApp.Core.Application.Services
 
             var roleName = string.IsNullOrEmpty(dto.Role) ? "Cliente" : dto.Role;
 
-            // ✅ BUSCAR el rol existente (NO crear uno nuevo)
+            // Buscar el rol existente
             var role = await _roleRepo.GetByNameAsync(roleName);
 
             if (role == null)
@@ -48,19 +54,45 @@ namespace PetCareApp.Core.Application.Services
                 UserName = dto.UserName,
                 Email = dto.Email,
                 PasswordHashed = Hash(dto.PasswordHashed),
-                RoleId = role.Id // ✅ Asignar el ID del rol EXISTENTE
+                RoleId = role.Id
             };
 
             await _usuarioRepo.AddAsync(user);
-          //  await _usuarioRepo.SaveChangesAsync();
 
             var usuarioConRole = await _usuarioRepo.GetByEmailAsync(user.Email);
 
             _logger.Info($"Usuario {user.Email} registrado con rol {role.Rol}");
+
+            // ⭐ ENVIAR EMAIL DE BIENVENIDA
+            try
+            {
+                var emailEnviado = await _emailService.EnviarEmailBienvenidaAsync(
+                    user.Email,
+                    user.UserName,
+                    user.Email
+                );
+
+                if (emailEnviado)
+                {
+                    _logger.Info($"✅ Email de bienvenida enviado a {user.Email}");
+                }
+                else
+                {
+                    _logger.Warning($"⚠️ No se pudo enviar email de bienvenida a {user.Email}");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Error($"❌ Error al enviar email de bienvenida: {ex.Message}");
+                // No lanzamos excepción para no interrumpir el registro
+            }
+
             return usuarioConRole!;
         }
-        
 
+        // ========================================
+        // LOGIN DE USUARIO CON EMAIL
+        // ========================================
         public async Task<Usuario?> LoginAsync(RegistrarDTOS dto)
         {
             if (string.IsNullOrEmpty(dto.Email) || string.IsNullOrEmpty(dto.PasswordHashed))
@@ -90,15 +122,48 @@ namespace PetCareApp.Core.Application.Services
             }
 
             _logger.Info($"Usuario {user.Email} inició sesión exitosamente con rol {user.Role.Rol}");
+
+            // ⭐ ENVIAR EMAIL DE NOTIFICACIÓN DE LOGIN
+            try
+            {
+                // Ejecutar el envío de email de forma asíncrona sin esperar (fire and forget)
+                _ = Task.Run(async () =>
+                {
+                    try
+                    {
+                        var emailEnviado = await _emailService.EnviarEmailLoginAsync(
+                            user.Email,
+                            user.UserName,
+                            "Navegador Web" // Puedes mejorar esto con la IP real del cliente
+                        );
+
+                        if (emailEnviado)
+                        {
+                            _logger.Info($"✅ Email de login enviado a {user.Email}");
+                        }
+                        else
+                        {
+                            _logger.Warning($"⚠️ No se pudo enviar email de login a {user.Email}");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.Error($"❌ Error al enviar email de login: {ex.Message}");
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.Error($"❌ Error al iniciar tarea de email de login: {ex.Message}");
+                // No lanzamos excepción para no interrumpir el login
+            }
+
             return user;
         }
-   
-        private static string Hash(string input)
-        {
-            using var sha = SHA256.Create();
-            var bytes = sha.ComputeHash(Encoding.UTF8.GetBytes(input));
-            return Convert.ToHexString(bytes);
-        }
+
+        // ========================================
+        // LOGIN CON GOOGLE
+        // ========================================
         public async Task<Usuario> LoginConGoogleAsync(string email, string name)
         {
             // Retornar un usuario "temporal" sin tocar la DB
@@ -106,14 +171,24 @@ namespace PetCareApp.Core.Application.Services
             {
                 Email = email,
                 UserName = name,
-                PasswordHashed = "", // sin contraseña
-                RoleId = 1, // siempre Recepcionista
+                PasswordHashed = "",
+                RoleId = 1,
                 Role = new Role
                 {
                     Id = 1,
-                    Rol = "Cliente" // ⚠️ esto evita el error en TokenService
+                    Rol = "Cliente"
                 }
             };
+        }
+
+        // ========================================
+        // MÉTODO PRIVADO PARA HASHEAR CONTRASEÑAS
+        // ========================================
+        private static string Hash(string input)
+        {
+            using var sha = SHA256.Create();
+            var bytes = sha.ComputeHash(Encoding.UTF8.GetBytes(input));
+            return Convert.ToHexString(bytes);
         }
     }
 }

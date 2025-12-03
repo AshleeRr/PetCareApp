@@ -34,5 +34,8 @@ namespace PetCareApp.Infraestructure.Persistence.Logging
 
         public void Error(string mensaje, string usuario = "")
             => _queue.Add($"[ERROR] {DateTime.UtcNow:o} {usuario} {mensaje}");
+
+        public void Warning(string mensaje, string usuario = "")
+            => _queue.Add($"[Warning] {DateTime.UtcNow:o} {usuario} {mensaje}");
     }
 }
